@@ -3,6 +3,7 @@ layout: post
 title: Blog 0 - Why I started a blog
 date: 2020-12-26
 description: my motivation for starting a blog
+categories: misc
 ---
 
 So this is my first official blog post of this website! I have to admit that setting up the basics of this web server was a lot more complicated than I anticipated, but here we are!

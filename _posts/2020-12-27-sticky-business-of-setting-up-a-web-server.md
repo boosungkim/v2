@@ -3,6 +3,7 @@ layout: post
 title: Sticky business of setting up a web server
 date: 2020-12-27
 description: the process of setting up my original website
+categories: misc
 ---
 
 # 0: Introduction
