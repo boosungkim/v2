@@ -16,6 +16,7 @@ latest_posts: true  # includes a list of the newest posts
 selected_papers: false # includes a list of papers marked as "selected={true}"
 social: true  # includes social icons at the bottom of the page
 ---
+Hello!
 
 I am an undergraduate student studying Math and Computer Science at Dickinson College. I am currently working as a data analyst in the Underground Tunnel Detection squad of the Republic of Korea Army Intelligence.
 
