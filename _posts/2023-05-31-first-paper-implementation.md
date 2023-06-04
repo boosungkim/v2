@@ -9,6 +9,9 @@ related_posts: true
 toc:
   sidebar: right
 ---
+Link to [paper](https://arxiv.org/abs/1409.1556)
+Link to [my code](https://github.com/boosungkim/milestone-cnn-model-implementations)
+
 I have read several Deep Learning research papers at this point, but I have never fully implemented one from scratch. I decided to finally try with the VGG model from [Very Deep Convolutional Networks for Large-Scale Image Recognition](https://arxiv.org/abs/1409.1556).
 
 ## VGG Explained
@@ -17,12 +20,12 @@ The VGG paper was unique in that it proved the importance of depth in image clas
 ## Hurdles along the way
 Implementing VGG from scratch initially introduced a few challenges. While it may seem easy now, converting the architecture represented in the text into Pytorch code was confusing at first.
 
-### Coding and refactoring
+### 1. Coding and refactoring
 At first, I manually wrote the model by simply writing out every single layer in the model class ```__init__()``` function. Obviously, this is not good code.
 
 In the end, I referenced some code online to see how other people organized their code. Others did so by utilizing enumeration, ```for``` loops and helper functions. 
 
-### Finding hyperparameters
+### 2. Finding hyperparameters
 Another trouble I ran into was finding the parameters and hyperparameters for the architecture in the code. Thankfully, the VGG paper has a very detailed architecture diagram.
 
 ![image](/assets/img/blogs/2023-05-31-first-paper-implementation/vgg-architecture.png)
@@ -31,7 +34,7 @@ As can be seen above, the sizes and number of convolutional filters for each lay
 
 Not difficult at all, as the paper is very detailed, but some of the more recent papers I tried recently are not as explicit.
 
-### Checking the model structure
+### 3. Checking the model structure
 Once I had a seemingly functioning model, I needed a way of making sure that recreated the VGG model exactly. There are two methods I used:
 
 1) Passing a tensor through the model
@@ -52,7 +55,7 @@ torch.Size([1, 1000])
 
 However, this is not enough to ensure that the model architecture is correct. So, I used a Python library called [Torchinfo](https://github.com/TylerYep/torchinfo) to print out the entire architecture. I ran into a few issues with Torchinfo later on, but that is not relevant here.
 
-```python
+```
 ==========================================================================================
 Layer (type:depth-idx)                   Output Shape              Param #
 ==========================================================================================
@@ -120,14 +123,18 @@ Estimated Total Size (MB): 694.16
 ==========================================================================================
 ```
 
-That seems to match up with the paper!
+The example above is my implementation of the VGG19 model. The structure seems to match up with the paper's VGG19. Additionally, the number of parameters of my custom model is roughly equivalent to that of VGG19 (144M parameters)!
 
-### The dreaded 0.1 accuracy
+![image](/assets/img/blogs/2023-05-31-first-paper-implementation/vgg-param.png)
+
+On a side note, you may wonder why there is no huge difference between the number of parameters in VGG11 (133M) and that of VGG19 (144M). The reason for that is that most of the parameters are located in the Fully Connected layers at the end of the each model. The number of parameters in the Convolutional layers pales in comparison to the number in Fully Connected layers, which is why, even though there is an 8-layer difference between VGG11 and VGG19, the numbers of parameters do not differ that much.
+
+### 4. The dreaded 10% accuracy
 When I ran this code on the CIFAR10 dataset, however, I got a 0.1 accuracy! That's basically the same as randomly guessing (since there are 10 possible guesses). No matter how many times I tweaked the hyperparameters, I got the same 0.1.
 
 The VGG model was created to be used on the ImageNet, which contains images of `224x224x3` dimensions. On the other hand, CIFAR10 contains images of `32x32x3` dimensions. The VGG is simple just too deep to learn the CIFAR10 dataset properly.
 
-I resolved this issue by adding Batch Normalization to every block in the architecture. Since Batch Normalization ensures that the activations of each layer have zero mean and unit variance, the gradients are well scaled throughout the network. I improved the performance even further by removing the final few FC layers.
+I resolved this issue by adding Batch Normalization to every block in the architecture. Since Batch Normalization ensures that the activations of each layer have zero mean and unit variance, the gradients are well scaled throughout the network. I improved the performance even further by removing the final few Fully Connected layers.
 
 In the end, with even more hyperparameter tweaking, I was left with a training accuracy of 95%, a validation accuracy of 88.7%, and a testing accuracy of 88.2%.
 

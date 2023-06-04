@@ -15,26 +15,34 @@ news: true  # includes a list of news items
 latest_posts: true  # includes a list of the newest posts
 selected_papers: false # includes a list of papers marked as "selected={true}"
 social: true  # includes social icons at the bottom of the page
+toc:
+  sidebar: right
 ---
-Hello!
+## Hello!
 
-I am an undergraduate student studying Math and Computer Science at Dickinson College. I am currently working as a data analyst in the Underground Tunnel Detection squad of the Republic of Korea Army Intelligence.
+I am an undergraduate majoring in Math and Computer Science at Dickinson College. I am currently pursuing research and learning mainly in Computer Vision, but I like to experiment with Natural Language Processing, General Software Engineering, and Linux.
 
+I sometimes [blog](./blog/index.html) and create Tech videos for my YouTube channel, [Converge2Diverge](https://youtube.com/converge2diverge).
+
+I love talking to new people and learning about what they are working on, so feel free to reach out!
+
+## Recent Work/Research Experience
+#### Data Analyst in the Korean Army
+I spent the past two years working as a data analyst for the Tunnel Neutralization Team in the Republic of Korea Army Intelligence. I utilized Fast Fourier Transformation and other military AI tools to collect and process North Korean underground sound data.
+
+#### Computer Vision Research
 In the past, I worked as an AI research assistant with [Professor John MacCormick](https://www.dickinson.edu/johnmaccormick) on the visualization of Convolutional Neural Networks (Summer 2021).
 
-I also worked as a computational research assistant with [Professor Michael Roberts](https://www.dickinson.edu/site/custom_scripts/dc_faculty_profile_index.php?fac=robertsm) (Spring 2021). Before that, I worked as a Teaching Assistant for several Math and CS courses.
+#### Computational Bioinformatics Research
+I also worked as a computational research assistant with [Professor Michael Roberts](https://www.dickinson.edu/site/custom_scripts/dc_faculty_profile_index.php?fac=robertsm) (Spring 2021).
 
-##### Interests
-I believe that our world is heading towards a future where most things are run by Artificial Intelligence, from large scale workforces to our daily tasks. My interest is in creating AI systems and workflows to futher human creativity and ingenuity.
+Check out my [experience page](./experience) for more.
 
-Current research interests:
-- Convolutional Neural Networks
-- Supervised Learning
-- Deep learning.
+## Projects
+<div class="repositories d-flex flex-wrap flex-md-row flex-column justify-content-between align-items-center">
+  {% for repo in site.data.repositories.github_repos %}
+    {% include repository/repo.html repository=repo %}
+  {% endfor %}
+</div>
 
-Alongside research, I also maintain my [blog](./blog/index.html) and my YouTube channel, [Converge2Diverge](https://youtube.com/converge2diverge). I write about my projects, progress on my studies, and opinions about news in the computing world. Similarly, I create videos about various Mathematics/Computer Science topics.
-
-##### Projects
-[Currently being edited]
-
-The rest can be viewed over on the [projects page](https://boosungkim.github.io/projects/).
+Check out my [projects page](./projects) for more.

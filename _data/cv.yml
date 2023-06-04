@@ -2,48 +2,38 @@
   type: map
   contents:
     - name: Full Name
-      value: Albert Einstein
-    - name: Date of Birth
-      value: 14th March 1879
+      value: Boosung Kim
+    - name: Programming Languages
+      value: Python3, C++, Java
+    - name: Frameworks
+      value: PyTorch, TensorFlow, Keras, Scikit-Learn
+    - name: Developer Tools
+      value: Git, Docker, VSCode, PyCharm, Linux
     - name: Languages
-      value: English, German
+      value: English, Korean, Chinese
 
 - title: Education
   type: time_table
-  contents:
-    - title: PhD
-      institution: University of Zurich, Zurich, Switzerland
-      year: 1905
+    - title: B.S. in Math and Computer Science
+      institution: Dickinson College, Carlisle, US
+      year: 2025
       description:
-        - Description 1.
-        - Description 2.
-        - title: Description 3.
-          contents:
-            - Sub-description 1.
-            - Sub-description 2.
-    - title: Federal teaching diploma
-      institution: Eidgenössische Technische Hochschule, Zurich, Switzerland
-      year: 1900
-      description:
-        - Description 1.
-        - Description 2.
+        - Full ride scholarship
+        - Selected Coursework - Data Structures and Algorithms, Computing Abstractions, Linear Algebra, Deep Learning Specialization (Coursera), Large Scale Open Source Software Development, Probability and Statistics I & II
 
 - title: Experience
   type: time_table
   contents:
-    - title: Professor of Theoretical Physics
-      institution: Institute for Advanced Study, Princeton University
-      year: 1933 - 1955
+    - title: Math and Computer Science Teaching Assistant
+      institution: Dickinson College Math and CS Department
+      year: 2020 -- 2021, Aug 2023 -- Present
       description:
-        - Description 1.
-        - Description 2.
-        - title: Description 3.
-          contents:
-            - Sub-description 1.
-            - Sub-description 2.
-    - title: Visiting Professor
-      institution: California Institute of Technology, Pasadena, California, US
-      year: 1933
+        - Instruct +80 students in Multivariable Calculus, Computing with Python, and Data Structures and Algorithms labs
+        - Led weekly study sessions, reviewed student code and graded homework
+    
+    - title: Tunnel Neutralization Team Data Analyst
+      institution: South Korean Army Division 1 Reconnaissance Battalion
+      year: Oct 2021 -- Apr 2023
       description:
         - Description 1.
         - Description 2.
@@ -61,7 +51,7 @@
       institution: University of Zurich, Zurich, Switzerland
       year: 1909 - 1911
 
-- title: Open Source Projects
+- title: Projects
   type: time_table
   contents:
     - title: <a href="https://github.com/alshedivat/al-folio">al-folio</a>
@@ -78,20 +68,3 @@
     - year: 2029
       items: 
         - Max Planck Medal
-
-- title: Academic Interests
-  type: nested_list
-  contents:
-    - title: Topic 1.
-      items: 
-        - Description 1.
-        - Description 2.
-    - title: Topic 2.
-      items:
-        - Description 1.
-        - Description 2.
-
-- title: Other Interests
-  type: list
-  contents:
-    - <u>Hobbies:</u> Hobby 1, Hobby 2, etc.

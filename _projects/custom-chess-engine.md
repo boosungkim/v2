@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Python Chess
+title: Custom Chess Engine
 description: A chess engine made from scratch in Python along with a simple AI for single player mode.
 img: /assets/img/projects/chess-start.png
 importance: 4

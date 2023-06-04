@@ -4,7 +4,7 @@ title: Dickinson Menu Bot
 description: A Java webscraper that extracts and emails the users the daily menu from the Dickinson College Dining website.
 img: /assets/img/projects/menu.png
 importance: 1
-category: completed
+category: past
 ---
 Sept 2019 - July 2020  
 [GitHub](https://github.com/boosungkim/dickinson-menu-bot)

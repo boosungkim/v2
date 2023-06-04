@@ -1,12 +1,7 @@
 github_users:
-  - torvalds
-  - alshedivat
+  - boosungkim
 
 github_repos:
-  - alshedivat/al-folio
-  - twbs/bootstrap
-  - jekyll/jekyll
-  - jquery/jquery
-  - FortAwesome/Font-Awesome
-  - jpswalsh/academicons
-  - mathjax/MathJax
+  - boosungkim/milestone-cnn-model-implementations
+  - boosungkim/custom-chess-engine
+  - boosungkim/dickinson-college-menu-bot
