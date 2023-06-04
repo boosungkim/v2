@@ -14,7 +14,8 @@
 
 - title: Education
   type: time_table
-    - title: PhD
+  contents:
+    - title: B.S. in Math and Computer Science
       institution: Dickinson College, Carlisle, US
       year: Expected 2025
       description:
