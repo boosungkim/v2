@@ -26,19 +26,19 @@ I love talking to new people and learning about what they are working on, so fee
 
 ## Recent Work/Research Experience
 #### Data Analyst in the Korean Army
-Oct 2021 ~ Apr 2023
+2021 ~ 2023
 
 I spent the past two years working as a data analyst for the Tunnel Neutralization Team in the Republic of Korea Army Intelligence. I utilized Fast Fourier Transformation and other military AI tools to collect and process North Korean underground sound data.
 
 #### Computer Vision Research
 Summer 2021
 
-I worked as a Computer Vision research assistant for [Professor John MacCormick](https://www.dickinson.edu/johnmaccormick) on the visualization techniques of Convolutional Neural Networks (Summer 2021).
+I worked as a Computer Vision research assistant for [Professor John MacCormick](https://www.dickinson.edu/johnmaccormick) on the visualization techniques of Convolutional Neural Networks.
 
 #### Computational Bioinformatics Research
 Spring 2021
 
-I also worked as a computational research assistant with [Professor Michael Roberts](https://www.dickinson.edu/site/custom_scripts/dc_faculty_profile_index.php?fac=robertsm) on creating classifier models to predict EGR1 cancer relapse levels (Spring 2021).
+I also worked as a computational research assistant with [Professor Michael Roberts](https://www.dickinson.edu/site/custom_scripts/dc_faculty_profile_index.php?fac=robertsm) on creating classifier models to predict EGR1 cancer relapse levels.
 
 > Check out my [cv page](./cv) for more.
 

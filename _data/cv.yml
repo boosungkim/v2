@@ -31,7 +31,7 @@
       description:
         - Explored and applied advanced Convolutional Neural Network visualization techniques using TensorFlow/Scikit-learn
         - Conducted alterations to software packages to improve CNN visualizations for a non-expert audience
-        - Surveyed and summarized $10$+ CNN published journals and conference articles
+        - Surveyed and summarized +10 CNN published journals and conference articles
     
     - title: Computational Biologist Research Assistant with Professor Michael Roberts
       institution: Rector Biochemistry & Molecular Biology Research Lab
@@ -46,7 +46,7 @@
   contents:
     - title: Math and Computer Science Teaching Assistant
       institution: Dickinson College Math and CS Department
-      year: 2020 - Present
+      year: Jan 2020 - Present
       description:
         - Instruct +80 students in Multivariable Calculus, Computing with Python, and Data Structures and Algorithms labs
         - Led weekly study sessions, reviewed student code and graded homework
@@ -58,7 +58,7 @@
       description:
         - Collected and preprocessed +30 North Korean underground sound data using Fast Fourier Transformation and AI tools
         - Led +10 reconnaissance missions dealing with specialized military computers in the Korean Demilitarized Zone
-        - Co-founded the RECON Coding Bootcamp and taught Python Scikit-learn/Tensorflow to over $10$ soldiers and officers
+        - Co-founded the RECON Coding Bootcamp and taught Python Scikit-learn/Tensorflow to over 10 soldiers and officers
         - Received Academic Excellence Award for placing 2nd among +70 trainees in Korea Army Intelligence School's class of 2021
     
 - title: Leadership & Extra-Curricular
@@ -89,7 +89,7 @@
     - title: <a href="https://github.com/boosungkim/custom-chess-engine">Custom Chess Engine</a>
       description: A custom chess engine, including a basic AI player, written from scratch in Python and C++ used by dozens in the Korean army
     - title: <a href="https://github.com/boosungkim/dickinson-college-menu-bot">Dickinson College Menu Bot</a>
-      description: A webscraper + email bot that retrieves and formats the cafeteria menu for $50+$ students, professors, and faculty
+      description: A webscraper + email bot that retrieves and formats the cafeteria menu for +50 students, professors, and faculty
 
 - title: Academic Honors and Awards
   type: time_table

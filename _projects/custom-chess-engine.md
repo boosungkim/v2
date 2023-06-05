@@ -7,7 +7,7 @@ importance: 4
 category: highlight
 ---
 Mar 2020 - Nov 2020  
-[GitHub](https://github.com/boosungkim/python-chess)
+[GitHub](https://github.com/boosungkim/custom-chess-engine)
 
 <center>
 <img src="/assets/img/projects/chess-start.png" alt="menu" width="500" class="center-image"/>
