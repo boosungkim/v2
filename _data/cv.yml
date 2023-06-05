@@ -20,7 +20,7 @@
       year: Expected 2025
       description:
         - Full ride scholarship
-        - Selected Coursework - Data Structures and Algorithms, Computing Abstractions, Linear Algebra, Deep Learning Specialization (Coursera), Large Scale Open Source Software Development, Probability and Statistics I & II
+        - Selected Coursework - Data Structures and Algorithms, Object Oriented Programming, Computing Abstractions, Linear Algebra, Deep Learning Specialization (Coursera), Large Scale Open Source Development, Probability and Statistics I & II, Gene Reprogramming of Human Leukemia Cells
 
 - title: Research Experience
   type: time_table
@@ -30,16 +30,16 @@
       year: May 2021 - Aug 2021
       description:
         - Explored and applied advanced Convolutional Neural Network visualization techniques using TensorFlow/Scikit-learn
-        - Conducted alterations to software packages to improve CNN visualizations for a non-expert audience
-        - Surveyed and summarized +10 CNN published journals and conference articles
+        - Enhanced existing software packages to optimize CNN visualizations for a non-expert audience, effectively bridging the gap between complex algorithms and accessible interpretation
+        - Conducted an extensive review of 12 cutting-edge CNN research papers and conference articles, synthesizing key findings and advancements in the field
     
     - title: Computational Biologist Research Assistant with Professor Michael Roberts
       institution: Rector Biochemistry & Molecular Biology Research Lab
       year: Jan 2021 - May 2021
       description:
-        - Established a data pipeline for machine learning model development on Acute Myeloid Leukemia (AML) cell data
-        - Constructed classifier models with 90% accuracy to predict EGR1 cancer relapse levels using Scikit-Learn and Pandas
-        - Participated in weekly stand-up meetings to present findings and interpret AML Bioinformatics papers
+        - Developed a robust data pipeline for machine learning model development, enabling advanced analysis and insights into Acute Myeloid Leukemia (AML) cell data
+        - Designed and trained highly accurate classifier models, achieving an impressive 90% accuracy, to predict EGR1 cancer relapse levels by leveraging Scikit-Learn and Pandas libraries for efficient model development
+        - Actively contributed to weekly stand-up meetings, delivering comprehensive presentations on research findings and providing insightful interpretations of AML Bioinformatics papers
 
 - title: Relevant Work Experience
   type: time_table
@@ -57,9 +57,9 @@
       year: Oct 2021 - Apr 2023
       description:
         - Collected and preprocessed +30 North Korean underground sound data using Fast Fourier Transformation and AI tools
-        - Led +10 reconnaissance missions dealing with specialized military computers in the Korean Demilitarized Zone
-        - Co-founded the RECON Coding Bootcamp and taught Python Scikit-learn/Tensorflow to over 10 soldiers and officers
-        - Received Academic Excellence Award for placing 2nd among +70 trainees in Korea Army Intelligence School's class of 2021
+        - Demonstrated exceptional leadership skills during more than 10  reconnaissance missions, successfully deploying and managing specialized military computer systems within the intense environment of the Korean Demilitarized Zone
+        - Co-founded the RECON Coding Bootcamp, empowering over 10 soldiers and officers with invaluable skills in Scikit-learn and TensorFlow, enhancing their ability to address complex military challenges through advanced data analysis
+        - Recognized with the Academic Excellence Award for securing the second position among a cohort of over 70 trainees at the Korea Army Intelligence School's distinguished Class of 2021
     
 - title: Leadership & Extra-Curricular
   type: time_table
@@ -109,4 +109,5 @@
         - Alpha Lambda Delta
     - year: 2019
       items: 
+        - Freshman Putnam score of 8 (top 39%)
         - Benjamin Rush Scholarship ($60,000)

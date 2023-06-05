@@ -20,7 +20,9 @@ social: true  # includes social icons at the bottom of the page
 
 I am an undergraduate majoring in Math and Computer Science at Dickinson College. I am currently pursuing research and learning mainly in Computer Vision, but I like to experiment with Natural Language Processing, general Software Engineering, and Linux.
 
-I sometimes [blog](./blog/index.html) and create videos for my Tech YouTube channel, [Converge2Diverge](https://youtube.com/converge2diverge).
+I spent the past two years (2021 ~ 2023) serving in the Korean military and plan on returning to the US this fall.
+
+I sometimes [blog](./blog/index.html) and create videos for my Tech YouTube channel, [Converge2Diverge](https://youtube.com/converge2diverge). I love taking walks and swimming
 
 I love talking to new people and learning about what they are working on, so feel free to reach out!
 
