@@ -22,50 +22,88 @@
         - Full ride scholarship
         - Selected Coursework - Data Structures and Algorithms, Computing Abstractions, Linear Algebra, Deep Learning Specialization (Coursera), Large Scale Open Source Software Development, Probability and Statistics I & II
 
-- title: Experience
+- title: Research Experience
+  type: time_table
+  contents:
+    - title: Undergraduate Computer Vision Research Assistant with Professor John MacCormick
+      institution: Dickinson College Tome Robotics Lab
+      year: May 2021 - Aug 2021
+      description:
+        - Explored and applied advanced Convolutional Neural Network visualization techniques using TensorFlow/Scikit-learn
+        - Conducted alterations to software packages to improve CNN visualizations for a non-expert audience
+        - Surveyed and summarized $10$+ CNN published journals and conference articles
+    
+    - title: Computational Biologist Research Assistant with Professor Michael Roberts
+      institution: Rector Biochemistry & Molecular Biology Research Lab
+      year: Jan 2021 - May 2021
+      description:
+        - Established a data pipeline for machine learning model development on Acute Myeloid Leukemia (AML) cell data
+        - Constructed classifier models with $90\%$ accuracy to predict EGR1 cancer relapse levels using Scikit-Learn and Pandas
+        - Participated in weekly stand-up meetings to present findings and interpret AML Bioinformatics papers
+
+- title: Relevant Work Experience
   type: time_table
   contents:
     - title: Math and Computer Science Teaching Assistant
       institution: Dickinson College Math and CS Department
-      year: 2020 -- 2021, Aug 2023 -- Present
+      year: 2020 - Present
       description:
         - Instruct +80 students in Multivariable Calculus, Computing with Python, and Data Structures and Algorithms labs
         - Led weekly study sessions, reviewed student code and graded homework
+        - 2020 - 2021, Aug 2023 - Present
     
     - title: Tunnel Neutralization Team Data Analyst
       institution: South Korean Army Division 1 Reconnaissance Battalion
-      year: Oct 2021 -- Apr 2023
+      year: Oct 2021 - Apr 2023
       description:
-        - Description 1.
-        - Description 2.
+        - Collected and preprocessed +30 North Korean underground sound data using Fast Fourier Transformation and AI tools
+        - Led +10 reconnaissance missions dealing with specialized military computers in the Korean Demilitarized Zone
+        - Co-founded the RECON Coding Bootcamp and taught Python Scikit-learn/Tensorflow to over $10$ soldiers and officers
+        - Received Academic Excellence Award for placing 2nd among +70 trainees in Korea Army Intelligence School's class of 2021
+    
+- title: Leadership & Extra-Curricular
+  type: time_table
+  contents:
+    - title: Math and Computer Science Majors Committee
+      institution: Dickinson College Math and Computer Science Department
+      year: 2020 - Present
 
-    - title: Director
-      institution: Kaiser Wilhelm Institute for Physics, Berlin, Germany.
-      year: 1917-1933
-
-    - title: Professor of Theoretical Physics
-      institution: Karl-Ferdinand University, Prague, Czechoslovakia
-      year: 1911 - 1917
+    - title: Resident Advisor
+      institution: Dickinson College Residence Life Office
+      year: 2020 - Present
       description:
+        - 2020 - 2021, Aug 2023 - Present
+    
+    - title: Partnered YouTube Tech Content Creator
+      institution: YouTube Partnership Program
+      year: 2018 - Present
 
-    - title: Associate Professor of Theoretical Physics
-      institution: University of Zurich, Zurich, Switzerland
-      year: 1909 - 1911
 
 - title: Projects
   type: time_table
   contents:
-    - title: <a href="https://github.com/alshedivat/al-folio">al-folio</a>
-      year: 2015-now
-      description: A beautiful, simple, clean, and responsive Jekyll theme for academics.
+    - title: <a href="">Artify.ai</a>
+      description: Artify
+    - title: <a href="https://github.com/boosungkim/milestone-cnn-model-implementations">Milestone CNN Papers Implementations</a>
+      description: Implementations of milestone Convolutional Neural Network models from famous papers
+    - title: <a href="https://github.com/boosungkim/custom-chess-engine">Custom Chess Engine</a>
+      description: A custom chess engine, including a basic AI player, written from scratch in Python and C++ used by dozens in the Korean army
+    - title: <a href="https://github.com/boosungkim/dickinson-college-menu-bot">Dickinson College Menu Bot</a>
+      description: A webscraper + email bot that retrieves and formats the cafeteria menu for $50+$ students, professors, and faculty
 
-- title: Honors and Awards
+- title: Academic Honors and Awards
   type: time_table
   contents:
-    - year: 1921
+    - year: All semesters
       items: 
-        - Nobel Prize in Physics 
-        - Matteucci Medal
-    - year: 2029
+        - Dean's List
+    - year: 2021
       items: 
-        - Max Planck Medal
+        - Pi Mu Epsilon (Mathematics)
+        - Upsilon Pi Epsilon (Computer Science)
+        - Henry P. Cannon Memorial Prize in Mathematics (Top Sophomore in Math)
+    - year: 2020
+      items: 
+        - William W. Landis Memorial Prize in Mathematics (Top Freshman in Math)
+        - Jane Hill Prize for excellence in Computer Science (Top Freshman in CS)
+        - Alpha Lambda Delta
