@@ -8,9 +8,9 @@
     - name: Frameworks
       value: PyTorch, TensorFlow, Keras, Scikit-Learn
     - name: Developer Tools
-      value: Git, Docker, VSCode, PyCharm, Linux
+      value: Git, Latex, Docker, VSCode, PyCharm, Linux
     - name: Languages
-      value: English, Korean, Chinese
+      value: English (native), Korean (native), Chinese (fluent)
 
 - title: Education
   type: time_table
@@ -38,7 +38,7 @@
       year: Jan 2021 - May 2021
       description:
         - Established a data pipeline for machine learning model development on Acute Myeloid Leukemia (AML) cell data
-        - Constructed classifier models with $90\%$ accuracy to predict EGR1 cancer relapse levels using Scikit-Learn and Pandas
+        - Constructed classifier models with 90% accuracy to predict EGR1 cancer relapse levels using Scikit-Learn and Pandas
         - Participated in weekly stand-up meetings to present findings and interpret AML Bioinformatics papers
 
 - title: Relevant Work Experience
@@ -107,3 +107,6 @@
         - William W. Landis Memorial Prize in Mathematics (Top Freshman in Math)
         - Jane Hill Prize for excellence in Computer Science (Top Freshman in CS)
         - Alpha Lambda Delta
+    - year: 2019
+      items: 
+        - Benjamin Rush Scholarship ($60,000)
