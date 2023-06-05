@@ -7,7 +7,7 @@ importance: 1
 category: subsidiary
 ---
 <div class="repositories d-flex flex-wrap flex-md-row flex-column justify-content-between align-items-center">
-    {% include repository/repo.html repository=boosungkim/milestone-cnn-model-implementations %}
+    {% include repository/repo.html repository="boosungkim/milestone-cnn-model-implementations" %}
 </div>
 
 [GitHub](https://github.com/boosungkim/milestone-cnn-model-implementations)
