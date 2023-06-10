@@ -26,6 +26,9 @@ I sometimes [blog](./blog/index.html) and create videos for my Tech YouTube chan
 
 I love talking to new people and learning about what they are working on, so feel free to reach out!
 
+## Currently
+I am currently participating in the VIPriors ICCV 2023 Challenge with a researcher from Yonsei University. Additionally, I am working on implementing milestone papers in Computer Vision as well as recreating some basics techniques in machine learning, such as Pytorch's Autograd and Transformers.
+
 ## Recent Work/Research Experience
 #### Data Analyst in the Korean Army
 2021 ~ 2023
