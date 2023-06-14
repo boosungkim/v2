@@ -136,7 +136,7 @@ The VGG model was created to be used on the ImageNet, which contains images of `
 
 I resolved this issue by adding Batch Normalization to every block in the architecture. Since Batch Normalization ensures that the activations of each layer have zero mean and unit variance, the gradients are well scaled throughout the network. I improved the performance even further by removing the final few Fully Connected layers.
 
-In the end, with even more hyperparameter tweaking, I was left with a training accuracy of 95%, a validation accuracy of 88.7%, and a testing accuracy of 88.2%.
+In the end, with even more hyperparameter tweaking, I was left with a training accuracy of 93.4%, a validation accuracy of 88.7%, and a testing accuracy of 88.2%.
 
 ## Conclusion
 As someone who had never fully implemented an entire paper before, I struggled with some of the code conversion in the beginning. However, compared to models like ResNet and DenseNet, VGG definitely was the easiest to implement.
