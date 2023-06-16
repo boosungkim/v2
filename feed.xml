@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://boosungkim.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://boosungkim.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2023-06-16T12:21:48+00:00</updated><id>https://boosungkim.com/feed.xml</id><title type="html">blank</title><subtitle>A lifelong learner interested in the modern world.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://boosungkim.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://boosungkim.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2023-06-16T12:36:34+00:00</updated><id>https://boosungkim.com/feed.xml</id><title type="html">blank</title><subtitle>A lifelong learner interested in the modern world.
 </subtitle><entry><title type="html">EfficientNet Implementation</title><link href="https://boosungkim.com/blog/2023/efficientnet-implementation/" rel="alternate" type="text/html" title="EfficientNet Implementation" /><published>2023-06-15T19:53:00+00:00</published><updated>2023-06-15T19:53:00+00:00</updated><id>https://boosungkim.com/blog/2023/efficientnet-implementation</id><content type="html" xml:base="https://boosungkim.com/blog/2023/efficientnet-implementation/"><![CDATA[<p>Link to <a href="https://arxiv.org/abs/1905.11946">paper</a>
 Link to <a href="https://github.com/boosungkim/milestone-cnn-model-implementations">my code</a></p>
 
@@ -93,12 +93,12 @@ such that $\alpha \cdot \beta^2 \cdot \gamma^2 \approx 2$ and $\alpha \geq 1, \b
 
 <h2 id="3-take-notes-on-the-paper">3. Take notes on the paper</h2>
 
-<p><img src="../assets/img/blogs/2023-06-15-the-imagenet-5/notes-densenet.jpeg" width="600" height="300" /></p>
+<p><img src="/assets/img/blogs/2023-06-15-the-imagenet-5/notes-densenet.jpeg" width="600" height="300" /></p>
 
 <!-- ![image](/assets/img/blogs/2023-06-15-the-imagenet-5/notes-densenet.jpeg) -->
 <p><em>My notes on the DenseNet paper</em></p>
 
-<p><img src="../assets/img/blogs/2023-06-15-the-imagenet-5/notes-resnet.jpeg" width="600" /></p>
+<p><img src="/assets/img/blogs/2023-06-15-the-imagenet-5/notes-resnet.jpeg" width="600" /></p>
 
 <!-- ![image](/assets/img/blogs/2023-06-15-the-imagenet-5/notes-resnet.jpeg) -->
 <p><em>My notes on the ResNet paper</em></p>
