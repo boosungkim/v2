@@ -1,5 +1,503 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://boosungkim.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://boosungkim.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2023-06-06T17:04:43+00:00</updated><id>https://boosungkim.com/feed.xml</id><title type="html">blank</title><subtitle>A lifelong learner interested in the modern world.
-</subtitle><entry><title type="html">My first full paper implementation</title><link href="https://boosungkim.com/blog/2023/first-paper-implementation/" rel="alternate" type="text/html" title="My first full paper implementation" /><published>2023-05-31T19:53:00+00:00</published><updated>2023-05-31T19:53:00+00:00</updated><id>https://boosungkim.com/blog/2023/first-paper-implementation</id><content type="html" xml:base="https://boosungkim.com/blog/2023/first-paper-implementation/"><![CDATA[<p>Link to <a href="https://arxiv.org/abs/1409.1556">paper</a>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://boosungkim.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://boosungkim.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2023-06-16T12:11:22+00:00</updated><id>https://boosungkim.com/feed.xml</id><title type="html">blank</title><subtitle>A lifelong learner interested in the modern world.
+</subtitle><entry><title type="html">EfficientNet Implementation</title><link href="https://boosungkim.com/blog/2023/efficientnet-implementation/" rel="alternate" type="text/html" title="EfficientNet Implementation" /><published>2023-06-15T19:53:00+00:00</published><updated>2023-06-15T19:53:00+00:00</updated><id>https://boosungkim.com/blog/2023/efficientnet-implementation</id><content type="html" xml:base="https://boosungkim.com/blog/2023/efficientnet-implementation/"><![CDATA[<p>Link to <a href="https://arxiv.org/abs/1905.11946">paper</a>
+Link to <a href="https://github.com/boosungkim/milestone-cnn-model-implementations">my code</a></p>
+
+<p>Unlike previous models, EfficientNet does not introduce a novel architecture. Rather, it introduces the idea of compound scaling and a base model, EfficientNet, to test the new scaling method.</p>
+
+<p>The EfficientNet utilizes inverted residual blocks from MobileNetV2, Squeeze-and-Efficient layers from SE-Net, and stochastic depth.</p>
+
+<h2 id="scaling-and-balancing">Scaling and balancing</h2>
+<p><img src="/assets/img/blogs/2023-06-15-efficientnet-implementation/model-scaling.png" alt="image" /></p>
+
+<p>The authors argue that while scaling up depth, width, image resolution are common techniques to improve the model performance, previous papers use arbitrary scaling.</p>
+
+<p>Depth is the most common method of scaling models. The VGG paper introduced the importance of depth, while ResNet and Densenet helped resolve the issue of training degradation.</p>
+
+<p>While we have not spent time on width scaling, shallow networks generally use width scaling to capture features while being easy to train.</p>
+
+<p>Scaling resolution is uncommon, but some networks GPipe utilize this to perform better. Resolution scaling is essentially increasing the width and height of the input images.</p>
+
+<p>The empirical results of the paper indicate that a balance among width/depth/resolution can be achieved through compound scaling, which scales all three by a constant factor.</p>
+
+<h2 id="compound-scaling">Compound scaling</h2>
+<p>The idea behind compound scaling is to uniformly scale the depth, width, and resolution of the network in a principled manner. The authors introduce a compound coefficient, denoted as $\phi$, that controls the scaling factor for each dimension. By varying the value of $\phi$, the network can be scaled up or down while maintaining a balance among depth, width, and resolution.</p>
+
+<p>The compound scaling is achieved by applying a set of predefined scaling rules. These rules specify how the depth, width, and resolution should be scaled based on the compound coefficient $\phi$. By following these rules, the network’s capacity is increased in a balanced way, ensuring that no individual dimension dominates the scaling process.</p>
+
+<p>\(depth: d = \alpha^{\phi}\)
+\(width: w = \beta^{\phi}\)
+\(resolution: r = \gamma^{\phi}\)
+such that $\alpha \cdot \beta^2 \cdot \gamma^2 \approx 2$ and $\alpha \geq 1, \beta \geq 1, \gamma \geq 1$.</p>
+
+<p>For EfficientNet-B0, the authors first fixed $\phi = 1$ and performed a grid search for $\alpha, \beta, \gamma$ based on the equations above. The results showed that the best values are $\alpha = 1.2, \beta = 1.1, \gamma = 1.15$.</p>
+
+<p>Then, by fixing the $\alpha, \beta, \gamma$ values found above, the authors calculated new $\phi$ for scaled up versions of the model (EfficientNet-B1 ~ B7).</p>
+
+<p>The authors used this approach to minimize search cost, but it is technically possible to find the optimal $\alpha, \beta, \gamma$ values using a larger model.</p>
+
+<h2 id="inverted-residual-block-mobilenet-and-se-net">Inverted residual block (MobileNet) and SE-Net</h2>
+
+<p><img src="/assets/img/blogs/2023-06-15-efficientnet-implementation/efficientnet-b0.png" alt="image" /></p>
+
+<p><em>Table 1: EfficientNet-B0 architecture</em></p>
+
+<p>As you can see from the table above, the EfficientNet-B0 baseline network utilizes inverted residual blocks (MBConv) from MobileNets.</p>
+
+<p>In a normal residual block, bottlenecks are used to reduce the number of parameters and improve efficiency. To summarize, the block has a wide -&gt; narrow -&gt; structure using 1 by 1 convolutions.</p>
+
+<p>On the other hand, an inverted residual block uses a narrow -&gt; wide -&gt; narrow approach with 1 by 1 convolutions and 3 by 3 depthwise convolutions.</p>
+
+<p>Depthwise convolutions use far less parameters, as only one channel is neccessary for the filters. A single channel filter is used to calculate convolutions layer by layer, meaning less parameters.</p>
+
+<p>The authors also state that they use Squeeze-and-Excitation networks.</p>
+
+<h2 id="stochastic-depth">Stochastic depth</h2>
+<p>Stochastic depth is essentially dropout for layers. For each mini-batch, some residual layers are completely dropped and only the residual skip connections are passed along.</p>
+
+<p>This allows the network to train with a shorter effective depth, reducing the risk of overfitting and promoting regularization. By randomly dropping layers, stochastic depth provides a form of regularization similar to dropout but specifically tailored for residual networks.</p>
+
+<h2 id="silu">SiLU</h2>
+<p>The authors of the paper use SiLU instead of ReLU for feature activation.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+<p>The big mistake I made was implementing this paper before MobileNet, as EfficientNet builds upon MobileNetV2. On the bright side, implementing MobileNetV2 should be relatively easy now using the code for the inverted residual block.</p>
+
+<p>This is definitely the most complex model that I coded to date, as it uses many previous concepts. I haven’t run this model on CIFAR10 yet, as I am still going through the code to see if I implemented everything correctly, but it was quite an experience jumping back and forth between papers and presentation videos to try and grasp the idea of EfficientNet.</p>
+
+<p>Once I finalize the model and run it on a dataset, I will post another blog post.</p>
+
+<h2 id="references">References:</h2>
+<ol>
+  <li>https://paperswithcode.com/method/inverted-residual-block</li>
+</ol>]]></content><author><name></name></author><category term="computer-vision" /><category term="implementation" /><summary type="html"><![CDATA[Understanding and implementing EfficientNet]]></summary></entry><entry><title type="html">I implemented 5 CNN papers. Here’s what I learned.</title><link href="https://boosungkim.com/blog/2023/the-imagenet-5/" rel="alternate" type="text/html" title="I implemented 5 CNN papers. Here’s what I learned." /><published>2023-06-15T19:53:00+00:00</published><updated>2023-06-15T19:53:00+00:00</updated><id>https://boosungkim.com/blog/2023/the-imagenet-5</id><content type="html" xml:base="https://boosungkim.com/blog/2023/the-imagenet-5/"><![CDATA[<p><a href="https://github.com/boosungkim/milestone-cnn-model-implementations">The Imagenet 5</a></p>
+
+<p><em>An accompanying Converge2Diverge YouTube video is in the works.</em></p>
+
+<p>As of this post, I have implemented 5 milestone CNN papers (6 really, if you include my implementation of MobileNet’s inverted residual block). I thinking about calling this short series of implementations “The ImageNet 5” (since all these models are based on ImageNet).</p>
+
+<p>From this short experience, I truly believe that implementing papers and utilizing the code for other projects is the best way to learn deep learning. I learnt a lot, which can be summarized in 5 key points:</p>
+
+<h2 id="1-break-down-the-model">1. Break down the model</h2>
+<p>When I first implemented the VGG network and Residual Networks, I coded everything into one huge chunk. If you look at the ealiest GitHub versions of my code, you will be able to find it.</p>
+
+<p>While the code may run, it is significantly harder to debug or to come back to later. If you read my post on <a href="/_posts/2023-06-15-efficientnet-implementation.md">EfficientNet</a>, you saw how we had to reuse the SE-Net code.</p>
+
+<p>Additionally, if you run <code class="language-plaintext highlighter-rouge">summary()</code> from torchinfo, you can see that the function groups layers together by blocks or sequences. Organizing the dozens of of layers in the model into <code class="language-plaintext highlighter-rouge">features</code>, <code class="language-plaintext highlighter-rouge">classifier</code>, or other categories can be immensely helpful in reading the summary later. The official Pytorch implementations of the models do this as well, and when you utilize transfer learning, you can set which blocks of code to training mode easily due to this classification.</p>
+
+<p>Finally, breaking down the model to smaller parts and implementing them first can help your understanding as well. Instead of overwhelming yourself with implementing everything, focus on implementing separate parts of the model.</p>
+
+<h2 id="2-you-need-to-know-the-background-knowledge">2. You need to know the background knowledge</h2>
+<p>I particularly felt this when implementing EfficientNet. Trying to implement it without proper knowledge of MobileNetV2 (its basis) was a complete nightmare, and I had to reference many explanations and videos to even code a running model.</p>
+
+<p>When reading a paper, it includes references to previous works it is built on. Don’t be stubborn and actually read the references as well.</p>
+
+<h2 id="3-take-notes-on-the-paper">3. Take notes on the paper</h2>
+<p><img src="/assets/img/blogs/2023-06-15-the-imagenet-5/notes-densenet.jpeg" alt="image" />
+<em>My notes on the DenseNet paper</em></p>
+
+<p><img src="/assets/img/blogs/2023-06-15-the-imagenet-5/notes-resnet.jpeg" alt="image" />
+<em>My notes on the ResNet paper</em></p>
+
+<p>As mentioned in a previous blog, the parameters and hyperparameters of a model is often embedded in several different places in the paper. It’s like going on an Easter egg hunt for these clues.</p>
+
+<p>Thanks to my prior research experience, I knew how to read papers on a high level: read the abstract -&gt; conclusion -&gt; figures/tables -&gt; introduction -&gt; main content. But through these implementations, I’ve gotten better at hunting down these little details.</p>
+
+<p>Taking notes and writing down these details are very important, especially when you are trying to read several papers at once and start getting overwhelmed.</p>
+
+<h2 id="4-have-a-set-environment">4. Have a set environment</h2>
+<p>When you are testing these models, it can be very time-consuming to create a whole new environment. It also helps to use the same dataset with the same augmentations to benchmark your models. I ended up reusing the data augmentation and training/testing codes for all my models.</p>
+
+<h2 id="5-hyperparameter-tuning-takes-all-day">5. Hyperparameter tuning takes all day</h2>
+<p>The models I implemented were made for ImageNet, not CIFAR10. Thus, I had to finetune the hyperparameters to get close to the results on the paper. Even then, I was not able to fully replicate the results.</p>
+
+<p>These models get more complicated as time goes on. We aren’t dealing with MNIST or Cats vs Dogs anymore. Each time I tweak a hyperparameter, I have to let the model run for hundreds of epoch, which can take hours. I’ve learnt to let the model run while I take care of other work or even while I am sleeping. It is important to get more efficient in running these models.</p>
+
+<h2 id="what-now">What now?</h2>
+<h3 id="more-experimentation">More experimentation</h3>
+<p>So far, all my implementations focused on just the coding part with a little bit of finetuning. If my results matched the general trend of the model, I moved onto the next model. That’s not what a true researcher does.</p>
+
+<p>A true researcher would try to replicate the different experiments done in each paper. While I will continue with my studies in other domains, I plan on coming back to some of these papers and properly replicating the results. I need to learn to plot loss and accuracy and compare these models against each other under the exact same circumstances.</p>
+
+<h3 id="newer-papers">Newer papers</h3>
+<p>So far, I only worked with older papers, the latest one being published in 2020 (which is pretty recent I guess). These older papers have more articles and explanations online that I was able to reference when I got stuck.</p>
+
+<p>For instance, I was able to read an online article explaining the concept of growth rates in DenseNet, which was how I figured out that growth rates are just the number of channels the convolutional step is supposed to output.</p>
+
+<p>As my skills and knowledge improve, I hope to be able to understand newer state-of-the-art papers from top conferences. My current goal is to be able to read and implement a 2023 NeurIPS paper this winter break.</p>
+
+<h3 id="other-domain-studies">Other domain studies</h3>
+<p>There are so many other areas outside of just image classification. The closest areas being Object Segmentation and Object Detection. Not to mention there is a whole world of Natural Language Processing waiting as well.</p>
+
+<p>Perhaps I could do a Segmentation 5?</p>
+
+<p>On a final note, I would like to thank my friend Daesung (Dan) Kim for his continuous help and support so far.</p>]]></content><author><name></name></author><category term="computer-vision" /><category term="implementation" /><summary type="html"><![CDATA[5 things I learnt from implementing 5 Computer Vision papers]]></summary></entry><entry><title type="html">SE-Net Implementation</title><link href="https://boosungkim.com/blog/2023/senet-implementation/" rel="alternate" type="text/html" title="SE-Net Implementation" /><published>2023-06-05T19:53:00+00:00</published><updated>2023-06-05T19:53:00+00:00</updated><id>https://boosungkim.com/blog/2023/senet-implementation</id><content type="html" xml:base="https://boosungkim.com/blog/2023/senet-implementation/"><![CDATA[<p>Link to <a href="https://arxiv.org/pdf/1709.01507.pdf">paper</a>
+Link to <a href="https://github.com/boosungkim/milestone-cnn-model-implementations">my code</a></p>
+
+<p>Squeeze-and-Excitation Networks, SE-Nets for short, are actually convolutional blocks that can be added to other models, like ResNet or VGG.</p>
+
+<p><img src="/assets/img/blogs/2023-06-05-senet-implementation/senet.png" alt="image" />
+<em>Figure 1: Squeeze and Excitation Block</em></p>
+
+<p>The key problem that the authors of the paper wants to address is the problem of implicit and local channel dependencies. They do so by adding the Squeeze-and-Excitation block, which relays channel-wise information.</p>
+
+<p>By incorporating the SE blocks into the model, the network can adaptively recalibrate its feature maps to capture more discriminative information, leading to improved performance.</p>
+
+<h2 id="implicit-local-channel-information">Implicit local channel information</h2>
+<p><img src="/assets/img/blogs/2023-06-05-senet-implementation/convolution.png" alt="image" />
+<em>Figure 2: A normal convolution</em></p>
+
+<p>In a normal convolution like the image above, channel dependencies are implicitly included in the outputs of the convolutional layers. In other words, each layer calculates the convolution on all the channels of a local region every step.</p>
+
+<p>Due to the localness of the convolutions, each channel in the output contains implicit channel embeddings tangled with local spatial correlations. To simplify further, each pixel in a channel contains the channel embeddings of the local region on the convolution was calculated on.</p>
+
+<h2 id="the-se-net">The SE-Net</h2>
+<p>The SE-Net sets out to resolve this issue by introducing an explicit mechanism to model channel-wise relationships through the “squeeze” and “excitation” layers.</p>
+
+<h3 id="squeeze">Squeeze</h3>
+<p>The network first “squeezes” the outputs of the previous convolutional layer into $channel\times1\times1$ shape using Global Average Pool.</p>
+
+<h3 id="excitation">Excitation</h3>
+<p>The network then performs “excitation” by performing two Fully Connected (FC) layers. The first FC layer reduces the number of channels by applying a reduction ratio. This reduction helps in reducing the computational complexity of the SE block. The second FC layer then expands the number of channels back to the original number. These FC layers capture the channel dependencies and learn channel-wise relationships based on the aggregated information from the squeeze operation.</p>
+
+<p>FYI, because the FC layers are “fully connected,” every node is connected with each other. This is how the network captures channel-wise relationships and dependencies.</p>
+
+<h3 id="rescale">Rescale</h3>
+<p>Finally, the SE-Net rescales the output back to the input dimensions by using the Unflatten operation and channel-wise multiplication. The channel-wise attention weights are then applied by element-wise multiplication, allowing the network to selectively amplify or suppress the channel activations based on their importance.</p>
+
+<h2 id="se-net-implementation">SE-Net implementation</h2>
+<h3 id="implementation">Implementation</h3>
+<pre><code class="language-Python">class se_block(nn.Module):
+    def __init__(self, input_channels, reduction_ratio):
+        super(se_block,self).__init__()
+        self.sequence = nn.Sequential(
+            # 1. Squeeze
+            nn.AdaptiveAvgPool2d((1,1)), # output: bxCx1x1
+            nn.Flatten(),  # output: bxC
+            # 2. Excitation
+            nn.Linear(input_channels, input_channels // reduction_ratio, bias=False), # output: bxC/r
+            nn.ReLU(), # output: bxC/r
+            nn.Linear(input_channels // reduction_ratio, input_channels), # output: bxC
+            nn.Sigmoid(), # output: bxC
+            nn.Unflatten(1, (input_channels,1,1)) # output: bxCx1x1
+        )
+        pass
+
+    def forward(self,x):
+        z = self.sequence(x)
+        # 3. Rescale
+        z = x*z # output: bxCxHxW
+        return z
+</code></pre>
+<p>There is not much to add here, as the code follows the description one-to-one. One thing to add is that I originally used Pytorch’s AvgPool2d with manually calculated channel width and height, but Pytorch has the AdaptiveAvgPool2d which handles the dimensions for you.</p>
+
+<h3 id="network-summary">Network summary</h3>
+<pre><code class="language-Python">&gt;&gt;&gt; model = se_block(64, 16)
+&gt;&gt;&gt; summary(model, input_size=(1,64,32,32), col_names=["input_size","output_size","num_params"])
+</code></pre>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>===================================================================================================================
+Layer (type:depth-idx)                   Input Shape               Output Shape              Param #
+===================================================================================================================
+se_block                                 [1, 64, 32, 32]           [1, 64, 32, 32]           --
+├─Sequential: 1-1                        [1, 64, 32, 32]           [1, 64, 1, 1]             --
+│    └─AdaptiveAvgPool2d: 2-1            [1, 64, 32, 32]           [1, 64, 1, 1]             --
+│    └─Flatten: 2-2                      [1, 64, 1, 1]             [1, 64]                   --
+│    └─Linear: 2-3                       [1, 64]                   [1, 4]                    256
+│    └─ReLU: 2-4                         [1, 4]                    [1, 4]                    --
+│    └─Linear: 2-5                       [1, 4]                    [1, 64]                   320
+│    └─Sigmoid: 2-6                      [1, 64]                   [1, 64]                   --
+│    └─Unflatten: 2-7                    [1, 64]                   [1, 64, 1, 1]             --
+===================================================================================================================
+Total params: 576
+Trainable params: 576
+Non-trainable params: 0
+Total mult-adds (Units.MEGABYTES): 0.00
+===================================================================================================================
+Input size (MB): 0.26
+Forward/backward pass size (MB): 0.00
+Params size (MB): 0.00
+Estimated Total Size (MB): 0.27
+===================================================================================================================
+</code></pre></div></div>
+<p>You may notice that the number of parameters is relatively low due to the use the reduction ratio. Thus, the inclusion of SE-Nets in other models will not significantly impact the number of total parameters.</p>
+
+<h2 id="se-resnet">SE-ResNet</h2>
+<p>With the SE-Net coded, it is trivial to add it to our previous models. I decided to test it on ResNet.</p>
+
+<pre><code class="language-Python">class SE_ResidualBlockBottleneck(nn.Module):
+    expansion = 4
+    def __init__(self, input_channels, in_channels, reduction_ratio, stride=1):
+        super(SE_ResidualBlockBottleneck, self).__init__()
+
+        self.block = nn.Sequential(
+            nn.Conv2d(in_channels=input_channels, out_channels=in_channels, kernel_size=1, stride=1, padding=0, bias=False),
+            nn.BatchNorm2d(in_channels),
+            nn.ReLU(),
+            nn.Conv2d(in_channels=in_channels, out_channels=in_channels, kernel_size=3, stride=stride, padding=1, bias=False),
+            nn.BatchNorm2d(in_channels),
+            nn.ReLU(),
+            nn.Conv2d(in_channels=in_channels, out_channels=in_channels*4, kernel_size=1, stride=1, padding=0, bias=False),
+            nn.BatchNorm2d(in_channels*4)
+        )
+        self.relu = nn.ReLU()
+        self.se_block = SE_block(in_channels*4, reduction_ratio)
+
+        if stride != 1 or input_channels != self.expansion*in_channels:
+            self.shortcut = nn.Sequential(
+                nn.Conv2d(in_channels=input_channels, out_channels=in_channels*4, kernel_size=1, stride=stride, padding=0, bias=False),
+                nn.BatchNorm2d(in_channels*4)
+            )
+        else:
+            self.shortcut = nn.Sequential()
+
+    def forward(self, x):
+        z = self.block(x)
+        z = self.se_block(z)
+        z += self.shortcut(x)
+        z = self.relu(z)
+        return z
+</code></pre>
+<p>Notice that the only additions made are <code class="language-plaintext highlighter-rouge">self.se_block = SE_block(in_channels*4, reduction_ratio)</code> and <code class="language-plaintext highlighter-rouge">z = self.se_block(z)</code>. The number of channels is <code class="language-plaintext highlighter-rouge">in_channel*4</code> as that is the result of the residual block (bottleneck).</p>
+
+<h3 id="experimentation">Experimentation</h3>
+<p>When run under the same hyperparameters as ResNet, SE-ResNet produces a training accuracy of 95.7% and a testing accuracy of 88.6%. Not quite as a good as DenseNet, but I only ran SE-ResNet for about 400 epoch, significantly less than my runs for ResNet and DenseNet.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+<p>The results fall in line with the results of the paper. The accuracies were increased and the network converged faster than the original.</p>
+
+<p>While I only tested the SE-Network on ResNet, the squeeze-and-excitation method can be included in many other models as well.</p>
+
+<h2 id="references">References:</h2>
+<ol>
+  <li>https://towardsdatascience.com/practical-graph-neural-networks-for-molecular-machine-learning-5e6dee7dc003</li>
+</ol>]]></content><author><name></name></author><category term="computer-vision" /><category term="implementation" /><summary type="html"><![CDATA[Understanding and implementing SE-Networks]]></summary></entry><entry><title type="html">DenseNet Implementation</title><link href="https://boosungkim.com/blog/2023/densenet-implementation/" rel="alternate" type="text/html" title="DenseNet Implementation" /><published>2023-06-02T19:53:00+00:00</published><updated>2023-06-02T19:53:00+00:00</updated><id>https://boosungkim.com/blog/2023/densenet-implementation</id><content type="html" xml:base="https://boosungkim.com/blog/2023/densenet-implementation/"><![CDATA[<p>Link to <a href="https://arxiv.org/abs/1608.06993">paper</a>
+Link to <a href="https://github.com/boosungkim/milestone-cnn-model-implementations">my code</a></p>
+
+<p>DenseNets are basically ResNets but with residual connections between every single layer.</p>
+
+<p><img src="/assets/img/blogs/2023-06-02-densenet-implementation/densenet.png" alt="image" />
+<em>Figure 1: DenseNet</em></p>
+
+<p>The idea is to concatenate the feature maps of all the preceding layers with the result of the current layer. The authors of “Densely Connected Convolutional Networks” argue that the element-wise summation used in Residual Networks may impede the flow of information.</p>
+
+<p>By concatenating the feature maps, the authors improves the information flow as each layer would have direct information from all previous layers.</p>
+
+\[x_l = H_l([x_0, x_1, \dots, x_{l-1}])\]
+
+<p>What this equation basically means is that instead of each layer taking in only the previous output, like VGG, taking in the previous output and the output of the block before, like ResNet, each layer takes in the concatenation of all previous layers in the Dense block.</p>
+
+<h2 id="growth-rate">Growth rate</h2>
+<p>So what is the growth rate in DenseNets? The growth rate, as its name suggests, is the growth rate of the number of channels for each dense layer. For instance, if we start off with $64$ layers and the growth rate is $32$, the convolutional sequence in the first layer will create an output of $32$ channels. The dense layer will conclude by concatenating the previous outputs, giving us $96$ channels. The next layer will then have $128$ layers, and so on.</p>
+
+<p>The authors of the paper emperically prove that the dense network works sufficiently well with relatively small growth rates, like $k=12$.</p>
+
+<h2 id="bottleneck-layers-in-densenet">Bottleneck layers in DenseNet</h2>
+<p>With the continuous increase in the number of channels, you may understand the importance of using bottlenecks if you read my previous blog post on <a href="/_posts/2023-06-01-resnet34-implementation.md">ResNet</a>.</p>
+
+<p>To recap, bottleneck layers decrease the number of channels using 1 by 1 convolutions for more efficient computation.</p>
+
+<p>By employing 1 by 1 convolutions, the bottleneck layers compress the information carried by the feature maps, reducing the computational load while still preserving essential features.</p>
+
+<p>Unlike ResNet, DenseNets utilize just one 1 by 1 convolutions per layer to reduce the number of channels.</p>
+
+<h2 id="transition-layers">Transition layers</h2>
+<p>Bottleneck layers alone are not enough to improve the model compactness. This is where the authors introduce compression by Transition layers.</p>
+
+<p>Essentially, the transition layer reduces the number of channels by a factor of $\theta$, which the paper sets as $0.5$ for DenseNet-C. Hence, DenseNet-C halves the number of channels every transition layer.</p>
+
+<h2 id="implementation-detail">Implementation detail</h2>
+<p>We now have the building blocks for DesneNet.</p>
+
+<h3 id="dense-layer">Dense layer</h3>
+<pre><code class="language-Python">class DenseLayer(nn.Module):
+    def __init__(self, input_channels, growth_rate):
+        super(DenseLayer, self).__init__()
+        self.growth_rate = growth_rate
+
+        self.layer = nn.Sequential(
+            nn.BatchNorm2d(input_channels),
+            nn.ReLU(),
+            nn.Conv2d(in_channels=input_channels, out_channels=4*input_channels, kernel_size=1, stride=1, padding=0, bias=False),
+            nn.BatchNorm2d(4*input_channels),
+            nn.ReLU(),
+            nn.Conv2d(in_channels=4*input_channels, out_channels=growth_rate, kernel_size=3, stride=1, padding=1, bias=False)
+        )
+    
+    def forward(self,x):
+        return self._forward_implementation(x)
+    
+    def _forward_implementation(self,x):
+        z = self.layer(x)
+        z = torch.cat([z, x], 1)
+        return z
+</code></pre>
+<p>The difference here from the Residual block code is that we use <code class="language-plaintext highlighter-rouge">torch.cat([z,x],1)</code> to concatenate the previous results. <code class="language-plaintext highlighter-rouge">z</code> is the result of the convolutions, which will return <code class="language-plaintext highlighter-rouge">growth_rate</code> number of channels. <code class="language-plaintext highlighter-rouge">x</code> is the result of the previous layer’s output.</p>
+
+<h3 id="transition-layer">Transition layer</h3>
+<pre><code class="language-Python">class TransitionBlock(nn.Module):
+    def __init__(self, input_channels):
+        super(TransitionBlock, self).__init__()
+        self.input_channels = input_channels
+        self.output_channels = input_channels // 2
+
+        self.layer = nn.Sequential(
+            nn.BatchNorm2d(self.input_channels),
+            nn.Conv2d(in_channels=self.input_channels, out_channels=self.output_channels, kernel_size=1, stride=1, padding=0, bias=False),
+            nn.AvgPool2d(kernel_size=2, stride=2, padding=0)
+        )
+    
+    def forward(self,x):
+        return self.layer(x)
+    
+    def output_channels_num(self):
+        return self.output_channels
+</code></pre>
+<p>Even simpler! We just use a combination of BatchNorm, 1 by 1 convolution, and AvgPool to reduce the number of channels by a factor of $0.5$ and the width and height by $0.5$.</p>
+
+<p>I just set $\theta$ to be $0.5$ as the paper does, but you can adjust it to be some other value.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+<p>Despite having a similar depth and the number of parameters as ResNet, my variation of DenseNet produced an improvement in both training and testing accuracies. My densenet produced a training accuracy of 96.6% and testing accuracy of 88.7%.</p>
+
+<p>The higher training accuracy before plateuing proves that densely connected layers is an improvement over shortcut connections from ResNet. The direct information flow between layers in DenseNet through concatenation has proven to be beneficial for learning complex representations and improving model performance.</p>]]></content><author><name></name></author><category term="computer-vision" /><category term="implementation" /><summary type="html"><![CDATA[Understanding and implementing Dense Networks]]></summary></entry><entry><title type="html">ResNet34 Model Implementation</title><link href="https://boosungkim.com/blog/2023/resnet34-implementation/" rel="alternate" type="text/html" title="ResNet34 Model Implementation" /><published>2023-06-01T19:53:00+00:00</published><updated>2023-06-01T19:53:00+00:00</updated><id>https://boosungkim.com/blog/2023/resnet34-implementation</id><content type="html" xml:base="https://boosungkim.com/blog/2023/resnet34-implementation/"><![CDATA[<p>Link to <a href="https://arxiv.org/pdf/1512.03385.pdf">paper</a>
+Link to <a href="https://github.com/boosungkim/milestone-cnn-model-implementations">my code</a></p>
+
+<p>Continuing on from my previous <a href="./2023-05-31-first-paper-implementation.md">VGG implementation</a>, I worked on implementing ResNet next.</p>
+
+<h2 id="what-is-resnet">What is ResNet?</h2>
+<p>The researchers behind ‘Deep Residual Learning for Image Recognition’ aimed to address the common ‘degradation problem’ encountered in deep convolutional networks.</p>
+
+<p>When the depth of a CNN model is increased, it initially shows an improvement in performance but eventually degrades rapidly as the training accuracy plateus or even worsens over time.</p>
+
+<h3 id="the-common-misconception">The common misconception</h3>
+<p>The common misconception is that this rapid degradation in accuracy is caused by overfitting.</p>
+
+<p>While overfitting due to exploding/vanishing gradients is expected problems in very deep networks, it has been accounted for by nomalized initializations of the dataset and the intermediate Batch Normalization layers.</p>
+
+<p>The degradation is definitely not caused by overfitting, as adding more layers actually causes the <em>training error</em> to <strong>increase</strong>.</p>
+
+<p>So what causes this degradation problem? Even the researchers in the paper are not sure. Their conclusion is that “deep plain nets may have exponentially low convergence rates.”</p>
+
+<h2 id="what-is-a-residual-learning">What is a Residual Learning?</h2>
+<p>So if we don’t know what causes the degradation problem, do we at least know how to prevent it? That’s where residual mapping in Residual Learning come into play.</p>
+
+<p><img src="/assets/img/blogs/2023-06-01-resnet34-implementation/residual-block.jpeg" alt="image" />
+<em>Figure 1: A residual block</em></p>
+
+\[H(x) := F(x) + x\]
+
+<p>If we let $x$ be the incoming feature, the $F(x)$ is the normal weighted layers that CNNs have (Convolutional, Batch Normalization, ReLU layers). The original $x$ is then added (element-wise addition) to $F(x)$ to produce $H(x)$.</p>
+
+<p>Essentially, the original features are added to the result of the weighted layers, and this whole process is one residual block. The idea is that, in the worst case scenario where $F(x)$ produce a useless tensor filled with $0$s, the identity will be added back in to pass on a useful feature to the next block. Shortcut connections can only help the network.</p>
+
+<p>As this is a CNN model, downsampling is necessary. The issue is that the dimensions of $F(x)$ and $x$ would be different after downsampling. In such cases, the $F(x)$ and $W_1x$ are added together, where the square matrix $W_1$ is used to match dimensions.</p>
+
+<h2 id="what-is-a-bottleneck-residual-block">What is a Bottleneck Residual Block?</h2>
+<p>A bottleneck residual block is a variant of the residual block that uses 1 by 1 convolutions to create a “bottleneck.” The primary purpose of a bottleneck is to reduce the number for parameters in the network.</p>
+
+<p><img src="/assets/img/blogs/2023-06-01-resnet34-implementation/residual-block-bottleneck.png" alt="image" />
+<em>Figure 2: A no-bottleneck residual block (left) vs a bottleneck residual block (right)</em></p>
+
+<p>By utilizing a 1x1 convolution, the network first reduces the number of channels before applying the subsequent 3x3 convolution. The output is then restored to the original channel length by another 1x1 convolution.</p>
+
+<p>The reduction in the number of channels leads to a significant reduction in the number of parameters in the network. This parameter reduction allows for more efficient training and enables the use of deeper and more complex architectures while managing computational resources effectively.</p>
+
+<p>Bottleneck residual blocks have become a key component in deeper ResNet variants, contributing to their improved performance and efficiency.</p>
+
+<h2 id="understanding-dimensionality-reduction">Understanding dimensionality reduction</h2>
+<p>As this is a CNN model, downsampling is necessary. The issue is that the dimensions of $F(x)$ and $x$ would be different after downsampling. In such cases, the $F(x)$ and $W_1x$ are added together, where the square matrix $W_1$ is used to match dimensions.</p>
+
+<p>Below is for simple shortcut connections with elementwise addition.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">+</span> <span class="n">identity</span>
+</code></pre></div></div>
+
+<p>But what about the dimensionality reductions? Well it’s just a sequence of a Conv2d layer and a BatchNorm2d layer, but matching the dimensions was a little confusing at first.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="nf">dim_reduction</span><span class="p">(</span><span class="n">identity</span><span class="p">)</span>
+<span class="bp">...</span>
+
+<span class="k">def</span> <span class="nf">skip_connection</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">input_channels</span><span class="p">,</span> <span class="n">output_channels</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">nn</span><span class="p">.</span><span class="nc">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="n">input_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="n">output_channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">BatchNorm2d</span><span class="p">(</span><span class="n">output_channels</span><span class="p">)</span>
+        <span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="implementation">Implementation</h2>
+<h3 id="a-normal-residual-block">A normal residual block</h3>
+<pre><code class="language-Python">class ResidualBlockNoBottleneck(nn.Module):
+    expansion = 1
+    def __init__(self, input_channels, output_channels, stride=1):
+        super(ResidualBlockNoBottleneck, self).__init__()
+        self.expansion = 1
+
+        self.block = nn.Sequential(
+            nn.Conv2d(in_channels=input_channels, out_channels=output_channels, kernel_size=3, stride=stride, padding=1, bias=False),
+            nn.BatchNorm2d(output_channels),
+            nn.ReLU(),
+            nn.Conv2d(in_channels=output_channels, out_channels=output_channels, kernel_size=3, stride=1, padding=1, bias=False),
+            nn.BatchNorm2d(output_channels)
+        )
+        self.relu = nn.ReLU()
+        
+        if stride != 1:
+            self.shortcut = nn.Sequential(
+                nn.Conv2d(in_channels=input_channels, out_channels=output_channels, kernel_size=1, stride=2, padding=0),
+                nn.BatchNorm2d(output_channels)
+            )
+        else:
+            self.shortcut = nn.Sequential()
+    
+    def forward(self, x):
+        z = self.block(x)
+        z += self.shortcut(x)
+        z = self.relu(z)
+        return z
+</code></pre>
+<p>In the residual block (no bottleneck), there is the standard sequence of Conv2d-BatchNorm-ReLU. The key addition here is the addition of the shortcut connection.</p>
+
+<p>When there is a stride of 2 in the block, there is a change in dimensionality (width and height are reduced by 2), so the dimensionality reduction is applied.</p>
+
+<h2 id="bottleneck-residual-block">Bottleneck residual block</h2>
+<pre><code class="language-Python">class ResidualBlockBottleneck(nn.Module):
+    expansion = 4
+    def __init__(self, input_channels, in_channels, stride=1):
+        super(ResidualBlockBottleneck, self).__init__()
+
+        self.block = nn.Sequential(
+            nn.Conv2d(in_channels=input_channels, out_channels=in_channels, kernel_size=1, stride=1, padding=0, bias=False),
+            nn.BatchNorm2d(in_channels),
+            nn.ReLU(),
+            nn.Conv2d(in_channels=in_channels, out_channels=in_channels, kernel_size=3, stride=stride, padding=1, bias=False),
+            nn.BatchNorm2d(in_channels),
+            nn.ReLU(),
+            nn.Conv2d(in_channels=in_channels, out_channels=in_channels*4, kernel_size=1, stride=1, padding=0, bias=False),
+            nn.BatchNorm2d(in_channels*4)
+        )
+        self.relu = nn.ReLU()
+        
+        if stride != 1 or input_channels != self.expansion*in_channels:
+            self.shortcut = nn.Sequential(
+                nn.Conv2d(in_channels=input_channels, out_channels=in_channels*4, kernel_size=1, stride=stride, padding=0, bias=False),
+                nn.BatchNorm2d(in_channels*4)
+            )
+        else:
+            self.shortcut = nn.Sequential()
+    
+    def forward(self, x):
+        z = self.block(x)
+        z += self.shortcut(x)
+        z = self.relu(z)
+        return z
+</code></pre>
+<p>The new addition here is the 1 by 1 convolutions. Also, the code checks for <code class="language-plaintext highlighter-rouge">stride != 1</code> and <code class="language-plaintext highlighter-rouge">input_channels != self.expansion*in_channels</code>. The second condition checks if we are repeating the same residual block or if we are moving on to the next layer.</p>
+
+<p>For example, for the first layer in ResNet50, the <code class="language-plaintext highlighter-rouge">input_channels</code> would be $64$ as a result of preliminary layers. The <code class="language-plaintext highlighter-rouge">in_channels</code> is $64$. The first layer repeats the bottleneck block 3 times. The first time, <code class="language-plaintext highlighter-rouge">input_channels</code> and <code class="language-plaintext highlighter-rouge">self.expansion*in_channels</code> would be $64$ and $4\times64=256$ respectively. Thus, there would be a dimensionality reduction. The second and third layers would then have <code class="language-plaintext highlighter-rouge">input_channels</code> and <code class="language-plaintext highlighter-rouge">self.expansion*in_channels</code> of 256, meaning no dimensionality reduction would be required.</p>
+
+<p>With these blocks coded, making a full ResNet is as easy as stacking them on top of each other.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+<p>The training accuracy of my VGG implementation plateued around 93.4%. My ResNet34 CIFAR10 variant managed to reach almost 95% before plateuing, suggesting that the skip connections managed to reduce training degradation as the paper set out to do. The CIFAR10 dataset is far smaller than ImageNet - probably why we do not see as big of a difference between VGG and ResNet.</p>
+
+<p>Overall, this was a good paper to implement after VGG, due to small but significant alterations to the code. Next up: DenseNet.</p>]]></content><author><name></name></author><category term="computer-vision" /><category term="implementation" /><summary type="html"><![CDATA[Understanding and implementing Residual Networks]]></summary></entry><entry><title type="html">My first full paper implementation</title><link href="https://boosungkim.com/blog/2023/first-paper-implementation/" rel="alternate" type="text/html" title="My first full paper implementation" /><published>2023-05-31T19:53:00+00:00</published><updated>2023-05-31T19:53:00+00:00</updated><id>https://boosungkim.com/blog/2023/first-paper-implementation</id><content type="html" xml:base="https://boosungkim.com/blog/2023/first-paper-implementation/"><![CDATA[<p>Link to <a href="https://arxiv.org/abs/1409.1556">paper</a>
 Link to <a href="https://github.com/boosungkim/milestone-cnn-model-implementations">my code</a></p>
 
 <p>I have read several Deep Learning research papers at this point, but I have never fully implemented one from scratch. I decided to finally try with the VGG model from <a href="https://arxiv.org/abs/1409.1556">Very Deep Convolutional Networks for Large-Scale Image Recognition</a>.</p>
@@ -125,7 +623,7 @@ Estimated Total Size (MB): 694.16
 
 <p>I resolved this issue by adding Batch Normalization to every block in the architecture. Since Batch Normalization ensures that the activations of each layer have zero mean and unit variance, the gradients are well scaled throughout the network. I improved the performance even further by removing the final few Fully Connected layers.</p>
 
-<p>In the end, with even more hyperparameter tweaking, I was left with a training accuracy of 95%, a validation accuracy of 88.7%, and a testing accuracy of 88.2%.</p>
+<p>In the end, with even more hyperparameter tweaking, I was left with a training accuracy of 93.4%, a validation accuracy of 88.7%, and a testing accuracy of 88.2%.</p>
 
 <h2 id="conclusion">Conclusion</h2>
 <p>As someone who had never fully implemented an entire paper before, I struggled with some of the code conversion in the beginning. However, compared to models like ResNet and DenseNet, VGG definitely was the easiest to implement.</p>

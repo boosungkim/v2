@@ -10,9 +10,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>My first full paper implementation | Boosung  Kim</title>
+    <title>EfficientNet Implementation | Boosung  Kim</title>
     <meta name="author" content="Boosung  Kim">
-    <meta name="description" content="Implementing the VGG paper from " very deep convolutional networks for large-scale image recognition>
+    <meta name="description" content="Understanding and implementing EfficientNet">
     <meta name="keywords" content="portfolio-website">
 
 
@@ -41,7 +41,7 @@
     <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%94%A5&lt;/text&gt;&lt;/svg&gt;">
     
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://boosungkim.com/blog/2023/first-paper-implementation/">
+    <link rel="canonical" href="https://boosungkim.com/blog/2023/efficientnet-implementation/">
 
     <!-- Dark Mode -->
     
@@ -139,8 +139,8 @@
 <div class="post">
 
   <header class="post-header">
-    <h1 class="post-title">My first full paper implementation</h1>
-    <p class="post-meta">May 31, 2023</p>
+    <h1 class="post-title">EfficientNet Implementation</h1>
+    <p class="post-meta">June 15, 2023</p>
     <p class="post-tags">
       <a href="/blog/2023"> <i class="fas fa-calendar fa-sm"></i> 2023 </a>
         ·  
@@ -156,145 +156,77 @@
   <article class="post-content">
     
     <div id="markdown-content">
-      <p>Link to <a href="https://arxiv.org/abs/1409.1556" rel="external nofollow noopener" target="_blank">paper</a>
+      <p>Link to <a href="https://arxiv.org/abs/1905.11946" rel="external nofollow noopener" target="_blank">paper</a>
 Link to <a href="https://github.com/boosungkim/milestone-cnn-model-implementations" rel="external nofollow noopener" target="_blank">my code</a></p>
 
-<p>I have read several Deep Learning research papers at this point, but I have never fully implemented one from scratch. I decided to finally try with the VGG model from <a href="https://arxiv.org/abs/1409.1556" rel="external nofollow noopener" target="_blank">Very Deep Convolutional Networks for Large-Scale Image Recognition</a>.</p>
+<p>Unlike previous models, EfficientNet does not introduce a novel architecture. Rather, it introduces the idea of compound scaling and a base model, EfficientNet, to test the new scaling method.</p>
 
-<h2 id="vgg-explained">VGG Explained</h2>
-<p>The VGG paper was unique in that it proved the importance of depth in image classification. Unlike its predecessors, VGG utilizes simple filters and a repetitive structure. In return for its simplicity, VGG has a far greater depth, the deepest variation in the paper having 19 layers, which was a lot for its time.</p>
+<p>The EfficientNet utilizes inverted residual blocks from MobileNetV2, Squeeze-and-Efficient layers from SE-Net, and stochastic depth.</p>
 
-<h2 id="hurdles-along-the-way">Hurdles along the way</h2>
-<p>Implementing VGG from scratch initially introduced a few challenges. While it may seem easy now, converting the architecture represented in the text into Pytorch code was confusing at first.</p>
+<h2 id="scaling-and-balancing">Scaling and balancing</h2>
+<p><img src="/assets/img/blogs/2023-06-15-efficientnet-implementation/model-scaling.png" alt="image"></p>
 
-<h3 id="1-coding-and-refactoring">1. Coding and refactoring</h3>
-<p>At first, I manually wrote the model by simply writing out every single layer in the model class <code class="language-plaintext highlighter-rouge">__init__()</code> function. Obviously, this is not good code.</p>
+<p>The authors argue that while scaling up depth, width, image resolution are common techniques to improve the model performance, previous papers use arbitrary scaling.</p>
 
-<p>In the end, I referenced some code online to see how other people organized their code. Others did so by utilizing enumeration, <code class="language-plaintext highlighter-rouge">for</code> loops and helper functions.</p>
+<p>Depth is the most common method of scaling models. The VGG paper introduced the importance of depth, while ResNet and Densenet helped resolve the issue of training degradation.</p>
 
-<h3 id="2-finding-hyperparameters">2. Finding hyperparameters</h3>
-<p>Another trouble I ran into was finding the parameters and hyperparameters for the architecture in the code. Thankfully, the VGG paper has a very detailed architecture diagram.</p>
+<p>While we have not spent time on width scaling, shallow networks generally use width scaling to capture features while being easy to train.</p>
 
-<p><img src="/assets/img/blogs/2023-05-31-first-paper-implementation/vgg-architecture.png" alt="image"></p>
+<p>Scaling resolution is uncommon, but some networks GPipe utilize this to perform better. Resolution scaling is essentially increasing the width and height of the input images.</p>
 
-<p>As can be seen above, the sizes and number of convolutional filters for each layer is quite apparent. However, for instance, I had to read the text to find out that the stride and padding are both 1 pixel.</p>
+<p>The empirical results of the paper indicate that a balance among width/depth/resolution can be achieved through compound scaling, which scales all three by a constant factor.</p>
 
-<p>Not difficult at all, as the paper is very detailed, but some of the more recent papers I tried recently are not as explicit.</p>
+<h2 id="compound-scaling">Compound scaling</h2>
+<p>The idea behind compound scaling is to uniformly scale the depth, width, and resolution of the network in a principled manner. The authors introduce a compound coefficient, denoted as $\phi$, that controls the scaling factor for each dimension. By varying the value of $\phi$, the network can be scaled up or down while maintaining a balance among depth, width, and resolution.</p>
 
-<h3 id="3-checking-the-model-structure">3. Checking the model structure</h3>
-<p>Once I had a seemingly functioning model, I needed a way of making sure that recreated the VGG model exactly. There are two methods I used:</p>
+<p>The compound scaling is achieved by applying a set of predefined scaling rules. These rules specify how the depth, width, and resolution should be scaled based on the compound coefficient $\phi$. By following these rules, the network’s capacity is increased in a balanced way, ensuring that no individual dimension dominates the scaling process.</p>
 
-<p>1) Passing a tensor through the model</p>
+<p>\(depth: d = \alpha^{\phi}\)
+\(width: w = \beta^{\phi}\)
+\(resolution: r = \gamma^{\phi}\)
+such that $\alpha \cdot \beta^2 \cdot \gamma^2 \approx 2$ and $\alpha \geq 1, \beta \geq 1, \gamma \geq 1$.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">t1</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">224</span><span class="p">)</span>
-</code></pre></div></div>
-<blockquote>
-  <p>A tensor representation of an image from ImageNet.</p>
-</blockquote>
+<p>For EfficientNet-B0, the authors first fixed $\phi = 1$ and performed a grid search for $\alpha, \beta, \gamma$ based on the equations above. The results showed that the best values are $\alpha = 1.2, \beta = 1.1, \gamma = 1.15$.</p>
 
-<p>By sending this through the model, I was able to check if the model returns the correct output dimensions.</p>
+<p>Then, by fixing the $\alpha, \beta, \gamma$ values found above, the authors calculated new $\phi$ for scaled up versions of the model (EfficientNet-B1 ~ B7).</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="nf">print</span><span class="p">(</span><span class="nf">testing</span><span class="p">(</span><span class="n">t1</span><span class="p">).</span><span class="nf">size</span><span class="p">())</span>
-<span class="n">torch</span><span class="p">.</span><span class="nc">Size</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">])</span>
-</code></pre></div></div>
+<p>The authors used this approach to minimize search cost, but it is technically possible to find the optimal $\alpha, \beta, \gamma$ values using a larger model.</p>
 
-<p>2) Torchinfo</p>
+<h2 id="inverted-residual-block-mobilenet-and-se-net">Inverted residual block (MobileNet) and SE-Net</h2>
 
-<p>However, this is not enough to ensure that the model architecture is correct. So, I used a Python library called <a href="https://github.com/TylerYep/torchinfo" rel="external nofollow noopener" target="_blank">Torchinfo</a> to print out the entire architecture. I ran into a few issues with Torchinfo later on, but that is not relevant here.</p>
+<p><img src="/assets/img/blogs/2023-06-15-efficientnet-implementation/efficientnet-b0.png" alt="image"></p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>==========================================================================================
-Layer (type:depth-idx)                   Output Shape              Param #
-==========================================================================================
-VGGModel                                 [1, 1000]                 --
-├─Sequential: 1-1                        [1, 64, 112, 112]         --
-│    └─Conv2d: 2-1                       [1, 64, 224, 224]         1,792
-│    └─ReLU: 2-2                         [1, 64, 224, 224]         --
-│    └─Conv2d: 2-3                       [1, 64, 224, 224]         36,928
-│    └─ReLU: 2-4                         [1, 64, 224, 224]         --
-│    └─MaxPool2d: 2-5                    [1, 64, 112, 112]         --
-├─Sequential: 1-2                        [1, 128, 56, 56]          --
-│    └─Conv2d: 2-6                       [1, 128, 112, 112]        73,856
-│    └─ReLU: 2-7                         [1, 128, 112, 112]        --
-│    └─Conv2d: 2-8                       [1, 128, 112, 112]        147,584
-│    └─ReLU: 2-9                         [1, 128, 112, 112]        --
-│    └─MaxPool2d: 2-10                   [1, 128, 56, 56]          --
-├─Sequential: 1-3                        [1, 256, 28, 28]          --
-│    └─Conv2d: 2-11                      [1, 256, 56, 56]          295,168
-│    └─ReLU: 2-12                        [1, 256, 56, 56]          --
-│    └─Conv2d: 2-13                      [1, 256, 56, 56]          590,080
-│    └─ReLU: 2-14                        [1, 256, 56, 56]          --
-│    └─Conv2d: 2-15                      [1, 256, 56, 56]          590,080
-│    └─ReLU: 2-16                        [1, 256, 56, 56]          --
-│    └─Conv2d: 2-17                      [1, 256, 56, 56]          590,080
-│    └─ReLU: 2-18                        [1, 256, 56, 56]          --
-│    └─MaxPool2d: 2-19                   [1, 256, 28, 28]          --
-├─Sequential: 1-4                        [1, 512, 14, 14]          --
-│    └─Conv2d: 2-20                      [1, 512, 28, 28]          1,180,160
-│    └─ReLU: 2-21                        [1, 512, 28, 28]          --
-│    └─Conv2d: 2-22                      [1, 512, 28, 28]          2,359,808
-│    └─ReLU: 2-23                        [1, 512, 28, 28]          --
-│    └─Conv2d: 2-24                      [1, 512, 28, 28]          2,359,808
-│    └─ReLU: 2-25                        [1, 512, 28, 28]          --
-│    └─Conv2d: 2-26                      [1, 512, 28, 28]          2,359,808
-│    └─ReLU: 2-27                        [1, 512, 28, 28]          --
-│    └─MaxPool2d: 2-28                   [1, 512, 14, 14]          --
-├─Sequential: 1-5                        [1, 512, 7, 7]            --
-│    └─Conv2d: 2-29                      [1, 512, 14, 14]          2,359,808
-│    └─ReLU: 2-30                        [1, 512, 14, 14]          --
-│    └─Conv2d: 2-31                      [1, 512, 14, 14]          2,359,808
-│    └─ReLU: 2-32                        [1, 512, 14, 14]          --
-│    └─Conv2d: 2-33                      [1, 512, 14, 14]          2,359,808
-│    └─ReLU: 2-34                        [1, 512, 14, 14]          --
-│    └─Conv2d: 2-35                      [1, 512, 14, 14]          2,359,808
-│    └─ReLU: 2-36                        [1, 512, 14, 14]          --
-│    └─MaxPool2d: 2-37                   [1, 512, 7, 7]            --
-├─Flatten: 1-6                           [1, 25088]                --
-├─Sequential: 1-7                        [1, 1000]                 --
-│    └─Linear: 2-38                      [1, 4096]                 102,764,544
-│    └─ReLU: 2-39                        [1, 4096]                 --
-│    └─Linear: 2-40                      [1, 4096]                 16,781,312
-│    └─ReLU: 2-41                        [1, 4096]                 --
-│    └─Linear: 2-42                      [1, 1000]                 4,097,000
-│    └─Softmax: 2-44                     [1, 1000]                 --
-==========================================================================================
-Total params: 143,667,240
-Trainable params: 143,667,240
-Non-trainable params: 0
-Total mult-adds (Units.GIGABYTES): 19.65
-==========================================================================================
-Input size (MB): 0.60
-Forward/backward pass size (MB): 118.89
-Params size (MB): 574.67
-Estimated Total Size (MB): 694.16
-==========================================================================================
-</code></pre></div></div>
+<p><em>Table 1: EfficientNet-B0 architecture</em></p>
 
-<p>The example above is my implementation of the VGG19 model. The structure seems to match up with the paper’s VGG19. Additionally, the number of parameters of my custom model is roughly equivalent to that of VGG19 (144M parameters)!</p>
+<p>As you can see from the table above, the EfficientNet-B0 baseline network utilizes inverted residual blocks (MBConv) from MobileNets.</p>
 
-<p><img src="/assets/img/blogs/2023-05-31-first-paper-implementation/vgg-param.png" alt="image"></p>
+<p>In a normal residual block, bottlenecks are used to reduce the number of parameters and improve efficiency. To summarize, the block has a wide -&gt; narrow -&gt; structure using 1 by 1 convolutions.</p>
 
-<p>On a side note, you may wonder why there is no huge difference between the number of parameters in VGG11 (133M) and that of VGG19 (144M). The reason for that is that most of the parameters are located in the Fully Connected layers at the end of the each model. The number of parameters in the Convolutional layers pales in comparison to the number in Fully Connected layers, which is why, even though there is an 8-layer difference between VGG11 and VGG19, the numbers of parameters do not differ that much.</p>
+<p>On the other hand, an inverted residual block uses a narrow -&gt; wide -&gt; narrow approach with 1 by 1 convolutions and 3 by 3 depthwise convolutions.</p>
 
-<h3 id="4-the-dreaded-10-accuracy">4. The dreaded 10% accuracy</h3>
-<p>When I ran this code on the CIFAR10 dataset, however, I got a 0.1 accuracy! That’s basically the same as randomly guessing (since there are 10 possible guesses). No matter how many times I tweaked the hyperparameters, I got the same 0.1.</p>
+<p>Depthwise convolutions use far less parameters, as only one channel is neccessary for the filters. A single channel filter is used to calculate convolutions layer by layer, meaning less parameters.</p>
 
-<p>The VGG model was created to be used on the ImageNet, which contains images of <code class="language-plaintext highlighter-rouge">224x224x3</code> dimensions. On the other hand, CIFAR10 contains images of <code class="language-plaintext highlighter-rouge">32x32x3</code> dimensions. The VGG is simple just too deep to learn the CIFAR10 dataset properly.</p>
+<p>The authors also state that they use Squeeze-and-Excitation networks.</p>
 
-<p>I resolved this issue by adding Batch Normalization to every block in the architecture. Since Batch Normalization ensures that the activations of each layer have zero mean and unit variance, the gradients are well scaled throughout the network. I improved the performance even further by removing the final few Fully Connected layers.</p>
+<h2 id="stochastic-depth">Stochastic depth</h2>
+<p>Stochastic depth is essentially dropout for layers. For each mini-batch, some residual layers are completely dropped and only the residual skip connections are passed along.</p>
 
-<p>In the end, with even more hyperparameter tweaking, I was left with a training accuracy of 93.4%, a validation accuracy of 88.7%, and a testing accuracy of 88.2%.</p>
+<p>This allows the network to train with a shorter effective depth, reducing the risk of overfitting and promoting regularization. By randomly dropping layers, stochastic depth provides a form of regularization similar to dropout but specifically tailored for residual networks.</p>
+
+<h2 id="silu">SiLU</h2>
+<p>The authors of the paper use SiLU instead of ReLU for feature activation.</p>
 
 <h2 id="conclusion">Conclusion</h2>
-<p>As someone who had never fully implemented an entire paper before, I struggled with some of the code conversion in the beginning. However, compared to models like ResNet and DenseNet, VGG definitely was the easiest to implement.</p>
+<p>The big mistake I made was implementing this paper before MobileNet, as EfficientNet builds upon MobileNetV2. On the bright side, implementing MobileNetV2 should be relatively easy now using the code for the inverted residual block.</p>
 
-<p>I can see why people often recommend beginners to start by implementing papers despite the difficulty - there really is no better way to learn.</p>
+<p>This is definitely the most complex model that I coded to date, as it uses many previous concepts. I haven’t run this model on CIFAR10 yet, as I am still going through the code to see if I implemented everything correctly, but it was quite an experience jumping back and forth between papers and presentation videos to try and grasp the idea of EfficientNet.</p>
 
-<p>What I learnt:</p>
-<ul>
-  <li>NN model debugging skills</li>
-  <li>Analyzing parameters and hyperparameters from papers</li>
-  <li>Adjusting the model to fit the dataset</li>
-</ul>
+<p>Once I finalize the model and run it on a dataset, I will post another blog post.</p>
+
+<h2 id="references">References:</h2>
+<ol>
+  <li>https://paperswithcode.com/method/inverted-residual-block</li>
+</ol>
 
     </div>
   </article>
@@ -319,12 +251,6 @@ Estimated Total Size (MB): 694.16
   
 
   <li class="my-2">
-    <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/efficientnet-implementation/">EfficientNet Implementation</a>
-  </li>
-
-  
-
-  <li class="my-2">
     <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/senet-implementation/">SE-Net Implementation</a>
   </li>
 
@@ -338,6 +264,12 @@ Estimated Total Size (MB): 694.16
 
   <li class="my-2">
     <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/resnet34-implementation/">ResNet34 Model Implementation</a>
+  </li>
+
+  
+
+  <li class="my-2">
+    <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/first-paper-implementation/">My first full paper implementation</a>
   </li>
 
 </div>

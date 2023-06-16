@@ -10,9 +10,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>My first full paper implementation | Boosung  Kim</title>
+    <title>SE-Net Implementation | Boosung  Kim</title>
     <meta name="author" content="Boosung  Kim">
-    <meta name="description" content="Implementing the VGG paper from " very deep convolutional networks for large-scale image recognition>
+    <meta name="description" content="Understanding and implementing SE-Networks">
     <meta name="keywords" content="portfolio-website">
 
 
@@ -41,7 +41,7 @@
     <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%94%A5&lt;/text&gt;&lt;/svg&gt;">
     
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://boosungkim.com/blog/2023/first-paper-implementation/">
+    <link rel="canonical" href="https://boosungkim.com/blog/2023/senet-implementation/">
 
     <!-- Dark Mode -->
     
@@ -139,8 +139,8 @@
 <div class="post">
 
   <header class="post-header">
-    <h1 class="post-title">My first full paper implementation</h1>
-    <p class="post-meta">May 31, 2023</p>
+    <h1 class="post-title">SE-Net Implementation</h1>
+    <p class="post-meta">June 5, 2023</p>
     <p class="post-tags">
       <a href="/blog/2023"> <i class="fas fa-calendar fa-sm"></i> 2023 </a>
         ·  
@@ -156,145 +156,146 @@
   <article class="post-content">
     
     <div id="markdown-content">
-      <p>Link to <a href="https://arxiv.org/abs/1409.1556" rel="external nofollow noopener" target="_blank">paper</a>
+      <p>Link to <a href="https://arxiv.org/pdf/1709.01507.pdf" rel="external nofollow noopener" target="_blank">paper</a>
 Link to <a href="https://github.com/boosungkim/milestone-cnn-model-implementations" rel="external nofollow noopener" target="_blank">my code</a></p>
 
-<p>I have read several Deep Learning research papers at this point, but I have never fully implemented one from scratch. I decided to finally try with the VGG model from <a href="https://arxiv.org/abs/1409.1556" rel="external nofollow noopener" target="_blank">Very Deep Convolutional Networks for Large-Scale Image Recognition</a>.</p>
+<p>Squeeze-and-Excitation Networks, SE-Nets for short, are actually convolutional blocks that can be added to other models, like ResNet or VGG.</p>
 
-<h2 id="vgg-explained">VGG Explained</h2>
-<p>The VGG paper was unique in that it proved the importance of depth in image classification. Unlike its predecessors, VGG utilizes simple filters and a repetitive structure. In return for its simplicity, VGG has a far greater depth, the deepest variation in the paper having 19 layers, which was a lot for its time.</p>
+<p><img src="/assets/img/blogs/2023-06-05-senet-implementation/senet.png" alt="image">
+<em>Figure 1: Squeeze and Excitation Block</em></p>
 
-<h2 id="hurdles-along-the-way">Hurdles along the way</h2>
-<p>Implementing VGG from scratch initially introduced a few challenges. While it may seem easy now, converting the architecture represented in the text into Pytorch code was confusing at first.</p>
+<p>The key problem that the authors of the paper wants to address is the problem of implicit and local channel dependencies. They do so by adding the Squeeze-and-Excitation block, which relays channel-wise information.</p>
 
-<h3 id="1-coding-and-refactoring">1. Coding and refactoring</h3>
-<p>At first, I manually wrote the model by simply writing out every single layer in the model class <code class="language-plaintext highlighter-rouge">__init__()</code> function. Obviously, this is not good code.</p>
+<p>By incorporating the SE blocks into the model, the network can adaptively recalibrate its feature maps to capture more discriminative information, leading to improved performance.</p>
 
-<p>In the end, I referenced some code online to see how other people organized their code. Others did so by utilizing enumeration, <code class="language-plaintext highlighter-rouge">for</code> loops and helper functions.</p>
+<h2 id="implicit-local-channel-information">Implicit local channel information</h2>
+<p><img src="/assets/img/blogs/2023-06-05-senet-implementation/convolution.png" alt="image">
+<em>Figure 2: A normal convolution</em></p>
 
-<h3 id="2-finding-hyperparameters">2. Finding hyperparameters</h3>
-<p>Another trouble I ran into was finding the parameters and hyperparameters for the architecture in the code. Thankfully, the VGG paper has a very detailed architecture diagram.</p>
+<p>In a normal convolution like the image above, channel dependencies are implicitly included in the outputs of the convolutional layers. In other words, each layer calculates the convolution on all the channels of a local region every step.</p>
 
-<p><img src="/assets/img/blogs/2023-05-31-first-paper-implementation/vgg-architecture.png" alt="image"></p>
+<p>Due to the localness of the convolutions, each channel in the output contains implicit channel embeddings tangled with local spatial correlations. To simplify further, each pixel in a channel contains the channel embeddings of the local region on the convolution was calculated on.</p>
 
-<p>As can be seen above, the sizes and number of convolutional filters for each layer is quite apparent. However, for instance, I had to read the text to find out that the stride and padding are both 1 pixel.</p>
+<h2 id="the-se-net">The SE-Net</h2>
+<p>The SE-Net sets out to resolve this issue by introducing an explicit mechanism to model channel-wise relationships through the “squeeze” and “excitation” layers.</p>
 
-<p>Not difficult at all, as the paper is very detailed, but some of the more recent papers I tried recently are not as explicit.</p>
+<h3 id="squeeze">Squeeze</h3>
+<p>The network first “squeezes” the outputs of the previous convolutional layer into $channel\times1\times1$ shape using Global Average Pool.</p>
 
-<h3 id="3-checking-the-model-structure">3. Checking the model structure</h3>
-<p>Once I had a seemingly functioning model, I needed a way of making sure that recreated the VGG model exactly. There are two methods I used:</p>
+<h3 id="excitation">Excitation</h3>
+<p>The network then performs “excitation” by performing two Fully Connected (FC) layers. The first FC layer reduces the number of channels by applying a reduction ratio. This reduction helps in reducing the computational complexity of the SE block. The second FC layer then expands the number of channels back to the original number. These FC layers capture the channel dependencies and learn channel-wise relationships based on the aggregated information from the squeeze operation.</p>
 
-<p>1) Passing a tensor through the model</p>
+<p>FYI, because the FC layers are “fully connected,” every node is connected with each other. This is how the network captures channel-wise relationships and dependencies.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">t1</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">224</span><span class="p">)</span>
-</code></pre></div></div>
-<blockquote>
-  <p>A tensor representation of an image from ImageNet.</p>
-</blockquote>
+<h3 id="rescale">Rescale</h3>
+<p>Finally, the SE-Net rescales the output back to the input dimensions by using the Unflatten operation and channel-wise multiplication. The channel-wise attention weights are then applied by element-wise multiplication, allowing the network to selectively amplify or suppress the channel activations based on their importance.</p>
 
-<p>By sending this through the model, I was able to check if the model returns the correct output dimensions.</p>
+<h2 id="se-net-implementation">SE-Net implementation</h2>
+<h3 id="implementation">Implementation</h3>
+<pre><code class="language-Python">class se_block(nn.Module):
+    def __init__(self, input_channels, reduction_ratio):
+        super(se_block,self).__init__()
+        self.sequence = nn.Sequential(
+            # 1. Squeeze
+            nn.AdaptiveAvgPool2d((1,1)), # output: bxCx1x1
+            nn.Flatten(),  # output: bxC
+            # 2. Excitation
+            nn.Linear(input_channels, input_channels // reduction_ratio, bias=False), # output: bxC/r
+            nn.ReLU(), # output: bxC/r
+            nn.Linear(input_channels // reduction_ratio, input_channels), # output: bxC
+            nn.Sigmoid(), # output: bxC
+            nn.Unflatten(1, (input_channels,1,1)) # output: bxCx1x1
+        )
+        pass
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="nf">print</span><span class="p">(</span><span class="nf">testing</span><span class="p">(</span><span class="n">t1</span><span class="p">).</span><span class="nf">size</span><span class="p">())</span>
-<span class="n">torch</span><span class="p">.</span><span class="nc">Size</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">])</span>
-</code></pre></div></div>
+    def forward(self,x):
+        z = self.sequence(x)
+        # 3. Rescale
+        z = x*z # output: bxCxHxW
+        return z
+</code></pre>
+<p>There is not much to add here, as the code follows the description one-to-one. One thing to add is that I originally used Pytorch’s AvgPool2d with manually calculated channel width and height, but Pytorch has the AdaptiveAvgPool2d which handles the dimensions for you.</p>
 
-<p>2) Torchinfo</p>
-
-<p>However, this is not enough to ensure that the model architecture is correct. So, I used a Python library called <a href="https://github.com/TylerYep/torchinfo" rel="external nofollow noopener" target="_blank">Torchinfo</a> to print out the entire architecture. I ran into a few issues with Torchinfo later on, but that is not relevant here.</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>==========================================================================================
-Layer (type:depth-idx)                   Output Shape              Param #
-==========================================================================================
-VGGModel                                 [1, 1000]                 --
-├─Sequential: 1-1                        [1, 64, 112, 112]         --
-│    └─Conv2d: 2-1                       [1, 64, 224, 224]         1,792
-│    └─ReLU: 2-2                         [1, 64, 224, 224]         --
-│    └─Conv2d: 2-3                       [1, 64, 224, 224]         36,928
-│    └─ReLU: 2-4                         [1, 64, 224, 224]         --
-│    └─MaxPool2d: 2-5                    [1, 64, 112, 112]         --
-├─Sequential: 1-2                        [1, 128, 56, 56]          --
-│    └─Conv2d: 2-6                       [1, 128, 112, 112]        73,856
-│    └─ReLU: 2-7                         [1, 128, 112, 112]        --
-│    └─Conv2d: 2-8                       [1, 128, 112, 112]        147,584
-│    └─ReLU: 2-9                         [1, 128, 112, 112]        --
-│    └─MaxPool2d: 2-10                   [1, 128, 56, 56]          --
-├─Sequential: 1-3                        [1, 256, 28, 28]          --
-│    └─Conv2d: 2-11                      [1, 256, 56, 56]          295,168
-│    └─ReLU: 2-12                        [1, 256, 56, 56]          --
-│    └─Conv2d: 2-13                      [1, 256, 56, 56]          590,080
-│    └─ReLU: 2-14                        [1, 256, 56, 56]          --
-│    └─Conv2d: 2-15                      [1, 256, 56, 56]          590,080
-│    └─ReLU: 2-16                        [1, 256, 56, 56]          --
-│    └─Conv2d: 2-17                      [1, 256, 56, 56]          590,080
-│    └─ReLU: 2-18                        [1, 256, 56, 56]          --
-│    └─MaxPool2d: 2-19                   [1, 256, 28, 28]          --
-├─Sequential: 1-4                        [1, 512, 14, 14]          --
-│    └─Conv2d: 2-20                      [1, 512, 28, 28]          1,180,160
-│    └─ReLU: 2-21                        [1, 512, 28, 28]          --
-│    └─Conv2d: 2-22                      [1, 512, 28, 28]          2,359,808
-│    └─ReLU: 2-23                        [1, 512, 28, 28]          --
-│    └─Conv2d: 2-24                      [1, 512, 28, 28]          2,359,808
-│    └─ReLU: 2-25                        [1, 512, 28, 28]          --
-│    └─Conv2d: 2-26                      [1, 512, 28, 28]          2,359,808
-│    └─ReLU: 2-27                        [1, 512, 28, 28]          --
-│    └─MaxPool2d: 2-28                   [1, 512, 14, 14]          --
-├─Sequential: 1-5                        [1, 512, 7, 7]            --
-│    └─Conv2d: 2-29                      [1, 512, 14, 14]          2,359,808
-│    └─ReLU: 2-30                        [1, 512, 14, 14]          --
-│    └─Conv2d: 2-31                      [1, 512, 14, 14]          2,359,808
-│    └─ReLU: 2-32                        [1, 512, 14, 14]          --
-│    └─Conv2d: 2-33                      [1, 512, 14, 14]          2,359,808
-│    └─ReLU: 2-34                        [1, 512, 14, 14]          --
-│    └─Conv2d: 2-35                      [1, 512, 14, 14]          2,359,808
-│    └─ReLU: 2-36                        [1, 512, 14, 14]          --
-│    └─MaxPool2d: 2-37                   [1, 512, 7, 7]            --
-├─Flatten: 1-6                           [1, 25088]                --
-├─Sequential: 1-7                        [1, 1000]                 --
-│    └─Linear: 2-38                      [1, 4096]                 102,764,544
-│    └─ReLU: 2-39                        [1, 4096]                 --
-│    └─Linear: 2-40                      [1, 4096]                 16,781,312
-│    └─ReLU: 2-41                        [1, 4096]                 --
-│    └─Linear: 2-42                      [1, 1000]                 4,097,000
-│    └─Softmax: 2-44                     [1, 1000]                 --
-==========================================================================================
-Total params: 143,667,240
-Trainable params: 143,667,240
+<h3 id="network-summary">Network summary</h3>
+<pre><code class="language-Python">&gt;&gt;&gt; model = se_block(64, 16)
+&gt;&gt;&gt; summary(model, input_size=(1,64,32,32), col_names=["input_size","output_size","num_params"])
+</code></pre>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>===================================================================================================================
+Layer (type:depth-idx)                   Input Shape               Output Shape              Param #
+===================================================================================================================
+se_block                                 [1, 64, 32, 32]           [1, 64, 32, 32]           --
+├─Sequential: 1-1                        [1, 64, 32, 32]           [1, 64, 1, 1]             --
+│    └─AdaptiveAvgPool2d: 2-1            [1, 64, 32, 32]           [1, 64, 1, 1]             --
+│    └─Flatten: 2-2                      [1, 64, 1, 1]             [1, 64]                   --
+│    └─Linear: 2-3                       [1, 64]                   [1, 4]                    256
+│    └─ReLU: 2-4                         [1, 4]                    [1, 4]                    --
+│    └─Linear: 2-5                       [1, 4]                    [1, 64]                   320
+│    └─Sigmoid: 2-6                      [1, 64]                   [1, 64]                   --
+│    └─Unflatten: 2-7                    [1, 64]                   [1, 64, 1, 1]             --
+===================================================================================================================
+Total params: 576
+Trainable params: 576
 Non-trainable params: 0
-Total mult-adds (Units.GIGABYTES): 19.65
-==========================================================================================
-Input size (MB): 0.60
-Forward/backward pass size (MB): 118.89
-Params size (MB): 574.67
-Estimated Total Size (MB): 694.16
-==========================================================================================
+Total mult-adds (Units.MEGABYTES): 0.00
+===================================================================================================================
+Input size (MB): 0.26
+Forward/backward pass size (MB): 0.00
+Params size (MB): 0.00
+Estimated Total Size (MB): 0.27
+===================================================================================================================
 </code></pre></div></div>
+<p>You may notice that the number of parameters is relatively low due to the use the reduction ratio. Thus, the inclusion of SE-Nets in other models will not significantly impact the number of total parameters.</p>
 
-<p>The example above is my implementation of the VGG19 model. The structure seems to match up with the paper’s VGG19. Additionally, the number of parameters of my custom model is roughly equivalent to that of VGG19 (144M parameters)!</p>
+<h2 id="se-resnet">SE-ResNet</h2>
+<p>With the SE-Net coded, it is trivial to add it to our previous models. I decided to test it on ResNet.</p>
 
-<p><img src="/assets/img/blogs/2023-05-31-first-paper-implementation/vgg-param.png" alt="image"></p>
+<pre><code class="language-Python">class SE_ResidualBlockBottleneck(nn.Module):
+    expansion = 4
+    def __init__(self, input_channels, in_channels, reduction_ratio, stride=1):
+        super(SE_ResidualBlockBottleneck, self).__init__()
 
-<p>On a side note, you may wonder why there is no huge difference between the number of parameters in VGG11 (133M) and that of VGG19 (144M). The reason for that is that most of the parameters are located in the Fully Connected layers at the end of the each model. The number of parameters in the Convolutional layers pales in comparison to the number in Fully Connected layers, which is why, even though there is an 8-layer difference between VGG11 and VGG19, the numbers of parameters do not differ that much.</p>
+        self.block = nn.Sequential(
+            nn.Conv2d(in_channels=input_channels, out_channels=in_channels, kernel_size=1, stride=1, padding=0, bias=False),
+            nn.BatchNorm2d(in_channels),
+            nn.ReLU(),
+            nn.Conv2d(in_channels=in_channels, out_channels=in_channels, kernel_size=3, stride=stride, padding=1, bias=False),
+            nn.BatchNorm2d(in_channels),
+            nn.ReLU(),
+            nn.Conv2d(in_channels=in_channels, out_channels=in_channels*4, kernel_size=1, stride=1, padding=0, bias=False),
+            nn.BatchNorm2d(in_channels*4)
+        )
+        self.relu = nn.ReLU()
+        self.se_block = SE_block(in_channels*4, reduction_ratio)
 
-<h3 id="4-the-dreaded-10-accuracy">4. The dreaded 10% accuracy</h3>
-<p>When I ran this code on the CIFAR10 dataset, however, I got a 0.1 accuracy! That’s basically the same as randomly guessing (since there are 10 possible guesses). No matter how many times I tweaked the hyperparameters, I got the same 0.1.</p>
+        if stride != 1 or input_channels != self.expansion*in_channels:
+            self.shortcut = nn.Sequential(
+                nn.Conv2d(in_channels=input_channels, out_channels=in_channels*4, kernel_size=1, stride=stride, padding=0, bias=False),
+                nn.BatchNorm2d(in_channels*4)
+            )
+        else:
+            self.shortcut = nn.Sequential()
 
-<p>The VGG model was created to be used on the ImageNet, which contains images of <code class="language-plaintext highlighter-rouge">224x224x3</code> dimensions. On the other hand, CIFAR10 contains images of <code class="language-plaintext highlighter-rouge">32x32x3</code> dimensions. The VGG is simple just too deep to learn the CIFAR10 dataset properly.</p>
+    def forward(self, x):
+        z = self.block(x)
+        z = self.se_block(z)
+        z += self.shortcut(x)
+        z = self.relu(z)
+        return z
+</code></pre>
+<p>Notice that the only additions made are <code class="language-plaintext highlighter-rouge">self.se_block = SE_block(in_channels*4, reduction_ratio)</code> and <code class="language-plaintext highlighter-rouge">z = self.se_block(z)</code>. The number of channels is <code class="language-plaintext highlighter-rouge">in_channel*4</code> as that is the result of the residual block (bottleneck).</p>
 
-<p>I resolved this issue by adding Batch Normalization to every block in the architecture. Since Batch Normalization ensures that the activations of each layer have zero mean and unit variance, the gradients are well scaled throughout the network. I improved the performance even further by removing the final few Fully Connected layers.</p>
-
-<p>In the end, with even more hyperparameter tweaking, I was left with a training accuracy of 93.4%, a validation accuracy of 88.7%, and a testing accuracy of 88.2%.</p>
+<h3 id="experimentation">Experimentation</h3>
+<p>When run under the same hyperparameters as ResNet, SE-ResNet produces a training accuracy of 95.7% and a testing accuracy of 88.6%. Not quite as a good as DenseNet, but I only ran SE-ResNet for about 400 epoch, significantly less than my runs for ResNet and DenseNet.</p>
 
 <h2 id="conclusion">Conclusion</h2>
-<p>As someone who had never fully implemented an entire paper before, I struggled with some of the code conversion in the beginning. However, compared to models like ResNet and DenseNet, VGG definitely was the easiest to implement.</p>
+<p>The results fall in line with the results of the paper. The accuracies were increased and the network converged faster than the original.</p>
 
-<p>I can see why people often recommend beginners to start by implementing papers despite the difficulty - there really is no better way to learn.</p>
+<p>While I only tested the SE-Network on ResNet, the squeeze-and-excitation method can be included in many other models as well.</p>
 
-<p>What I learnt:</p>
-<ul>
-  <li>NN model debugging skills</li>
-  <li>Analyzing parameters and hyperparameters from papers</li>
-  <li>Adjusting the model to fit the dataset</li>
-</ul>
+<h2 id="references">References:</h2>
+<ol>
+  <li>https://towardsdatascience.com/practical-graph-neural-networks-for-molecular-machine-learning-5e6dee7dc003</li>
+</ol>
 
     </div>
   </article>
@@ -325,12 +326,6 @@ Estimated Total Size (MB): 694.16
   
 
   <li class="my-2">
-    <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/senet-implementation/">SE-Net Implementation</a>
-  </li>
-
-  
-
-  <li class="my-2">
     <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/densenet-implementation/">DenseNet Implementation</a>
   </li>
 
@@ -338,6 +333,12 @@ Estimated Total Size (MB): 694.16
 
   <li class="my-2">
     <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/resnet34-implementation/">ResNet34 Model Implementation</a>
+  </li>
+
+  
+
+  <li class="my-2">
+    <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/first-paper-implementation/">My first full paper implementation</a>
   </li>
 
 </div>

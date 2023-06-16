@@ -10,9 +10,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>My first full paper implementation | Boosung  Kim</title>
+    <title>ResNet34 Model Implementation | Boosung  Kim</title>
     <meta name="author" content="Boosung  Kim">
-    <meta name="description" content="Implementing the VGG paper from " very deep convolutional networks for large-scale image recognition>
+    <meta name="description" content="Understanding and implementing Residual Networks">
     <meta name="keywords" content="portfolio-website">
 
 
@@ -41,7 +41,7 @@
     <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%94%A5&lt;/text&gt;&lt;/svg&gt;">
     
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://boosungkim.com/blog/2023/first-paper-implementation/">
+    <link rel="canonical" href="https://boosungkim.com/blog/2023/resnet34-implementation/">
 
     <!-- Dark Mode -->
     
@@ -139,8 +139,8 @@
 <div class="post">
 
   <header class="post-header">
-    <h1 class="post-title">My first full paper implementation</h1>
-    <p class="post-meta">May 31, 2023</p>
+    <h1 class="post-title">ResNet34 Model Implementation</h1>
+    <p class="post-meta">June 1, 2023</p>
     <p class="post-tags">
       <a href="/blog/2023"> <i class="fas fa-calendar fa-sm"></i> 2023 </a>
         ·  
@@ -156,145 +156,146 @@
   <article class="post-content">
     
     <div id="markdown-content">
-      <p>Link to <a href="https://arxiv.org/abs/1409.1556" rel="external nofollow noopener" target="_blank">paper</a>
+      <p>Link to <a href="https://arxiv.org/pdf/1512.03385.pdf" rel="external nofollow noopener" target="_blank">paper</a>
 Link to <a href="https://github.com/boosungkim/milestone-cnn-model-implementations" rel="external nofollow noopener" target="_blank">my code</a></p>
 
-<p>I have read several Deep Learning research papers at this point, but I have never fully implemented one from scratch. I decided to finally try with the VGG model from <a href="https://arxiv.org/abs/1409.1556" rel="external nofollow noopener" target="_blank">Very Deep Convolutional Networks for Large-Scale Image Recognition</a>.</p>
+<p>Continuing on from my previous <a href="./2023-05-31-first-paper-implementation.md">VGG implementation</a>, I worked on implementing ResNet next.</p>
 
-<h2 id="vgg-explained">VGG Explained</h2>
-<p>The VGG paper was unique in that it proved the importance of depth in image classification. Unlike its predecessors, VGG utilizes simple filters and a repetitive structure. In return for its simplicity, VGG has a far greater depth, the deepest variation in the paper having 19 layers, which was a lot for its time.</p>
+<h2 id="what-is-resnet">What is ResNet?</h2>
+<p>The researchers behind ‘Deep Residual Learning for Image Recognition’ aimed to address the common ‘degradation problem’ encountered in deep convolutional networks.</p>
 
-<h2 id="hurdles-along-the-way">Hurdles along the way</h2>
-<p>Implementing VGG from scratch initially introduced a few challenges. While it may seem easy now, converting the architecture represented in the text into Pytorch code was confusing at first.</p>
+<p>When the depth of a CNN model is increased, it initially shows an improvement in performance but eventually degrades rapidly as the training accuracy plateus or even worsens over time.</p>
 
-<h3 id="1-coding-and-refactoring">1. Coding and refactoring</h3>
-<p>At first, I manually wrote the model by simply writing out every single layer in the model class <code class="language-plaintext highlighter-rouge">__init__()</code> function. Obviously, this is not good code.</p>
+<h3 id="the-common-misconception">The common misconception</h3>
+<p>The common misconception is that this rapid degradation in accuracy is caused by overfitting.</p>
 
-<p>In the end, I referenced some code online to see how other people organized their code. Others did so by utilizing enumeration, <code class="language-plaintext highlighter-rouge">for</code> loops and helper functions.</p>
+<p>While overfitting due to exploding/vanishing gradients is expected problems in very deep networks, it has been accounted for by nomalized initializations of the dataset and the intermediate Batch Normalization layers.</p>
 
-<h3 id="2-finding-hyperparameters">2. Finding hyperparameters</h3>
-<p>Another trouble I ran into was finding the parameters and hyperparameters for the architecture in the code. Thankfully, the VGG paper has a very detailed architecture diagram.</p>
+<p>The degradation is definitely not caused by overfitting, as adding more layers actually causes the <em>training error</em> to <strong>increase</strong>.</p>
 
-<p><img src="/assets/img/blogs/2023-05-31-first-paper-implementation/vgg-architecture.png" alt="image"></p>
+<p>So what causes this degradation problem? Even the researchers in the paper are not sure. Their conclusion is that “deep plain nets may have exponentially low convergence rates.”</p>
 
-<p>As can be seen above, the sizes and number of convolutional filters for each layer is quite apparent. However, for instance, I had to read the text to find out that the stride and padding are both 1 pixel.</p>
+<h2 id="what-is-a-residual-learning">What is a Residual Learning?</h2>
+<p>So if we don’t know what causes the degradation problem, do we at least know how to prevent it? That’s where residual mapping in Residual Learning come into play.</p>
 
-<p>Not difficult at all, as the paper is very detailed, but some of the more recent papers I tried recently are not as explicit.</p>
+<p><img src="/assets/img/blogs/2023-06-01-resnet34-implementation/residual-block.jpeg" alt="image">
+<em>Figure 1: A residual block</em></p>
 
-<h3 id="3-checking-the-model-structure">3. Checking the model structure</h3>
-<p>Once I had a seemingly functioning model, I needed a way of making sure that recreated the VGG model exactly. There are two methods I used:</p>
+\[H(x) := F(x) + x\]
 
-<p>1) Passing a tensor through the model</p>
+<p>If we let $x$ be the incoming feature, the $F(x)$ is the normal weighted layers that CNNs have (Convolutional, Batch Normalization, ReLU layers). The original $x$ is then added (element-wise addition) to $F(x)$ to produce $H(x)$.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">t1</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">224</span><span class="p">)</span>
-</code></pre></div></div>
-<blockquote>
-  <p>A tensor representation of an image from ImageNet.</p>
-</blockquote>
+<p>Essentially, the original features are added to the result of the weighted layers, and this whole process is one residual block. The idea is that, in the worst case scenario where $F(x)$ produce a useless tensor filled with $0$s, the identity will be added back in to pass on a useful feature to the next block. Shortcut connections can only help the network.</p>
 
-<p>By sending this through the model, I was able to check if the model returns the correct output dimensions.</p>
+<p>As this is a CNN model, downsampling is necessary. The issue is that the dimensions of $F(x)$ and $x$ would be different after downsampling. In such cases, the $F(x)$ and $W_1x$ are added together, where the square matrix $W_1$ is used to match dimensions.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="nf">print</span><span class="p">(</span><span class="nf">testing</span><span class="p">(</span><span class="n">t1</span><span class="p">).</span><span class="nf">size</span><span class="p">())</span>
-<span class="n">torch</span><span class="p">.</span><span class="nc">Size</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">])</span>
-</code></pre></div></div>
+<h2 id="what-is-a-bottleneck-residual-block">What is a Bottleneck Residual Block?</h2>
+<p>A bottleneck residual block is a variant of the residual block that uses 1 by 1 convolutions to create a “bottleneck.” The primary purpose of a bottleneck is to reduce the number for parameters in the network.</p>
 
-<p>2) Torchinfo</p>
+<p><img src="/assets/img/blogs/2023-06-01-resnet34-implementation/residual-block-bottleneck.png" alt="image">
+<em>Figure 2: A no-bottleneck residual block (left) vs a bottleneck residual block (right)</em></p>
 
-<p>However, this is not enough to ensure that the model architecture is correct. So, I used a Python library called <a href="https://github.com/TylerYep/torchinfo" rel="external nofollow noopener" target="_blank">Torchinfo</a> to print out the entire architecture. I ran into a few issues with Torchinfo later on, but that is not relevant here.</p>
+<p>By utilizing a 1x1 convolution, the network first reduces the number of channels before applying the subsequent 3x3 convolution. The output is then restored to the original channel length by another 1x1 convolution.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>==========================================================================================
-Layer (type:depth-idx)                   Output Shape              Param #
-==========================================================================================
-VGGModel                                 [1, 1000]                 --
-├─Sequential: 1-1                        [1, 64, 112, 112]         --
-│    └─Conv2d: 2-1                       [1, 64, 224, 224]         1,792
-│    └─ReLU: 2-2                         [1, 64, 224, 224]         --
-│    └─Conv2d: 2-3                       [1, 64, 224, 224]         36,928
-│    └─ReLU: 2-4                         [1, 64, 224, 224]         --
-│    └─MaxPool2d: 2-5                    [1, 64, 112, 112]         --
-├─Sequential: 1-2                        [1, 128, 56, 56]          --
-│    └─Conv2d: 2-6                       [1, 128, 112, 112]        73,856
-│    └─ReLU: 2-7                         [1, 128, 112, 112]        --
-│    └─Conv2d: 2-8                       [1, 128, 112, 112]        147,584
-│    └─ReLU: 2-9                         [1, 128, 112, 112]        --
-│    └─MaxPool2d: 2-10                   [1, 128, 56, 56]          --
-├─Sequential: 1-3                        [1, 256, 28, 28]          --
-│    └─Conv2d: 2-11                      [1, 256, 56, 56]          295,168
-│    └─ReLU: 2-12                        [1, 256, 56, 56]          --
-│    └─Conv2d: 2-13                      [1, 256, 56, 56]          590,080
-│    └─ReLU: 2-14                        [1, 256, 56, 56]          --
-│    └─Conv2d: 2-15                      [1, 256, 56, 56]          590,080
-│    └─ReLU: 2-16                        [1, 256, 56, 56]          --
-│    └─Conv2d: 2-17                      [1, 256, 56, 56]          590,080
-│    └─ReLU: 2-18                        [1, 256, 56, 56]          --
-│    └─MaxPool2d: 2-19                   [1, 256, 28, 28]          --
-├─Sequential: 1-4                        [1, 512, 14, 14]          --
-│    └─Conv2d: 2-20                      [1, 512, 28, 28]          1,180,160
-│    └─ReLU: 2-21                        [1, 512, 28, 28]          --
-│    └─Conv2d: 2-22                      [1, 512, 28, 28]          2,359,808
-│    └─ReLU: 2-23                        [1, 512, 28, 28]          --
-│    └─Conv2d: 2-24                      [1, 512, 28, 28]          2,359,808
-│    └─ReLU: 2-25                        [1, 512, 28, 28]          --
-│    └─Conv2d: 2-26                      [1, 512, 28, 28]          2,359,808
-│    └─ReLU: 2-27                        [1, 512, 28, 28]          --
-│    └─MaxPool2d: 2-28                   [1, 512, 14, 14]          --
-├─Sequential: 1-5                        [1, 512, 7, 7]            --
-│    └─Conv2d: 2-29                      [1, 512, 14, 14]          2,359,808
-│    └─ReLU: 2-30                        [1, 512, 14, 14]          --
-│    └─Conv2d: 2-31                      [1, 512, 14, 14]          2,359,808
-│    └─ReLU: 2-32                        [1, 512, 14, 14]          --
-│    └─Conv2d: 2-33                      [1, 512, 14, 14]          2,359,808
-│    └─ReLU: 2-34                        [1, 512, 14, 14]          --
-│    └─Conv2d: 2-35                      [1, 512, 14, 14]          2,359,808
-│    └─ReLU: 2-36                        [1, 512, 14, 14]          --
-│    └─MaxPool2d: 2-37                   [1, 512, 7, 7]            --
-├─Flatten: 1-6                           [1, 25088]                --
-├─Sequential: 1-7                        [1, 1000]                 --
-│    └─Linear: 2-38                      [1, 4096]                 102,764,544
-│    └─ReLU: 2-39                        [1, 4096]                 --
-│    └─Linear: 2-40                      [1, 4096]                 16,781,312
-│    └─ReLU: 2-41                        [1, 4096]                 --
-│    └─Linear: 2-42                      [1, 1000]                 4,097,000
-│    └─Softmax: 2-44                     [1, 1000]                 --
-==========================================================================================
-Total params: 143,667,240
-Trainable params: 143,667,240
-Non-trainable params: 0
-Total mult-adds (Units.GIGABYTES): 19.65
-==========================================================================================
-Input size (MB): 0.60
-Forward/backward pass size (MB): 118.89
-Params size (MB): 574.67
-Estimated Total Size (MB): 694.16
-==========================================================================================
+<p>The reduction in the number of channels leads to a significant reduction in the number of parameters in the network. This parameter reduction allows for more efficient training and enables the use of deeper and more complex architectures while managing computational resources effectively.</p>
+
+<p>Bottleneck residual blocks have become a key component in deeper ResNet variants, contributing to their improved performance and efficiency.</p>
+
+<h2 id="understanding-dimensionality-reduction">Understanding dimensionality reduction</h2>
+<p>As this is a CNN model, downsampling is necessary. The issue is that the dimensions of $F(x)$ and $x$ would be different after downsampling. In such cases, the $F(x)$ and $W_1x$ are added together, where the square matrix $W_1$ is used to match dimensions.</p>
+
+<p>Below is for simple shortcut connections with elementwise addition.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">+</span> <span class="n">identity</span>
 </code></pre></div></div>
 
-<p>The example above is my implementation of the VGG19 model. The structure seems to match up with the paper’s VGG19. Additionally, the number of parameters of my custom model is roughly equivalent to that of VGG19 (144M parameters)!</p>
+<p>But what about the dimensionality reductions? Well it’s just a sequence of a Conv2d layer and a BatchNorm2d layer, but matching the dimensions was a little confusing at first.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="nf">dim_reduction</span><span class="p">(</span><span class="n">identity</span><span class="p">)</span>
+<span class="bp">...</span>
 
-<p><img src="/assets/img/blogs/2023-05-31-first-paper-implementation/vgg-param.png" alt="image"></p>
+<span class="k">def</span> <span class="nf">skip_connection</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">input_channels</span><span class="p">,</span> <span class="n">output_channels</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">nn</span><span class="p">.</span><span class="nc">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="n">input_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="n">output_channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">BatchNorm2d</span><span class="p">(</span><span class="n">output_channels</span><span class="p">)</span>
+        <span class="p">)</span>
+</code></pre></div></div>
 
-<p>On a side note, you may wonder why there is no huge difference between the number of parameters in VGG11 (133M) and that of VGG19 (144M). The reason for that is that most of the parameters are located in the Fully Connected layers at the end of the each model. The number of parameters in the Convolutional layers pales in comparison to the number in Fully Connected layers, which is why, even though there is an 8-layer difference between VGG11 and VGG19, the numbers of parameters do not differ that much.</p>
+<h2 id="implementation">Implementation</h2>
+<h3 id="a-normal-residual-block">A normal residual block</h3>
+<pre><code class="language-Python">class ResidualBlockNoBottleneck(nn.Module):
+    expansion = 1
+    def __init__(self, input_channels, output_channels, stride=1):
+        super(ResidualBlockNoBottleneck, self).__init__()
+        self.expansion = 1
 
-<h3 id="4-the-dreaded-10-accuracy">4. The dreaded 10% accuracy</h3>
-<p>When I ran this code on the CIFAR10 dataset, however, I got a 0.1 accuracy! That’s basically the same as randomly guessing (since there are 10 possible guesses). No matter how many times I tweaked the hyperparameters, I got the same 0.1.</p>
+        self.block = nn.Sequential(
+            nn.Conv2d(in_channels=input_channels, out_channels=output_channels, kernel_size=3, stride=stride, padding=1, bias=False),
+            nn.BatchNorm2d(output_channels),
+            nn.ReLU(),
+            nn.Conv2d(in_channels=output_channels, out_channels=output_channels, kernel_size=3, stride=1, padding=1, bias=False),
+            nn.BatchNorm2d(output_channels)
+        )
+        self.relu = nn.ReLU()
+        
+        if stride != 1:
+            self.shortcut = nn.Sequential(
+                nn.Conv2d(in_channels=input_channels, out_channels=output_channels, kernel_size=1, stride=2, padding=0),
+                nn.BatchNorm2d(output_channels)
+            )
+        else:
+            self.shortcut = nn.Sequential()
+    
+    def forward(self, x):
+        z = self.block(x)
+        z += self.shortcut(x)
+        z = self.relu(z)
+        return z
+</code></pre>
+<p>In the residual block (no bottleneck), there is the standard sequence of Conv2d-BatchNorm-ReLU. The key addition here is the addition of the shortcut connection.</p>
 
-<p>The VGG model was created to be used on the ImageNet, which contains images of <code class="language-plaintext highlighter-rouge">224x224x3</code> dimensions. On the other hand, CIFAR10 contains images of <code class="language-plaintext highlighter-rouge">32x32x3</code> dimensions. The VGG is simple just too deep to learn the CIFAR10 dataset properly.</p>
+<p>When there is a stride of 2 in the block, there is a change in dimensionality (width and height are reduced by 2), so the dimensionality reduction is applied.</p>
 
-<p>I resolved this issue by adding Batch Normalization to every block in the architecture. Since Batch Normalization ensures that the activations of each layer have zero mean and unit variance, the gradients are well scaled throughout the network. I improved the performance even further by removing the final few Fully Connected layers.</p>
+<h2 id="bottleneck-residual-block">Bottleneck residual block</h2>
+<pre><code class="language-Python">class ResidualBlockBottleneck(nn.Module):
+    expansion = 4
+    def __init__(self, input_channels, in_channels, stride=1):
+        super(ResidualBlockBottleneck, self).__init__()
 
-<p>In the end, with even more hyperparameter tweaking, I was left with a training accuracy of 93.4%, a validation accuracy of 88.7%, and a testing accuracy of 88.2%.</p>
+        self.block = nn.Sequential(
+            nn.Conv2d(in_channels=input_channels, out_channels=in_channels, kernel_size=1, stride=1, padding=0, bias=False),
+            nn.BatchNorm2d(in_channels),
+            nn.ReLU(),
+            nn.Conv2d(in_channels=in_channels, out_channels=in_channels, kernel_size=3, stride=stride, padding=1, bias=False),
+            nn.BatchNorm2d(in_channels),
+            nn.ReLU(),
+            nn.Conv2d(in_channels=in_channels, out_channels=in_channels*4, kernel_size=1, stride=1, padding=0, bias=False),
+            nn.BatchNorm2d(in_channels*4)
+        )
+        self.relu = nn.ReLU()
+        
+        if stride != 1 or input_channels != self.expansion*in_channels:
+            self.shortcut = nn.Sequential(
+                nn.Conv2d(in_channels=input_channels, out_channels=in_channels*4, kernel_size=1, stride=stride, padding=0, bias=False),
+                nn.BatchNorm2d(in_channels*4)
+            )
+        else:
+            self.shortcut = nn.Sequential()
+    
+    def forward(self, x):
+        z = self.block(x)
+        z += self.shortcut(x)
+        z = self.relu(z)
+        return z
+</code></pre>
+<p>The new addition here is the 1 by 1 convolutions. Also, the code checks for <code class="language-plaintext highlighter-rouge">stride != 1</code> and <code class="language-plaintext highlighter-rouge">input_channels != self.expansion*in_channels</code>. The second condition checks if we are repeating the same residual block or if we are moving on to the next layer.</p>
+
+<p>For example, for the first layer in ResNet50, the <code class="language-plaintext highlighter-rouge">input_channels</code> would be $64$ as a result of preliminary layers. The <code class="language-plaintext highlighter-rouge">in_channels</code> is $64$. The first layer repeats the bottleneck block 3 times. The first time, <code class="language-plaintext highlighter-rouge">input_channels</code> and <code class="language-plaintext highlighter-rouge">self.expansion*in_channels</code> would be $64$ and $4\times64=256$ respectively. Thus, there would be a dimensionality reduction. The second and third layers would then have <code class="language-plaintext highlighter-rouge">input_channels</code> and <code class="language-plaintext highlighter-rouge">self.expansion*in_channels</code> of 256, meaning no dimensionality reduction would be required.</p>
+
+<p>With these blocks coded, making a full ResNet is as easy as stacking them on top of each other.</p>
 
 <h2 id="conclusion">Conclusion</h2>
-<p>As someone who had never fully implemented an entire paper before, I struggled with some of the code conversion in the beginning. However, compared to models like ResNet and DenseNet, VGG definitely was the easiest to implement.</p>
+<p>The training accuracy of my VGG implementation plateued around 93.4%. My ResNet34 CIFAR10 variant managed to reach almost 95% before plateuing, suggesting that the skip connections managed to reduce training degradation as the paper set out to do. The CIFAR10 dataset is far smaller than ImageNet - probably why we do not see as big of a difference between VGG and ResNet.</p>
 
-<p>I can see why people often recommend beginners to start by implementing papers despite the difficulty - there really is no better way to learn.</p>
-
-<p>What I learnt:</p>
-<ul>
-  <li>NN model debugging skills</li>
-  <li>Analyzing parameters and hyperparameters from papers</li>
-  <li>Adjusting the model to fit the dataset</li>
-</ul>
+<p>Overall, this was a good paper to implement after VGG, due to small but significant alterations to the code. Next up: DenseNet.</p>
 
     </div>
   </article>
@@ -337,7 +338,7 @@ Estimated Total Size (MB): 694.16
   
 
   <li class="my-2">
-    <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/resnet34-implementation/">ResNet34 Model Implementation</a>
+    <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/first-paper-implementation/">My first full paper implementation</a>
   </li>
 
 </div>

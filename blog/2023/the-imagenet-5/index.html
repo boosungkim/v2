@@ -10,10 +10,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>implementation | Boosung  Kim</title>
+    <title>I implemented 5 CNN papers. Here's what I learned. | Boosung  Kim</title>
     <meta name="author" content="Boosung  Kim">
-    <meta name="description" content="A lifelong learner interested in the modern world.
-">
+    <meta name="description" content="5 things I learnt from implementing 5 Computer Vision papers">
     <meta name="keywords" content="portfolio-website">
 
 
@@ -33,13 +32,16 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jwarby/jekyll-pygments-themes@master/github.css" media="" id="highlight_theme_light">
 
     
+    <!-- Sidebar Table of Contents -->
+    <link href="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.css" rel="stylesheet">
+    
 
     <!-- Styles -->
     
     <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%94%A5&lt;/text&gt;&lt;/svg&gt;">
     
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://boosungkim.com/blog/category/implementation/">
+    <link rel="canonical" href="https://boosungkim.com/blog/2023/the-imagenet-5/">
 
     <!-- Dark Mode -->
     
@@ -128,65 +130,148 @@
     <!-- Content -->
     <div class="container mt-5">
       
-        <div class="post">
+        
+        <div class="row">
+          <!-- main content area -->
+          <div class="col-sm-9">
+            <!-- _layouts/post.html -->
+
+<div class="post">
 
   <header class="post-header">
-    <h1 class="post-title"> <i class="fas fa-tag fa-sm"></i> implementation </h1>
-    <p class="post-description"> an archive of posts in this category </p>
+    <h1 class="post-title">I implemented 5 CNN papers. Here's what I learned.</h1>
+    <p class="post-meta">June 15, 2023</p>
+    <p class="post-tags">
+      <a href="/blog/2023"> <i class="fas fa-calendar fa-sm"></i> 2023 </a>
+        ·  
+        <a href="/blog/category/computer-vision">
+          <i class="fas fa-tag fa-sm"></i> computer-vision</a>  
+          <a href="/blog/category/implementation">
+          <i class="fas fa-tag fa-sm"></i> implementation</a>  
+          
+
+    </p>
   </header>
 
-  <article>
-    <div class="table-responsive">
-      <table class="table table-sm table-borderless">
-        
-        <tr>
-          <th scope="row">Jun 15, 2023</th>
-          <td>
-              <a class="post-link" href="/blog/2023/the-imagenet-5/">I implemented 5 CNN papers. Here's what I learned.</a>
-          </td>
-        </tr>
-      
-        <tr>
-          <th scope="row">Jun 15, 2023</th>
-          <td>
-              <a class="post-link" href="/blog/2023/efficientnet-implementation/">EfficientNet Implementation</a>
-          </td>
-        </tr>
-      
-        <tr>
-          <th scope="row">Jun 5, 2023</th>
-          <td>
-              <a class="post-link" href="/blog/2023/senet-implementation/">SE-Net Implementation</a>
-          </td>
-        </tr>
-      
-        <tr>
-          <th scope="row">Jun 2, 2023</th>
-          <td>
-              <a class="post-link" href="/blog/2023/densenet-implementation/">DenseNet Implementation</a>
-          </td>
-        </tr>
-      
-        <tr>
-          <th scope="row">Jun 1, 2023</th>
-          <td>
-              <a class="post-link" href="/blog/2023/resnet34-implementation/">ResNet34 Model Implementation</a>
-          </td>
-        </tr>
-      
-        <tr>
-          <th scope="row">May 31, 2023</th>
-          <td>
-              <a class="post-link" href="/blog/2023/first-paper-implementation/">My first full paper implementation</a>
-          </td>
-        </tr>
-      
-      </table>
+  <article class="post-content">
+    
+    <div id="markdown-content">
+      <p><a href="https://github.com/boosungkim/milestone-cnn-model-implementations" rel="external nofollow noopener" target="_blank">The Imagenet 5</a></p>
+
+<p><em>An accompanying Converge2Diverge YouTube video is in the works.</em></p>
+
+<p>As of this post, I have implemented 5 milestone CNN papers (6 really, if you include my implementation of MobileNet’s inverted residual block). I thinking about calling this short series of implementations “The ImageNet 5” (since all these models are based on ImageNet).</p>
+
+<p>From this short experience, I truly believe that implementing papers and utilizing the code for other projects is the best way to learn deep learning. I learnt a lot, which can be summarized in 5 key points:</p>
+
+<h2 id="1-break-down-the-model">1. Break down the model</h2>
+<p>When I first implemented the VGG network and Residual Networks, I coded everything into one huge chunk. If you look at the ealiest GitHub versions of my code, you will be able to find it.</p>
+
+<p>While the code may run, it is significantly harder to debug or to come back to later. If you read my post on <a href="/_posts/2023-06-15-efficientnet-implementation.md">EfficientNet</a>, you saw how we had to reuse the SE-Net code.</p>
+
+<p>Additionally, if you run <code class="language-plaintext highlighter-rouge">summary()</code> from torchinfo, you can see that the function groups layers together by blocks or sequences. Organizing the dozens of of layers in the model into <code class="language-plaintext highlighter-rouge">features</code>, <code class="language-plaintext highlighter-rouge">classifier</code>, or other categories can be immensely helpful in reading the summary later. The official Pytorch implementations of the models do this as well, and when you utilize transfer learning, you can set which blocks of code to training mode easily due to this classification.</p>
+
+<p>Finally, breaking down the model to smaller parts and implementing them first can help your understanding as well. Instead of overwhelming yourself with implementing everything, focus on implementing separate parts of the model.</p>
+
+<h2 id="2-you-need-to-know-the-background-knowledge">2. You need to know the background knowledge</h2>
+<p>I particularly felt this when implementing EfficientNet. Trying to implement it without proper knowledge of MobileNetV2 (its basis) was a complete nightmare, and I had to reference many explanations and videos to even code a running model.</p>
+
+<p>When reading a paper, it includes references to previous works it is built on. Don’t be stubborn and actually read the references as well.</p>
+
+<h2 id="3-take-notes-on-the-paper">3. Take notes on the paper</h2>
+<p><img src="/assets/img/blogs/2023-06-15-the-imagenet-5/notes-densenet.jpeg" alt="image">
+<em>My notes on the DenseNet paper</em></p>
+
+<p><img src="/assets/img/blogs/2023-06-15-the-imagenet-5/notes-resnet.jpeg" alt="image">
+<em>My notes on the ResNet paper</em></p>
+
+<p>As mentioned in a previous blog, the parameters and hyperparameters of a model is often embedded in several different places in the paper. It’s like going on an Easter egg hunt for these clues.</p>
+
+<p>Thanks to my prior research experience, I knew how to read papers on a high level: read the abstract -&gt; conclusion -&gt; figures/tables -&gt; introduction -&gt; main content. But through these implementations, I’ve gotten better at hunting down these little details.</p>
+
+<p>Taking notes and writing down these details are very important, especially when you are trying to read several papers at once and start getting overwhelmed.</p>
+
+<h2 id="4-have-a-set-environment">4. Have a set environment</h2>
+<p>When you are testing these models, it can be very time-consuming to create a whole new environment. It also helps to use the same dataset with the same augmentations to benchmark your models. I ended up reusing the data augmentation and training/testing codes for all my models.</p>
+
+<h2 id="5-hyperparameter-tuning-takes-all-day">5. Hyperparameter tuning takes all day</h2>
+<p>The models I implemented were made for ImageNet, not CIFAR10. Thus, I had to finetune the hyperparameters to get close to the results on the paper. Even then, I was not able to fully replicate the results.</p>
+
+<p>These models get more complicated as time goes on. We aren’t dealing with MNIST or Cats vs Dogs anymore. Each time I tweak a hyperparameter, I have to let the model run for hundreds of epoch, which can take hours. I’ve learnt to let the model run while I take care of other work or even while I am sleeping. It is important to get more efficient in running these models.</p>
+
+<h2 id="what-now">What now?</h2>
+<h3 id="more-experimentation">More experimentation</h3>
+<p>So far, all my implementations focused on just the coding part with a little bit of finetuning. If my results matched the general trend of the model, I moved onto the next model. That’s not what a true researcher does.</p>
+
+<p>A true researcher would try to replicate the different experiments done in each paper. While I will continue with my studies in other domains, I plan on coming back to some of these papers and properly replicating the results. I need to learn to plot loss and accuracy and compare these models against each other under the exact same circumstances.</p>
+
+<h3 id="newer-papers">Newer papers</h3>
+<p>So far, I only worked with older papers, the latest one being published in 2020 (which is pretty recent I guess). These older papers have more articles and explanations online that I was able to reference when I got stuck.</p>
+
+<p>For instance, I was able to read an online article explaining the concept of growth rates in DenseNet, which was how I figured out that growth rates are just the number of channels the convolutional step is supposed to output.</p>
+
+<p>As my skills and knowledge improve, I hope to be able to understand newer state-of-the-art papers from top conferences. My current goal is to be able to read and implement a 2023 NeurIPS paper this winter break.</p>
+
+<h3 id="other-domain-studies">Other domain studies</h3>
+<p>There are so many other areas outside of just image classification. The closest areas being Object Segmentation and Object Detection. Not to mention there is a whole world of Natural Language Processing waiting as well.</p>
+
+<p>Perhaps I could do a Segmentation 5?</p>
+
+<p>On a final note, I would like to thank my friend Daesung (Dan) Kim for his continuous help and support so far.</p>
+
     </div>
   </article>
 
+
+  
+    
+    <br>
+    <hr>
+    <br>
+    <ul class="list-disc pl-8"></ul>
+
+    <!-- Adds related posts to the end of an article -->
+    <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2>
+    <p class="mb-2">Here are some more articles you might like to read next:</p>
+  
+
+  <li class="my-2">
+    <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/efficientnet-implementation/">EfficientNet Implementation</a>
+  </li>
+
+  
+
+  <li class="my-2">
+    <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/senet-implementation/">SE-Net Implementation</a>
+  </li>
+
+  
+
+  <li class="my-2">
+    <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/densenet-implementation/">DenseNet Implementation</a>
+  </li>
+
+  
+
+  <li class="my-2">
+    <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/resnet34-implementation/">ResNet34 Model Implementation</a>
+  </li>
+
+  
+
+  <li class="my-2">
+    <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/first-paper-implementation/">My first full paper implementation</a>
+  </li>
+
 </div>
 
+          </div>
+          <!-- sidebar, which will move to the top on a small screen -->
+          <div class="col-sm-3">
+            <nav id="toc-sidebar" class="sticky-top"></nav>
+          </div>
+        </div>
+        
       
     </div>
 
@@ -212,6 +297,9 @@
   <!-- Medium Zoom JS -->
   <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
   <script defer src="/assets/js/zoom.js"></script>
+  <!-- Sidebar Table of Contents -->
+  <script defer src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script>
+
 
   <!-- Bootstrap Table -->
   <script defer src="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.js"></script>
