@@ -33,12 +33,12 @@ When reading a paper, it includes references to previous works it is built on. D
 
 ## 3. Take notes on the paper
 
-<img src="../assets/img/blogs/2023-06-15-the-imagenet-5/notes-densenet.jpeg"  width="600" height="300">
+<img src="/assets/img/blogs/2023-06-15-the-imagenet-5/notes-densenet.jpeg"  width="600" height="300">
 
 <!-- ![image](/assets/img/blogs/2023-06-15-the-imagenet-5/notes-densenet.jpeg) -->
 *My notes on the DenseNet paper*
 
-<img src="../assets/img/blogs/2023-06-15-the-imagenet-5/notes-resnet.jpeg"  width="600">
+<img src="/assets/img/blogs/2023-06-15-the-imagenet-5/notes-resnet.jpeg"  width="600">
 
 <!-- ![image](/assets/img/blogs/2023-06-15-the-imagenet-5/notes-resnet.jpeg) -->
 *My notes on the ResNet paper*
