@@ -161,7 +161,8 @@ Link to <a href="https://github.com/boosungkim/milestone-cnn-model-implementatio
 
 <p>DenseNets are basically ResNets but with residual connections between every single layer.</p>
 
-<p><img src="/assets/img/blogs/2023-06-02-densenet-implementation/densenet.png" alt="image">
+<p><img src="/assets/img/blogs/2023-06-02-densenet-implementation/densenet.png" width="600">
+<!-- ![image](/assets/img/blogs/2023-06-02-densenet-implementation/densenet.png) -->
 <em>Figure 1: DenseNet</em></p>
 
 <p>The idea is to concatenate the feature maps of all the preceding layers with the result of the current layer. The authors of “Densely Connected Convolutional Networks” argue that the element-wise summation used in Residual Networks may impede the flow of information.</p>
@@ -173,9 +174,9 @@ Link to <a href="https://github.com/boosungkim/milestone-cnn-model-implementatio
 <p>What this equation basically means is that instead of each layer taking in only the previous output, like VGG, taking in the previous output and the output of the block before, like ResNet, each layer takes in the concatenation of all previous layers in the Dense block.</p>
 
 <h2 id="growth-rate">Growth rate</h2>
-<p>So what is the growth rate in DenseNets? The growth rate, as its name suggests, is the growth rate of the number of channels for each dense layer. For instance, if we start off with $64$ layers and the growth rate is $32$, the convolutional sequence in the first layer will create an output of $32$ channels. The dense layer will conclude by concatenating the previous outputs, giving us $96$ channels. The next layer will then have $128$ layers, and so on.</p>
+<p>So what is the growth rate in DenseNets? The growth rate, as its name suggests, is the growth rate of the number of channels for each dense layer. For instance, if we start off with 64 layers and the growth rate is 32, the convolutional sequence in the first layer will create an output of 32 channels. The dense layer will conclude by concatenating the previous outputs, giving us 96 channels. The next layer will then have 128 layers, and so on.</p>
 
-<p>The authors of the paper emperically prove that the dense network works sufficiently well with relatively small growth rates, like $k=12$.</p>
+<p>The authors of the paper emperically prove that the dense network works sufficiently well with relatively small growth rates, like \(k=12\).</p>
 
 <h2 id="bottleneck-layers-in-densenet">Bottleneck layers in DenseNet</h2>
 <p>With the continuous increase in the number of channels, you may understand the importance of using bottlenecks if you read my previous blog post on <a href="/_posts/2023-06-01-resnet34-implementation.md">ResNet</a>.</p>
@@ -189,58 +190,58 @@ Link to <a href="https://github.com/boosungkim/milestone-cnn-model-implementatio
 <h2 id="transition-layers">Transition layers</h2>
 <p>Bottleneck layers alone are not enough to improve the model compactness. This is where the authors introduce compression by Transition layers.</p>
 
-<p>Essentially, the transition layer reduces the number of channels by a factor of $\theta$, which the paper sets as $0.5$ for DenseNet-C. Hence, DenseNet-C halves the number of channels every transition layer.</p>
+<p>Essentially, the transition layer reduces the number of channels by a factor of \(\theta\), which the paper sets as 0.5 for DenseNet-C. Hence, DenseNet-C halves the number of channels every transition layer.</p>
 
 <h2 id="implementation-detail">Implementation detail</h2>
 <p>We now have the building blocks for DesneNet.</p>
 
 <h3 id="dense-layer">Dense layer</h3>
-<pre><code class="language-Python">class DenseLayer(nn.Module):
-    def __init__(self, input_channels, growth_rate):
-        super(DenseLayer, self).__init__()
-        self.growth_rate = growth_rate
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">DenseLayer</span><span class="p">(</span><span class="n">nn</span><span class="p">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">input_channels</span><span class="p">,</span> <span class="n">growth_rate</span><span class="p">):</span>
+        <span class="nf">super</span><span class="p">(</span><span class="n">DenseLayer</span><span class="p">,</span> <span class="n">self</span><span class="p">).</span><span class="nf">__init__</span><span class="p">()</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">growth_rate</span> <span class="o">=</span> <span class="n">growth_rate</span>
 
-        self.layer = nn.Sequential(
-            nn.BatchNorm2d(input_channels),
-            nn.ReLU(),
-            nn.Conv2d(in_channels=input_channels, out_channels=4*input_channels, kernel_size=1, stride=1, padding=0, bias=False),
-            nn.BatchNorm2d(4*input_channels),
-            nn.ReLU(),
-            nn.Conv2d(in_channels=4*input_channels, out_channels=growth_rate, kernel_size=3, stride=1, padding=1, bias=False)
-        )
+        <span class="n">self</span><span class="p">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="nc">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">BatchNorm2d</span><span class="p">(</span><span class="n">input_channels</span><span class="p">),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="n">input_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="mi">4</span><span class="o">*</span><span class="n">input_channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">BatchNorm2d</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">input_channels</span><span class="p">),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="mi">4</span><span class="o">*</span><span class="n">input_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="n">growth_rate</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="p">)</span>
     
-    def forward(self,x):
-        return self._forward_implementation(x)
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="nf">_forward_implementation</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     
-    def _forward_implementation(self,x):
-        z = self.layer(x)
-        z = torch.cat([z, x], 1)
-        return z
-</code></pre>
+    <span class="k">def</span> <span class="nf">_forward_implementation</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">layer</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">cat</span><span class="p">([</span><span class="n">z</span><span class="p">,</span> <span class="n">x</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">z</span>
+</code></pre></div></div>
 <p>The difference here from the Residual block code is that we use <code class="language-plaintext highlighter-rouge">torch.cat([z,x],1)</code> to concatenate the previous results. <code class="language-plaintext highlighter-rouge">z</code> is the result of the convolutions, which will return <code class="language-plaintext highlighter-rouge">growth_rate</code> number of channels. <code class="language-plaintext highlighter-rouge">x</code> is the result of the previous layer’s output.</p>
 
 <h3 id="transition-layer">Transition layer</h3>
-<pre><code class="language-Python">class TransitionBlock(nn.Module):
-    def __init__(self, input_channels):
-        super(TransitionBlock, self).__init__()
-        self.input_channels = input_channels
-        self.output_channels = input_channels // 2
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TransitionBlock</span><span class="p">(</span><span class="n">nn</span><span class="p">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">input_channels</span><span class="p">):</span>
+        <span class="nf">super</span><span class="p">(</span><span class="n">TransitionBlock</span><span class="p">,</span> <span class="n">self</span><span class="p">).</span><span class="nf">__init__</span><span class="p">()</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">input_channels</span> <span class="o">=</span> <span class="n">input_channels</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">output_channels</span> <span class="o">=</span> <span class="n">input_channels</span> <span class="o">//</span> <span class="mi">2</span>
 
-        self.layer = nn.Sequential(
-            nn.BatchNorm2d(self.input_channels),
-            nn.Conv2d(in_channels=self.input_channels, out_channels=self.output_channels, kernel_size=1, stride=1, padding=0, bias=False),
-            nn.AvgPool2d(kernel_size=2, stride=2, padding=0)
-        )
+        <span class="n">self</span><span class="p">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="nc">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">BatchNorm2d</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">input_channels</span><span class="p">),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">input_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">output_channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">AvgPool2d</span><span class="p">(</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="p">)</span>
     
-    def forward(self,x):
-        return self.layer(x)
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="nf">layer</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     
-    def output_channels_num(self):
-        return self.output_channels
-</code></pre>
-<p>Even simpler! We just use a combination of BatchNorm, 1 by 1 convolution, and AvgPool to reduce the number of channels by a factor of $0.5$ and the width and height by $0.5$.</p>
+    <span class="k">def</span> <span class="nf">output_channels_num</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">output_channels</span>
+</code></pre></div></div>
+<p>Even simpler! We just use a combination of BatchNorm, 1 by 1 convolution, and AvgPool to reduce the number of channels by a factor of 0.5 and the width and height by 0.5.</p>
 
-<p>I just set $\theta$ to be $0.5$ as the paper does, but you can adjust it to be some other value.</p>
+<p>I just set \(\theta\) to be 0.5 as the paper does, but you can adjust it to be some other value.</p>
 
 <h2 id="conclusion">Conclusion</h2>
 <p>Despite having a similar depth and the number of parameters as ResNet, my variation of DenseNet produced an improvement in both training and testing accuracies. My densenet produced a training accuracy of 96.6% and testing accuracy of 88.7%.</p>

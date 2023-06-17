@@ -178,16 +178,17 @@ Link to <a href="https://github.com/boosungkim/milestone-cnn-model-implementatio
 <h2 id="what-is-a-residual-learning">What is a Residual Learning?</h2>
 <p>So if we don’t know what causes the degradation problem, do we at least know how to prevent it? That’s where residual mapping in Residual Learning come into play.</p>
 
-<p><img src="/assets/img/blogs/2023-06-01-resnet34-implementation/residual-block.jpeg" alt="image">
+<!-- ![image](/assets/img/blogs/2023-06-01-resnet34-implementation/residual-block.jpeg) -->
+<p><img src="/assets/img/blogs/2023-06-01-resnet34-implementation/residual-block.jpeg" width="600">
 <em>Figure 1: A residual block</em></p>
 
 \[H(x) := F(x) + x\]
 
-<p>If we let $x$ be the incoming feature, the $F(x)$ is the normal weighted layers that CNNs have (Convolutional, Batch Normalization, ReLU layers). The original $x$ is then added (element-wise addition) to $F(x)$ to produce $H(x)$.</p>
+<p>If we let \(x\) be the incoming feature, the \(F(x)\) is the normal weighted layers that CNNs have (Convolutional, Batch Normalization, ReLU layers). The original \(x\) is then added (element-wise addition) to \(F(x)\) to produce \(H(x)\).</p>
 
-<p>Essentially, the original features are added to the result of the weighted layers, and this whole process is one residual block. The idea is that, in the worst case scenario where $F(x)$ produce a useless tensor filled with $0$s, the identity will be added back in to pass on a useful feature to the next block. Shortcut connections can only help the network.</p>
+<p>Essentially, the original features are added to the result of the weighted layers, and this whole process is one residual block. The idea is that, in the worst case scenario where \(F(x)\) produce a useless tensor filled with \(0\)s, the identity will be added back in to pass on a useful feature to the next block. Shortcut connections can only help the network.</p>
 
-<p>As this is a CNN model, downsampling is necessary. The issue is that the dimensions of $F(x)$ and $x$ would be different after downsampling. In such cases, the $F(x)$ and $W_1x$ are added together, where the square matrix $W_1$ is used to match dimensions.</p>
+<p>As this is a CNN model, downsampling is necessary. The issue is that the dimensions of \(F(x)\) and \(x\) would be different after downsampling. In such cases, the \(F(x)\) and \(W_1x\) are added together, where the square matrix \(W_1\) is used to match dimensions.</p>
 
 <h2 id="what-is-a-bottleneck-residual-block">What is a Bottleneck Residual Block?</h2>
 <p>A bottleneck residual block is a variant of the residual block that uses 1 by 1 convolutions to create a “bottleneck.” The primary purpose of a bottleneck is to reduce the number for parameters in the network.</p>
@@ -202,7 +203,7 @@ Link to <a href="https://github.com/boosungkim/milestone-cnn-model-implementatio
 <p>Bottleneck residual blocks have become a key component in deeper ResNet variants, contributing to their improved performance and efficiency.</p>
 
 <h2 id="understanding-dimensionality-reduction">Understanding dimensionality reduction</h2>
-<p>As this is a CNN model, downsampling is necessary. The issue is that the dimensions of $F(x)$ and $x$ would be different after downsampling. In such cases, the $F(x)$ and $W_1x$ are added together, where the square matrix $W_1$ is used to match dimensions.</p>
+<p>As this is a CNN model, downsampling is necessary. The issue is that the dimensions of \(F(x)\) and \(x\) would be different after downsampling. In such cases, the \(F(x)\) and \(W_1x\) are added together, where the square matrix \(W_1\) is used to match dimensions.</p>
 
 <p>Below is for simple shortcut connections with elementwise addition.</p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">+</span> <span class="n">identity</span>
@@ -221,74 +222,74 @@ Link to <a href="https://github.com/boosungkim/milestone-cnn-model-implementatio
 
 <h2 id="implementation">Implementation</h2>
 <h3 id="a-normal-residual-block">A normal residual block</h3>
-<pre><code class="language-Python">class ResidualBlockNoBottleneck(nn.Module):
-    expansion = 1
-    def __init__(self, input_channels, output_channels, stride=1):
-        super(ResidualBlockNoBottleneck, self).__init__()
-        self.expansion = 1
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ResidualBlockNoBottleneck</span><span class="p">(</span><span class="n">nn</span><span class="p">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="n">expansion</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">input_channels</span><span class="p">,</span> <span class="n">output_channels</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="nf">super</span><span class="p">(</span><span class="n">ResidualBlockNoBottleneck</span><span class="p">,</span> <span class="n">self</span><span class="p">).</span><span class="nf">__init__</span><span class="p">()</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">expansion</span> <span class="o">=</span> <span class="mi">1</span>
 
-        self.block = nn.Sequential(
-            nn.Conv2d(in_channels=input_channels, out_channels=output_channels, kernel_size=3, stride=stride, padding=1, bias=False),
-            nn.BatchNorm2d(output_channels),
-            nn.ReLU(),
-            nn.Conv2d(in_channels=output_channels, out_channels=output_channels, kernel_size=3, stride=1, padding=1, bias=False),
-            nn.BatchNorm2d(output_channels)
-        )
-        self.relu = nn.ReLU()
+        <span class="n">self</span><span class="p">.</span><span class="n">block</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="nc">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="n">input_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="n">output_channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="n">stride</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">BatchNorm2d</span><span class="p">(</span><span class="n">output_channels</span><span class="p">),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="n">output_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="n">output_channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">BatchNorm2d</span><span class="p">(</span><span class="n">output_channels</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">relu</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="nc">ReLU</span><span class="p">()</span>
         
-        if stride != 1:
-            self.shortcut = nn.Sequential(
-                nn.Conv2d(in_channels=input_channels, out_channels=output_channels, kernel_size=1, stride=2, padding=0),
-                nn.BatchNorm2d(output_channels)
-            )
-        else:
-            self.shortcut = nn.Sequential()
+        <span class="k">if</span> <span class="n">stride</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">shortcut</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="nc">Sequential</span><span class="p">(</span>
+                <span class="n">nn</span><span class="p">.</span><span class="nc">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="n">input_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="n">output_channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+                <span class="n">nn</span><span class="p">.</span><span class="nc">BatchNorm2d</span><span class="p">(</span><span class="n">output_channels</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">shortcut</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="nc">Sequential</span><span class="p">()</span>
     
-    def forward(self, x):
-        z = self.block(x)
-        z += self.shortcut(x)
-        z = self.relu(z)
-        return z
-</code></pre>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">block</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">+=</span> <span class="n">self</span><span class="p">.</span><span class="nf">shortcut</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">relu</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">z</span>
+</code></pre></div></div>
 <p>In the residual block (no bottleneck), there is the standard sequence of Conv2d-BatchNorm-ReLU. The key addition here is the addition of the shortcut connection.</p>
 
 <p>When there is a stride of 2 in the block, there is a change in dimensionality (width and height are reduced by 2), so the dimensionality reduction is applied.</p>
 
 <h2 id="bottleneck-residual-block">Bottleneck residual block</h2>
-<pre><code class="language-Python">class ResidualBlockBottleneck(nn.Module):
-    expansion = 4
-    def __init__(self, input_channels, in_channels, stride=1):
-        super(ResidualBlockBottleneck, self).__init__()
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ResidualBlockBottleneck</span><span class="p">(</span><span class="n">nn</span><span class="p">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="n">expansion</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">input_channels</span><span class="p">,</span> <span class="n">in_channels</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="nf">super</span><span class="p">(</span><span class="n">ResidualBlockBottleneck</span><span class="p">,</span> <span class="n">self</span><span class="p">).</span><span class="nf">__init__</span><span class="p">()</span>
 
-        self.block = nn.Sequential(
-            nn.Conv2d(in_channels=input_channels, out_channels=in_channels, kernel_size=1, stride=1, padding=0, bias=False),
-            nn.BatchNorm2d(in_channels),
-            nn.ReLU(),
-            nn.Conv2d(in_channels=in_channels, out_channels=in_channels, kernel_size=3, stride=stride, padding=1, bias=False),
-            nn.BatchNorm2d(in_channels),
-            nn.ReLU(),
-            nn.Conv2d(in_channels=in_channels, out_channels=in_channels*4, kernel_size=1, stride=1, padding=0, bias=False),
-            nn.BatchNorm2d(in_channels*4)
-        )
-        self.relu = nn.ReLU()
+        <span class="n">self</span><span class="p">.</span><span class="n">block</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="nc">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="n">input_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">BatchNorm2d</span><span class="p">(</span><span class="n">in_channels</span><span class="p">),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="n">stride</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">BatchNorm2d</span><span class="p">(</span><span class="n">in_channels</span><span class="p">),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="n">in_channels</span><span class="o">*</span><span class="mi">4</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">BatchNorm2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">relu</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="nc">ReLU</span><span class="p">()</span>
         
-        if stride != 1 or input_channels != self.expansion*in_channels:
-            self.shortcut = nn.Sequential(
-                nn.Conv2d(in_channels=input_channels, out_channels=in_channels*4, kernel_size=1, stride=stride, padding=0, bias=False),
-                nn.BatchNorm2d(in_channels*4)
-            )
-        else:
-            self.shortcut = nn.Sequential()
+        <span class="k">if</span> <span class="n">stride</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">input_channels</span> <span class="o">!=</span> <span class="n">self</span><span class="p">.</span><span class="n">expansion</span><span class="o">*</span><span class="n">in_channels</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">shortcut</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="nc">Sequential</span><span class="p">(</span>
+                <span class="n">nn</span><span class="p">.</span><span class="nc">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="n">input_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="n">in_channels</span><span class="o">*</span><span class="mi">4</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="n">stride</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+                <span class="n">nn</span><span class="p">.</span><span class="nc">BatchNorm2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">shortcut</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="nc">Sequential</span><span class="p">()</span>
     
-    def forward(self, x):
-        z = self.block(x)
-        z += self.shortcut(x)
-        z = self.relu(z)
-        return z
-</code></pre>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">block</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">+=</span> <span class="n">self</span><span class="p">.</span><span class="nf">shortcut</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">relu</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">z</span>
+</code></pre></div></div>
 <p>The new addition here is the 1 by 1 convolutions. Also, the code checks for <code class="language-plaintext highlighter-rouge">stride != 1</code> and <code class="language-plaintext highlighter-rouge">input_channels != self.expansion*in_channels</code>. The second condition checks if we are repeating the same residual block or if we are moving on to the next layer.</p>
 
-<p>For example, for the first layer in ResNet50, the <code class="language-plaintext highlighter-rouge">input_channels</code> would be $64$ as a result of preliminary layers. The <code class="language-plaintext highlighter-rouge">in_channels</code> is $64$. The first layer repeats the bottleneck block 3 times. The first time, <code class="language-plaintext highlighter-rouge">input_channels</code> and <code class="language-plaintext highlighter-rouge">self.expansion*in_channels</code> would be $64$ and $4\times64=256$ respectively. Thus, there would be a dimensionality reduction. The second and third layers would then have <code class="language-plaintext highlighter-rouge">input_channels</code> and <code class="language-plaintext highlighter-rouge">self.expansion*in_channels</code> of 256, meaning no dimensionality reduction would be required.</p>
+<p>For example, for the first layer in ResNet50, the <code class="language-plaintext highlighter-rouge">input_channels</code> would be 64 as a result of preliminary layers. The <code class="language-plaintext highlighter-rouge">in_channels</code> is 64. The first layer repeats the bottleneck block 3 times. The first time, <code class="language-plaintext highlighter-rouge">input_channels</code> and <code class="language-plaintext highlighter-rouge">self.expansion*in_channels</code> would be 64 and \(4\times64=256\) respectively. Thus, there would be a dimensionality reduction. The second and third layers would then have <code class="language-plaintext highlighter-rouge">input_channels</code> and <code class="language-plaintext highlighter-rouge">self.expansion*in_channels</code> of 256, meaning no dimensionality reduction would be required.</p>
 
 <p>With these blocks coded, making a full ResNet is as easy as stacking them on top of each other.</p>
 

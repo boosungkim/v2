@@ -180,7 +180,7 @@ Link to <a href="https://github.com/boosungkim/milestone-cnn-model-implementatio
 <p>The SE-Net sets out to resolve this issue by introducing an explicit mechanism to model channel-wise relationships through the “squeeze” and “excitation” layers.</p>
 
 <h3 id="squeeze">Squeeze</h3>
-<p>The network first “squeezes” the outputs of the previous convolutional layer into $channel\times1\times1$ shape using Global Average Pool.</p>
+<p>The network first “squeezes” the outputs of the previous convolutional layer into \(channel\times1\times1\) shape using Global Average Pool.</p>
 
 <h3 id="excitation">Excitation</h3>
 <p>The network then performs “excitation” by performing two Fully Connected (FC) layers. The first FC layer reduces the number of channels by applying a reduction ratio. This reduction helps in reducing the computational complexity of the SE block. The second FC layer then expands the number of channels back to the original number. These FC layers capture the channel dependencies and learn channel-wise relationships based on the aggregated information from the squeeze operation.</p>
@@ -192,34 +192,34 @@ Link to <a href="https://github.com/boosungkim/milestone-cnn-model-implementatio
 
 <h2 id="se-net-implementation">SE-Net implementation</h2>
 <h3 id="implementation">Implementation</h3>
-<pre><code class="language-Python">class se_block(nn.Module):
-    def __init__(self, input_channels, reduction_ratio):
-        super(se_block,self).__init__()
-        self.sequence = nn.Sequential(
-            # 1. Squeeze
-            nn.AdaptiveAvgPool2d((1,1)), # output: bxCx1x1
-            nn.Flatten(),  # output: bxC
-            # 2. Excitation
-            nn.Linear(input_channels, input_channels // reduction_ratio, bias=False), # output: bxC/r
-            nn.ReLU(), # output: bxC/r
-            nn.Linear(input_channels // reduction_ratio, input_channels), # output: bxC
-            nn.Sigmoid(), # output: bxC
-            nn.Unflatten(1, (input_channels,1,1)) # output: bxCx1x1
-        )
-        pass
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">se_block</span><span class="p">(</span><span class="n">nn</span><span class="p">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">input_channels</span><span class="p">,</span> <span class="n">reduction_ratio</span><span class="p">):</span>
+        <span class="nf">super</span><span class="p">(</span><span class="n">se_block</span><span class="p">,</span><span class="n">self</span><span class="p">).</span><span class="nf">__init__</span><span class="p">()</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">sequence</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="nc">Sequential</span><span class="p">(</span>
+            <span class="c1"># 1. Squeeze
+</span>            <span class="n">nn</span><span class="p">.</span><span class="nc">AdaptiveAvgPool2d</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)),</span> <span class="c1"># output: bxCx1x1
+</span>            <span class="n">nn</span><span class="p">.</span><span class="nc">Flatten</span><span class="p">(),</span>  <span class="c1"># output: bxC
+</span>            <span class="c1"># 2. Excitation
+</span>            <span class="n">nn</span><span class="p">.</span><span class="nc">Linear</span><span class="p">(</span><span class="n">input_channels</span><span class="p">,</span> <span class="n">input_channels</span> <span class="o">//</span> <span class="n">reduction_ratio</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span> <span class="c1"># output: bxC/r
+</span>            <span class="n">nn</span><span class="p">.</span><span class="nc">ReLU</span><span class="p">(),</span> <span class="c1"># output: bxC/r
+</span>            <span class="n">nn</span><span class="p">.</span><span class="nc">Linear</span><span class="p">(</span><span class="n">input_channels</span> <span class="o">//</span> <span class="n">reduction_ratio</span><span class="p">,</span> <span class="n">input_channels</span><span class="p">),</span> <span class="c1"># output: bxC
+</span>            <span class="n">nn</span><span class="p">.</span><span class="nc">Sigmoid</span><span class="p">(),</span> <span class="c1"># output: bxC
+</span>            <span class="n">nn</span><span class="p">.</span><span class="nc">Unflatten</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">input_channels</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="c1"># output: bxCx1x1
+</span>        <span class="p">)</span>
+        <span class="k">pass</span>
 
-    def forward(self,x):
-        z = self.sequence(x)
-        # 3. Rescale
-        z = x*z # output: bxCxHxW
-        return z
-</code></pre>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">sequence</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="c1"># 3. Rescale
+</span>        <span class="n">z</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="n">z</span> <span class="c1"># output: bxCxHxW
+</span>        <span class="k">return</span> <span class="n">z</span>
+</code></pre></div></div>
 <p>There is not much to add here, as the code follows the description one-to-one. One thing to add is that I originally used Pytorch’s AvgPool2d with manually calculated channel width and height, but Pytorch has the AdaptiveAvgPool2d which handles the dimensions for you.</p>
 
 <h3 id="network-summary">Network summary</h3>
-<pre><code class="language-Python">&gt;&gt;&gt; model = se_block(64, 16)
-&gt;&gt;&gt; summary(model, input_size=(1,64,32,32), col_names=["input_size","output_size","num_params"])
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">model</span> <span class="o">=</span> <span class="nf">se_block</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nf">summary</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">input_size</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">32</span><span class="p">),</span> <span class="n">col_names</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">input_size</span><span class="sh">"</span><span class="p">,</span><span class="sh">"</span><span class="s">output_size</span><span class="sh">"</span><span class="p">,</span><span class="sh">"</span><span class="s">num_params</span><span class="sh">"</span><span class="p">])</span>
+</code></pre></div></div>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>===================================================================================================================
 Layer (type:depth-idx)                   Input Shape               Output Shape              Param #
 ===================================================================================================================
@@ -249,39 +249,39 @@ Estimated Total Size (MB): 0.27
 <h2 id="se-resnet">SE-ResNet</h2>
 <p>With the SE-Net coded, it is trivial to add it to our previous models. I decided to test it on ResNet.</p>
 
-<pre><code class="language-Python">class SE_ResidualBlockBottleneck(nn.Module):
-    expansion = 4
-    def __init__(self, input_channels, in_channels, reduction_ratio, stride=1):
-        super(SE_ResidualBlockBottleneck, self).__init__()
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">SE_ResidualBlockBottleneck</span><span class="p">(</span><span class="n">nn</span><span class="p">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="n">expansion</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">input_channels</span><span class="p">,</span> <span class="n">in_channels</span><span class="p">,</span> <span class="n">reduction_ratio</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="nf">super</span><span class="p">(</span><span class="n">SE_ResidualBlockBottleneck</span><span class="p">,</span> <span class="n">self</span><span class="p">).</span><span class="nf">__init__</span><span class="p">()</span>
 
-        self.block = nn.Sequential(
-            nn.Conv2d(in_channels=input_channels, out_channels=in_channels, kernel_size=1, stride=1, padding=0, bias=False),
-            nn.BatchNorm2d(in_channels),
-            nn.ReLU(),
-            nn.Conv2d(in_channels=in_channels, out_channels=in_channels, kernel_size=3, stride=stride, padding=1, bias=False),
-            nn.BatchNorm2d(in_channels),
-            nn.ReLU(),
-            nn.Conv2d(in_channels=in_channels, out_channels=in_channels*4, kernel_size=1, stride=1, padding=0, bias=False),
-            nn.BatchNorm2d(in_channels*4)
-        )
-        self.relu = nn.ReLU()
-        self.se_block = SE_block(in_channels*4, reduction_ratio)
+        <span class="n">self</span><span class="p">.</span><span class="n">block</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="nc">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="n">input_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">BatchNorm2d</span><span class="p">(</span><span class="n">in_channels</span><span class="p">),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="n">stride</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">BatchNorm2d</span><span class="p">(</span><span class="n">in_channels</span><span class="p">),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="n">in_channels</span><span class="o">*</span><span class="mi">4</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+            <span class="n">nn</span><span class="p">.</span><span class="nc">BatchNorm2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">relu</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="nc">ReLU</span><span class="p">()</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">se_block</span> <span class="o">=</span> <span class="nc">SE_block</span><span class="p">(</span><span class="n">in_channels</span><span class="o">*</span><span class="mi">4</span><span class="p">,</span> <span class="n">reduction_ratio</span><span class="p">)</span>
 
-        if stride != 1 or input_channels != self.expansion*in_channels:
-            self.shortcut = nn.Sequential(
-                nn.Conv2d(in_channels=input_channels, out_channels=in_channels*4, kernel_size=1, stride=stride, padding=0, bias=False),
-                nn.BatchNorm2d(in_channels*4)
-            )
-        else:
-            self.shortcut = nn.Sequential()
+        <span class="k">if</span> <span class="n">stride</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">input_channels</span> <span class="o">!=</span> <span class="n">self</span><span class="p">.</span><span class="n">expansion</span><span class="o">*</span><span class="n">in_channels</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">shortcut</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="nc">Sequential</span><span class="p">(</span>
+                <span class="n">nn</span><span class="p">.</span><span class="nc">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="n">input_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="n">in_channels</span><span class="o">*</span><span class="mi">4</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="n">stride</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+                <span class="n">nn</span><span class="p">.</span><span class="nc">BatchNorm2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">shortcut</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="nc">Sequential</span><span class="p">()</span>
 
-    def forward(self, x):
-        z = self.block(x)
-        z = self.se_block(z)
-        z += self.shortcut(x)
-        z = self.relu(z)
-        return z
-</code></pre>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">block</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">se_block</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">+=</span> <span class="n">self</span><span class="p">.</span><span class="nf">shortcut</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">relu</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">z</span>
+</code></pre></div></div>
 <p>Notice that the only additions made are <code class="language-plaintext highlighter-rouge">self.se_block = SE_block(in_channels*4, reduction_ratio)</code> and <code class="language-plaintext highlighter-rouge">z = self.se_block(z)</code>. The number of channels is <code class="language-plaintext highlighter-rouge">in_channel*4</code> as that is the result of the residual block (bottleneck).</p>
 
 <h3 id="experimentation">Experimentation</h3>
