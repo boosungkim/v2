@@ -46,7 +46,8 @@ As this is a CNN model, downsampling is necessary. The issue is that the dimensi
 ## What is a Bottleneck Residual Block?
 A bottleneck residual block is a variant of the residual block that uses 1 by 1 convolutions to create a "bottleneck." The primary purpose of a bottleneck is to reduce the number for parameters in the network.
 
-![image](/assets/img/blogs/2023-06-01-resnet34-implementation/residual-block-bottleneck.png)
+<img src="/assets/img/blogs/2023-06-01-resnet34-implementation/residual-block-bottleneck.png"  width="600">
+<!-- ![image](/assets/img/blogs/2023-06-01-resnet34-implementation/residual-block-bottleneck.png) -->
 *Figure 2: A no-bottleneck residual block (left) vs a bottleneck residual block (right)*
 
 By utilizing a 1x1 convolution, the network first reduces the number of channels before applying the subsequent 3x3 convolution. The output is then restored to the original channel length by another 1x1 convolution.
