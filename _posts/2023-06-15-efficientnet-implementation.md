@@ -30,20 +30,20 @@ Scaling resolution is uncommon, but some networks GPipe utilize this to perform 
 The empirical results of the paper indicate that a balance among width/depth/resolution can be achieved through compound scaling, which scales all three by a constant factor.
 
 ## Compound scaling
-The idea behind compound scaling is to uniformly scale the depth, width, and resolution of the network in a principled manner. The authors introduce a compound coefficient, denoted as $\phi$, that controls the scaling factor for each dimension. By varying the value of $\phi$, the network can be scaled up or down while maintaining a balance among depth, width, and resolution.
+The idea behind compound scaling is to uniformly scale the depth, width, and resolution of the network in a principled manner. The authors introduce a compound coefficient, denoted as $$\phi$$, that controls the scaling factor for each dimension. By varying the value of $$\phi$$, the network can be scaled up or down while maintaining a balance among depth, width, and resolution.
 
-The compound scaling is achieved by applying a set of predefined scaling rules. These rules specify how the depth, width, and resolution should be scaled based on the compound coefficient $\phi$. By following these rules, the network's capacity is increased in a balanced way, ensuring that no individual dimension dominates the scaling process.
+The compound scaling is achieved by applying a set of predefined scaling rules. These rules specify how the depth, width, and resolution should be scaled based on the compound coefficient $$\phi$$. By following these rules, the network's capacity is increased in a balanced way, ensuring that no individual dimension dominates the scaling process.
 
-$$depth: d = \alpha^{\phi}$$
-$$width: w = \beta^{\phi}$$
-$$resolution: r = \gamma^{\phi}$$
-such that $\alpha \cdot \beta^2 \cdot \gamma^2 \approx 2$ and $\alpha \geq 1, \beta \geq 1, \gamma \geq 1$.
+$$depth: d = \alpha^{\phi}$$  
+$$width: w = \beta^{\phi}$$  
+$$resolution: r = \gamma^{\phi}$$  
+such that $$\alpha \cdot \beta^2 \cdot \gamma^2 \approx 2$$ and $$\alpha \geq 1, \beta \geq 1, \gamma \geq 1$$.
 
-For EfficientNet-B0, the authors first fixed $\phi = 1$ and performed a grid search for $\alpha, \beta, \gamma$ based on the equations above. The results showed that the best values are $\alpha = 1.2, \beta = 1.1, \gamma = 1.15$.
+For EfficientNet-B0, the authors first fixed $$\phi = 1$$ and performed a grid search for $$\alpha, \beta, \gamma$$ based on the equations above. The results showed that the best values are $$\alpha = 1.2, \beta = 1.1, \gamma = 1.15$$.
 
-Then, by fixing the $\alpha, \beta, \gamma$ values found above, the authors calculated new $\phi$ for scaled up versions of the model (EfficientNet-B1 ~ B7).
+Then, by fixing the $$\alpha, \beta, \gamma$$ values found above, the authors calculated new $$\phi$$ for scaled up versions of the model (EfficientNet-B1 ~ B7).
 
-The authors used this approach to minimize search cost, but it is technically possible to find the optimal $\alpha, \beta, \gamma$ values using a larger model.
+The authors used this approach to minimize search cost, but it is technically possible to find the optimal $$\alpha, \beta, \gamma$$ values using a larger model.
 
 ## Inverted residual block (MobileNet) and SE-Net
 

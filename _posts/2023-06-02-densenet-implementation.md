@@ -14,7 +14,8 @@ Link to [my code](https://github.com/boosungkim/milestone-cnn-model-implementati
 
 DenseNets are basically ResNets but with residual connections between every single layer.
 
-![image](/assets/img/blogs/2023-06-02-densenet-implementation/densenet.png)
+<img src="/assets/img/blogs/2023-06-02-densenet-implementation/densenet.png"  width="600">
+<!-- ![image](/assets/img/blogs/2023-06-02-densenet-implementation/densenet.png) -->
 *Figure 1: DenseNet*
 
 The idea is to concatenate the feature maps of all the preceding layers with the result of the current layer. The authors of "Densely Connected Convolutional Networks" argue that the element-wise summation used in Residual Networks may impede the flow of information.
@@ -26,9 +27,9 @@ $$x_l = H_l([x_0, x_1, \dots, x_{l-1}])$$
 What this equation basically means is that instead of each layer taking in only the previous output, like VGG, taking in the previous output and the output of the block before, like ResNet, each layer takes in the concatenation of all previous layers in the Dense block.
 
 ## Growth rate
-So what is the growth rate in DenseNets? The growth rate, as its name suggests, is the growth rate of the number of channels for each dense layer. For instance, if we start off with $64$ layers and the growth rate is $32$, the convolutional sequence in the first layer will create an output of $32$ channels. The dense layer will conclude by concatenating the previous outputs, giving us $96$ channels. The next layer will then have $128$ layers, and so on.
+So what is the growth rate in DenseNets? The growth rate, as its name suggests, is the growth rate of the number of channels for each dense layer. For instance, if we start off with 64 layers and the growth rate is 32, the convolutional sequence in the first layer will create an output of 32 channels. The dense layer will conclude by concatenating the previous outputs, giving us 96 channels. The next layer will then have 128 layers, and so on.
 
-The authors of the paper emperically prove that the dense network works sufficiently well with relatively small growth rates, like $k=12$.
+The authors of the paper emperically prove that the dense network works sufficiently well with relatively small growth rates, like $$k=12$$.
 
 ## Bottleneck layers in DenseNet
 With the continuous increase in the number of channels, you may understand the importance of using bottlenecks if you read my previous blog post on [ResNet](/_posts/2023-06-01-resnet34-implementation.md).
@@ -42,13 +43,13 @@ Unlike ResNet, DenseNets utilize just one 1 by 1 convolutions per layer to reduc
 ## Transition layers
 Bottleneck layers alone are not enough to improve the model compactness. This is where the authors introduce compression by Transition layers.
 
-Essentially, the transition layer reduces the number of channels by a factor of $\theta$, which the paper sets as $0.5$ for DenseNet-C. Hence, DenseNet-C halves the number of channels every transition layer.
+Essentially, the transition layer reduces the number of channels by a factor of $$\theta$$, which the paper sets as 0.5 for DenseNet-C. Hence, DenseNet-C halves the number of channels every transition layer.
 
 ## Implementation detail
 We now have the building blocks for DesneNet.
 
 ### Dense layer
-```Python
+```python
 class DenseLayer(nn.Module):
     def __init__(self, input_channels, growth_rate):
         super(DenseLayer, self).__init__()
@@ -74,7 +75,7 @@ class DenseLayer(nn.Module):
 The difference here from the Residual block code is that we use `torch.cat([z,x],1)` to concatenate the previous results. `z` is the result of the convolutions, which will return `growth_rate` number of channels. `x` is the result of the previous layer's output.
 
 ### Transition layer
-```Python
+```python
 class TransitionBlock(nn.Module):
     def __init__(self, input_channels):
         super(TransitionBlock, self).__init__()
@@ -93,9 +94,9 @@ class TransitionBlock(nn.Module):
     def output_channels_num(self):
         return self.output_channels
 ```
-Even simpler! We just use a combination of BatchNorm, 1 by 1 convolution, and AvgPool to reduce the number of channels by a factor of $0.5$ and the width and height by $0.5$.
+Even simpler! We just use a combination of BatchNorm, 1 by 1 convolution, and AvgPool to reduce the number of channels by a factor of 0.5 and the width and height by 0.5.
 
-I just set $\theta$ to be $0.5$ as the paper does, but you can adjust it to be some other value.
+I just set $$\theta$$ to be 0.5 as the paper does, but you can adjust it to be some other value.
 
 ## Conclusion
 Despite having a similar depth and the number of parameters as ResNet, my variation of DenseNet produced an improvement in both training and testing accuracies. My densenet produced a training accuracy of 96.6% and testing accuracy of 88.7%.

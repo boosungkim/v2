@@ -31,16 +31,17 @@ So what causes this degradation problem? Even the researchers in the paper are n
 ## What is a Residual Learning?
 So if we don't know what causes the degradation problem, do we at least know how to prevent it? That's where residual mapping in Residual Learning come into play.
 
-![image](/assets/img/blogs/2023-06-01-resnet34-implementation/residual-block.jpeg)
+<!-- ![image](/assets/img/blogs/2023-06-01-resnet34-implementation/residual-block.jpeg) -->
+<img src="/assets/img/blogs/2023-06-01-resnet34-implementation/residual-block.jpeg"  width="600">
 *Figure 1: A residual block*
 
 $$H(x) := F(x) + x$$
 
-If we let $x$ be the incoming feature, the $F(x)$ is the normal weighted layers that CNNs have (Convolutional, Batch Normalization, ReLU layers). The original $x$ is then added (element-wise addition) to $F(x)$ to produce $H(x)$.
+If we let $$x$$ be the incoming feature, the $$F(x)$$ is the normal weighted layers that CNNs have (Convolutional, Batch Normalization, ReLU layers). The original $$x$$ is then added (element-wise addition) to $$F(x)$$ to produce $$H(x)$$.
 
-Essentially, the original features are added to the result of the weighted layers, and this whole process is one residual block. The idea is that, in the worst case scenario where $F(x)$ produce a useless tensor filled with $0$s, the identity will be added back in to pass on a useful feature to the next block. Shortcut connections can only help the network.
+Essentially, the original features are added to the result of the weighted layers, and this whole process is one residual block. The idea is that, in the worst case scenario where $$F(x)$$ produce a useless tensor filled with $$0$$s, the identity will be added back in to pass on a useful feature to the next block. Shortcut connections can only help the network.
 
-As this is a CNN model, downsampling is necessary. The issue is that the dimensions of $F(x)$ and $x$ would be different after downsampling. In such cases, the $F(x)$ and $W_1x$ are added together, where the square matrix $W_1$ is used to match dimensions.
+As this is a CNN model, downsampling is necessary. The issue is that the dimensions of $$F(x)$$ and $$x$$ would be different after downsampling. In such cases, the $$F(x)$$ and $$W_1x$$ are added together, where the square matrix $$W_1$$ is used to match dimensions.
 
 ## What is a Bottleneck Residual Block?
 A bottleneck residual block is a variant of the residual block that uses 1 by 1 convolutions to create a "bottleneck." The primary purpose of a bottleneck is to reduce the number for parameters in the network.
@@ -55,7 +56,7 @@ The reduction in the number of channels leads to a significant reduction in the 
 Bottleneck residual blocks have become a key component in deeper ResNet variants, contributing to their improved performance and efficiency.
 
 ## Understanding dimensionality reduction
-As this is a CNN model, downsampling is necessary. The issue is that the dimensions of $F(x)$ and $x$ would be different after downsampling. In such cases, the $F(x)$ and $W_1x$ are added together, where the square matrix $W_1$ is used to match dimensions.
+As this is a CNN model, downsampling is necessary. The issue is that the dimensions of $$F(x)$$ and $$x$$ would be different after downsampling. In such cases, the $$F(x)$$ and $$W_1x$$ are added together, where the square matrix $$W_1$$ is used to match dimensions.
 
 Below is for simple shortcut connections with elementwise addition.
 ```python
@@ -76,7 +77,7 @@ def skip_connection(self, input_channels, output_channels):
 
 ## Implementation
 ### A normal residual block
-```Python
+```python
 class ResidualBlockNoBottleneck(nn.Module):
     expansion = 1
     def __init__(self, input_channels, output_channels, stride=1):
@@ -111,7 +112,7 @@ In the residual block (no bottleneck), there is the standard sequence of Conv2d-
 When there is a stride of 2 in the block, there is a change in dimensionality (width and height are reduced by 2), so the dimensionality reduction is applied.
 
 ## Bottleneck residual block
-```Python
+```python
 class ResidualBlockBottleneck(nn.Module):
     expansion = 4
     def __init__(self, input_channels, in_channels, stride=1):
@@ -145,7 +146,7 @@ class ResidualBlockBottleneck(nn.Module):
 ```
 The new addition here is the 1 by 1 convolutions. Also, the code checks for `stride != 1` and `input_channels != self.expansion*in_channels`. The second condition checks if we are repeating the same residual block or if we are moving on to the next layer.
 
-For example, for the first layer in ResNet50, the `input_channels` would be $64$ as a result of preliminary layers. The `in_channels` is $64$. The first layer repeats the bottleneck block 3 times. The first time, `input_channels` and `self.expansion*in_channels` would be $64$ and $4\times64=256$ respectively. Thus, there would be a dimensionality reduction. The second and third layers would then have `input_channels` and `self.expansion*in_channels` of 256, meaning no dimensionality reduction would be required.
+For example, for the first layer in ResNet50, the `input_channels` would be 64 as a result of preliminary layers. The `in_channels` is 64. The first layer repeats the bottleneck block 3 times. The first time, `input_channels` and `self.expansion*in_channels` would be 64 and $$4\times64=256$$ respectively. Thus, there would be a dimensionality reduction. The second and third layers would then have `input_channels` and `self.expansion*in_channels` of 256, meaning no dimensionality reduction would be required.
 
 With these blocks coded, making a full ResNet is as easy as stacking them on top of each other.
 

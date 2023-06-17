@@ -33,7 +33,7 @@ Due to the localness of the convolutions, each channel in the output contains im
 The SE-Net sets out to resolve this issue by introducing an explicit mechanism to model channel-wise relationships through the "squeeze" and "excitation" layers.
 
 ### Squeeze
-The network first "squeezes" the outputs of the previous convolutional layer into $channel\times1\times1$ shape using Global Average Pool.
+The network first "squeezes" the outputs of the previous convolutional layer into $$channel\times1\times1$$ shape using Global Average Pool.
 
 ### Excitation
 The network then performs "excitation" by performing two Fully Connected (FC) layers. The first FC layer reduces the number of channels by applying a reduction ratio. This reduction helps in reducing the computational complexity of the SE block. The second FC layer then expands the number of channels back to the original number. These FC layers capture the channel dependencies and learn channel-wise relationships based on the aggregated information from the squeeze operation.
@@ -45,7 +45,7 @@ Finally, the SE-Net rescales the output back to the input dimensions by using th
 
 ## SE-Net implementation
 ### Implementation
-```Python
+```python
 class se_block(nn.Module):
     def __init__(self, input_channels, reduction_ratio):
         super(se_block,self).__init__()
@@ -71,7 +71,7 @@ class se_block(nn.Module):
 There is not much to add here, as the code follows the description one-to-one. One thing to add is that I originally used Pytorch's AvgPool2d with manually calculated channel width and height, but Pytorch has the AdaptiveAvgPool2d which handles the dimensions for you.
 
 ### Network summary
-```Python
+```python
 >>> model = se_block(64, 16)
 >>> summary(model, input_size=(1,64,32,32), col_names=["input_size","output_size","num_params"])
 ```
@@ -105,7 +105,7 @@ You may notice that the number of parameters is relatively low due to the use th
 ## SE-ResNet
 With the SE-Net coded, it is trivial to add it to our previous models. I decided to test it on ResNet.
 
-```Python
+```python
 class SE_ResidualBlockBottleneck(nn.Module):
     expansion = 4
     def __init__(self, input_channels, in_channels, reduction_ratio, stride=1):
