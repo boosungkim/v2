@@ -17,7 +17,7 @@ Unlike previous models, EfficientNet does not introduce a novel architecture. Ra
 The EfficientNet utilizes inverted residual blocks from MobileNetV2, Squeeze-and-Efficient layers from SE-Net, and stochastic depth.
 
 ## Scaling and balancing
-![image](/assets/img/blogs/2023-06-15-efficientnet-implementation/model-scaling.png)
+![image](/assets/img/blogs/2023/2023-06-15-efficientnet-implementation/model-scaling.png)
 
 The authors argue that while scaling up depth, width, image resolution are common techniques to improve the model performance, previous papers use arbitrary scaling.
 
@@ -47,7 +47,7 @@ The authors used this approach to minimize search cost, but it is technically po
 
 ## Inverted residual block (MobileNet) and SE-Net
 
-![image](/assets/img/blogs/2023-06-15-efficientnet-implementation/efficientnet-b0.png)
+![image](/assets/img/blogs/2023/2023-06-15-efficientnet-implementation/efficientnet-b0.png)
 
 *Table 1: EfficientNet-B0 architecture*
 

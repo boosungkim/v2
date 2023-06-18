@@ -14,7 +14,7 @@ Link to [my code](https://github.com/boosungkim/milestone-cnn-model-implementati
 
 DenseNets are basically ResNets but with residual connections between every single layer.
 
-<img src="/assets/img/blogs/2023-06-02-densenet-implementation/densenet.png"  width="600">
+<img src="/assets/img/blogs/2023/2023-06-02-densenet-implementation/densenet.png"  width="600">
 <!-- ![image](/assets/img/blogs/2023-06-02-densenet-implementation/densenet.png) -->
 *Figure 1: DenseNet*
 

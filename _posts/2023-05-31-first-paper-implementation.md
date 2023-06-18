@@ -28,7 +28,7 @@ In the end, I referenced some code online to see how other people organized thei
 ### 2. Finding hyperparameters
 Another trouble I ran into was finding the parameters and hyperparameters for the architecture in the code. Thankfully, the VGG paper has a very detailed architecture diagram.
 
-![image](/assets/img/blogs/2023-05-31-first-paper-implementation/vgg-architecture.png)
+![image](/assets/img/blogs/2023/2023-05-31-first-paper-implementation/vgg-architecture.png)
 
 As can be seen above, the sizes and number of convolutional filters for each layer is quite apparent. However, for instance, I had to read the text to find out that the stride and padding are both 1 pixel.
 
@@ -125,7 +125,7 @@ Estimated Total Size (MB): 694.16
 
 The example above is my implementation of the VGG19 model. The structure seems to match up with the paper's VGG19. Additionally, the number of parameters of my custom model is roughly equivalent to that of VGG19 (144M parameters)!
 
-![image](/assets/img/blogs/2023-05-31-first-paper-implementation/vgg-param.png)
+![image](/assets/img/blogs/2023/2023-05-31-first-paper-implementation/vgg-param.png)
 
 On a side note, you may wonder why there is no huge difference between the number of parameters in VGG11 (133M) and that of VGG19 (144M). The reason for that is that most of the parameters are located in the Fully Connected layers at the end of the each model. The number of parameters in the Convolutional layers pales in comparison to the number in Fully Connected layers, which is why, even though there is an 8-layer difference between VGG11 and VGG19, the numbers of parameters do not differ that much.
 

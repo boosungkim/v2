@@ -14,7 +14,7 @@ Link to [my code](https://github.com/boosungkim/milestone-cnn-model-implementati
 
 Squeeze-and-Excitation Networks, SE-Nets for short, are actually convolutional blocks that can be added to other models, like ResNet or VGG.
 
-![image](/assets/img/blogs/2023-06-05-senet-implementation/senet.png)
+![image](/assets/img/blogs/2023/2023-06-05-senet-implementation/senet.png)
 *Figure 1: Squeeze and Excitation Block*
 
 The key problem that the authors of the paper wants to address is the problem of implicit and local channel dependencies. They do so by adding the Squeeze-and-Excitation block, which relays channel-wise information.
@@ -22,7 +22,7 @@ The key problem that the authors of the paper wants to address is the problem of
 By incorporating the SE blocks into the model, the network can adaptively recalibrate its feature maps to capture more discriminative information, leading to improved performance.
 
 ## Implicit local channel information
-![image](/assets/img/blogs/2023-06-05-senet-implementation/convolution.png)
+![image](/assets/img/blogs/2023/2023-06-05-senet-implementation/convolution.png)
 *Figure 2: A normal convolution*
 
 In a normal convolution like the image above, channel dependencies are implicitly included in the outputs of the convolutional layers. In other words, each layer calculates the convolution on all the channels of a local region every step.
