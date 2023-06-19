@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://boosungkim.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://boosungkim.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2023-06-19T02:10:12+00:00</updated><id>https://boosungkim.com/feed.xml</id><title type="html">blank</title><subtitle>A lifelong learner interested in the modern world.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://boosungkim.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://boosungkim.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2023-06-19T02:15:02+00:00</updated><id>https://boosungkim.com/feed.xml</id><title type="html">blank</title><subtitle>A lifelong learner interested in the modern world.
 </subtitle><entry><title type="html">The time I coded Chess with pen and paper in the Korean Army</title><link href="https://boosungkim.com/blog/2023/chess-engine-comeback/" rel="alternate" type="text/html" title="The time I coded Chess with pen and paper in the Korean Army" /><published>2023-06-17T19:53:00+00:00</published><updated>2023-06-17T19:53:00+00:00</updated><id>https://boosungkim.com/blog/2023/chess-engine-comeback</id><content type="html" xml:base="https://boosungkim.com/blog/2023/chess-engine-comeback/"><![CDATA[<p>This is a story about how I brought back and used my Custom Chess Engine during my service in the Korea Army. With limited resources and immense determination, I overcame obstacles to bring the joy of chess to fellow soldiers. Who knows, perhaps my creation still thrives today?</p>
 
 <p><img src="/assets/img/blogs/2023/2023-06-17-chess-engine-comeback/army-time.jpeg" width="600" /></p>
@@ -100,7 +100,7 @@ Deep Convolutional Neural Networks,” and it provided an insight on how GANs ca
 
 <p>In the paper, the authors present their custom DCGAN model, which utilizes fractionally-strided convolutions. They demonstrate that with each iteration, the model improves significantly, transforming distinguishable chest structures into detailed representations of ribs and vessels in just 18 epochs.</p>
 
-<p><img src="/assets/img/blogs/2023/2023-06-18-xray-gan/chest-gan-epochs.png " width="600" /></p>
+<p><img src="/assets/img/blogs/2023/2023-06-18-xray-gan/chest-gan-epochs.png" width="600" /></p>
 
 <p><em>Figure 4: Visualization of random samples for different epochs</em></p>
 
