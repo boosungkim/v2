@@ -68,7 +68,7 @@
             <div class="navbar-brand social"> 
               <a href="mailto:%62%6F%6F%73%75%6E%67@%62%6F%6F%73%75%6E%67%6B%69%6D.%63%6F%6D" title="email"><i class="fas fa-envelope"></i></a>
             <a href="https://github.com/boosungkim" title="GitHub" rel="external nofollow noopener" target="_blank"><i class="fab fa-github"></i></a>
-            <a href="https://www.linkedin.com/in/boosunk" title="LinkedIn" rel="external nofollow noopener" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="https://www.linkedin.com/in/boosungk" title="LinkedIn" rel="external nofollow noopener" target="_blank"><i class="fab fa-linkedin"></i></a>
             <a href="https://twitter.com/bytesofboosung" title="Twitter" rel="external nofollow noopener" target="_blank"><i class="fab fa-twitter"></i></a>
             <a href="https://www.kaggle.com/boosungkim" title="Kaggle" rel="external nofollow noopener" target="_blank"><i class="fab fa-kaggle"></i></a>
             <a href="https://youtube.com/@converge2diverge" title="YouTube" rel="external nofollow noopener" target="_blank"><i class="fab fa-youtube"></i></a>
@@ -175,7 +175,7 @@ Link to <a href="https://github.com/boosungkim/milestone-cnn-model-implementatio
 <h3 id="2-finding-hyperparameters">2. Finding hyperparameters</h3>
 <p>Another trouble I ran into was finding the parameters and hyperparameters for the architecture in the code. Thankfully, the VGG paper has a very detailed architecture diagram.</p>
 
-<p><img src="/assets/img/blogs/2023-05-31-first-paper-implementation/vgg-architecture.png" alt="image"></p>
+<p><img src="/assets/img/blogs/2023/2023-05-31-first-paper-implementation/vgg-architecture.png" alt="image"></p>
 
 <p>As can be seen above, the sizes and number of convolutional filters for each layer is quite apparent. However, for instance, I had to read the text to find out that the stride and padding are both 1 pixel.</p>
 
@@ -271,7 +271,7 @@ Estimated Total Size (MB): 694.16
 
 <p>The example above is my implementation of the VGG19 model. The structure seems to match up with the paper’s VGG19. Additionally, the number of parameters of my custom model is roughly equivalent to that of VGG19 (144M parameters)!</p>
 
-<p><img src="/assets/img/blogs/2023-05-31-first-paper-implementation/vgg-param.png" alt="image"></p>
+<p><img src="/assets/img/blogs/2023/2023-05-31-first-paper-implementation/vgg-param.png" alt="image"></p>
 
 <p>On a side note, you may wonder why there is no huge difference between the number of parameters in VGG11 (133M) and that of VGG19 (144M). The reason for that is that most of the parameters are located in the Fully Connected layers at the end of the each model. The number of parameters in the Convolutional layers pales in comparison to the number in Fully Connected layers, which is why, even though there is an 8-layer difference between VGG11 and VGG19, the numbers of parameters do not differ that much.</p>
 
@@ -313,6 +313,18 @@ Estimated Total Size (MB): 694.16
   
 
   <li class="my-2">
+    <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/xray-gan/">How GANs can be used to synthesize X-Rays</a>
+  </li>
+
+  
+
+  <li class="my-2">
+    <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/chess-engine-comeback/">The time I coded Chess with pen and paper in the Korean Army</a>
+  </li>
+
+  
+
+  <li class="my-2">
     <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/the-imagenet-5/">I implemented 5 CNN papers. Here's what I learned.</a>
   </li>
 
@@ -326,18 +338,6 @@ Estimated Total Size (MB): 694.16
 
   <li class="my-2">
     <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/senet-implementation/">SE-Net Implementation</a>
-  </li>
-
-  
-
-  <li class="my-2">
-    <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/densenet-implementation/">DenseNet Implementation</a>
-  </li>
-
-  
-
-  <li class="my-2">
-    <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/resnet34-implementation/">ResNet34 Model Implementation</a>
   </li>
 
 </div>

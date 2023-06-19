@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <!-- Head -->
+  <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">    <!-- Metadata, OpenGraph and Schema.org -->
+    
+
+    <!-- Standard metadata -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>The time I coded Chess with pen and paper in the Korean Army | Boosung  Kim</title>
+    <meta name="author" content="Boosung  Kim">
+    <meta name="description" content="The story of how I coded Chess on pen and paper in the Korean Army.">
+    <meta name="keywords" content="portfolio-website">
+
+
+    <!-- Bootstrap & MDB -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-DF7Zhf293AJxJNTmh5zhoYYIMs2oXitRfBjY+9L//AY=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous">
+
+    <!-- Bootstrap Table -->
+    <link defer rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.css">
+
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha256-i1+4qU2G2860dGGIOJscdC30s9beBXjFfzjWLjBRsBg=" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons">
+
+    <!-- Code Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jwarby/jekyll-pygments-themes@master/github.css" media="" id="highlight_theme_light">
+
+    
+    <!-- Sidebar Table of Contents -->
+    <link href="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.css" rel="stylesheet">
+    
+
+    <!-- Styles -->
+    
+    <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%94%A5&lt;/text&gt;&lt;/svg&gt;">
+    
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="canonical" href="https://boosungkim.com/blog/2023/chess-engine-comeback/">
+
+    <!-- Dark Mode -->
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jwarby/jekyll-pygments-themes@master/native.css" media="none" id="highlight_theme_dark">
+
+    <script src="/assets/js/theme.js"></script>
+    <script src="/assets/js/dark_mode.js"></script>
+    
+
+  </head>
+
+  <!-- Body -->
+  <body class="fixed-top-nav sticky-bottom-footer">
+
+    <!-- Header -->
+    <header>
+
+      <!-- Nav Bar -->
+      <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top">
+        <div class="container">
+          <a class="navbar-brand title font-weight-lighter" href="/"><span class="font-weight-bold">Boosung </span>Kim</a>
+
+            <!-- Boo's edit: custom addition to add social icons to navbar -->
+            <div class="navbar-brand social"> 
+              <a href="mailto:%62%6F%6F%73%75%6E%67@%62%6F%6F%73%75%6E%67%6B%69%6D.%63%6F%6D" title="email"><i class="fas fa-envelope"></i></a>
+            <a href="https://github.com/boosungkim" title="GitHub" rel="external nofollow noopener" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/boosungk" title="LinkedIn" rel="external nofollow noopener" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="https://twitter.com/bytesofboosung" title="Twitter" rel="external nofollow noopener" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.kaggle.com/boosungkim" title="Kaggle" rel="external nofollow noopener" target="_blank"><i class="fab fa-kaggle"></i></a>
+            <a href="https://youtube.com/@converge2diverge" title="YouTube" rel="external nofollow noopener" target="_blank"><i class="fab fa-youtube"></i></a>
+            <a href="/feed.xml" title="RSS Feed"><i class="fas fa-rss-square"></i></a>
+            
+
+            </div>
+
+          <!-- Navbar Toggle -->
+          <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar top-bar"></span>
+            <span class="icon-bar middle-bar"></span>
+            <span class="icon-bar bottom-bar"></span>
+          </button>
+
+          <div class="collapse navbar-collapse text-right" id="navbarNav">
+            <ul class="navbar-nav ml-auto flex-nowrap">
+
+              <!-- About -->
+              <li class="nav-item ">
+                <a class="nav-link" href="/">about</a>
+              </li>
+              
+              <!-- Blog -->
+              <li class="nav-item active">
+                <a class="nav-link" href="/blog/">blog<span class="sr-only">(current)</span></a>
+              </li>
+
+              <!-- Other pages -->
+              <li class="nav-item ">
+                <a class="nav-link" href="/projects/">projects</a>
+              </li>
+              <li class="nav-item ">
+                <a class="nav-link" href="/cv/">cv</a>
+              </li>
+
+              <!-- Toogle theme mode -->
+              <li class="toggle-container">
+                <button id="light-toggle" title="Change theme">
+                  <i class="fas fa-moon"></i>
+                  <i class="fas fa-sun"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Scrolling Progress Bar -->
+      <progress id="progress" value="0">
+        <div class="progress-container">
+          <span class="progress-bar"></span>
+        </div>
+      </progress>
+    </header>
+
+
+    <!-- Content -->
+    <div class="container mt-5">
+      
+        
+        <div class="row">
+          <!-- main content area -->
+          <div class="col-sm-9">
+            <!-- _layouts/post.html -->
+
+<div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">The time I coded Chess with pen and paper in the Korean Army</h1>
+    <p class="post-meta">June 17, 2023</p>
+    <p class="post-tags">
+      <a href="/blog/2023"> <i class="fas fa-calendar fa-sm"></i> 2023 </a>
+        ·  
+        <a href="/blog/category/software">
+          <i class="fas fa-tag fa-sm"></i> software</a>  
+          <a href="/blog/category/story">
+          <i class="fas fa-tag fa-sm"></i> story</a>  
+          
+
+    </p>
+  </header>
+
+  <article class="post-content">
+    
+    <div id="markdown-content">
+      <p>This is a story about how I brought back and used my Custom Chess Engine during my service in the Korea Army. With limited resources and immense determination, I overcame obstacles to bring the joy of chess to fellow soldiers. Who knows, perhaps my creation still thrives today?</p>
+
+<p><img src="/assets/img/blogs/2023/2023-06-17-chess-engine-comeback/army-time.jpeg" width="600"></p>
+
+<h2 id="my-military-service">My military service</h2>
+<p>As many of you probably know, the military service is mandatory for most men in Korea. I enlisted in October 2021 and finished my service as a Sergeant this April.</p>
+
+<p><img src="/assets/img/blogs/2023/2023-06-17-chess-engine-comeback/army-time.jpeg" width="600"></p>
+
+<p>As a mandatory duty, I enlisted in the Korean Army in October 2021 and completed my service as a Sergeant in April of this year. Assigned as a Data Analyst for the Tunnel Neutralization Team in the Demilitarized Zone (DMZ), I engaged in data processing and DMZ missions throughout my tenure.</p>
+
+<p>Our base, situated outside the civilian zone, imposed numerous restrictions. Notably, we lacked modern facilities, including a PC room typically found in other bases.</p>
+
+<h2 id="the-spark-of-an-idea">The spark of an idea</h2>
+<p>Playing chess on military work computers was strictly prohibited due to security concerns. However, there were old recreational computers available for soldiers’ use during downtime—albeit without internet access.</p>
+
+<p>In the evening, we were allowed 2-3 hours with our phones (on non-surveillance shifts). While soldiers utilized this time as they pleased, it was a fraction of the day, limiting options for entertainment. One day, upon learning of my background in Computer Science, a superior casually suggested creating games for these recreational computers.</p>
+
+<p>That moment sparked my idea. I had previously developed a mostly finished Python-Chess project. Why not transfer the code to a military computer? Thus, I devoted the first half of 2022 to migrating my Chess project to a military machine.</p>
+
+<h2 id="the-mighty-pen">The mighty pen</h2>
+<p>Without internet access on the recreational computers, I couldn’t simply download the files from GitHub. However, I still had access to my phone during the evenings.</p>
+
+<p>Initially, I intended to bring my phone into the recreational room and copy the code directly onto the computers. However, I discovered that phones were not allowed there due to the proximity of a [REDACTED] area.</p>
+
+<p>Can you guess what I did? With approximately 2000 lines of code in my Chess project, I spent an hour or two every day for three months painstakingly copying code from GitHub onto paper and then transcribing it onto the recreational computers. Over 2000 lines of code.</p>
+
+<p>On days without evening work shifts, I would receive my phone, find a hilltop bench with a serene river view, and meticulously transcribe the code, line by line, word by word.</p>
+
+<p>There were moments when I accidentally wrote down the wrong line, resulting in hours of debugging. There were also days filled with emergency situations, like the threats of nuclear experimentation from North Korea last year. Despite the challenges, I persisted with unwavering determination.</p>
+
+<p>After months of resolute work, the transfer was complete, and the recreational army computer officially hosted the Chess game.</p>
+
+<h2 id="entertaining-a-whole-base">Entertaining a whole base</h2>
+<p><img src="/assets/img/blogs/2023/2023-06-17-chess-engine-comeback/pc-room-army.jpg" width="600"></p>
+
+<p>Transferring 2000 lines of code was no small feat, but witnessing soldiers play my game to unwind after arduous work made it all worthwhile.</p>
+
+<p>While I relish the problem-solving aspect of software development, the joy is multiplied when others actively use and enjoy my creations. Based on my rough estimate during service, I believe dozens of people played my game at least once.</p>
+
+<p>Since my honorable discharge this year, I haven’t received much news about my former base. However, I like to imagine that future generations of soldiers will continue to relish the fruits of my labor.</p>
+
+<h2 id="what-i-learned">What I learned</h2>
+<ol>
+  <li>Listen to what people want</li>
+</ol>
+
+<p>While it’s fulfilling to pursue projects that personally resonate, the true essence of product development lies in satisfying the desires of consumers. I’m grateful for recognizing the lack of daytime recreational activities based on my supervisor’s passing remark. Despite his unsuspecting nature, I employed my coding expertise to identify and resolve a problem.</p>
+
+<ol>
+  <li>Resistance and Resilience</li>
+</ol>
+
+<p>This “code transfer” was far from the most complex task in my short CS career. However, the hurdles I encountered along the way made it one of the most challenging endeavors.</p>
+
+<p>Coding within a controlled school environment is relatively straightforward, with minimal resistance. Yet, coding in the army exposed me to real-world obstacles. From the absence of internet and time constraints to skeptical commanders questioning my notebook filled with pages of code, I felt like I was navigating one fiery hoop after another.</p>
+
+<p>I would imagine that coding outside of school is generally like this. During these hurdles, it is important to stay resilient and keep moving forward, one step at a time.</p>
+
+<ol>
+  <li>Better code</li>
+</ol>
+
+<p>After revisiting my project code months after its initial creation, I identified repeated code sections requiring refactoring. Thanks to this project, I developed the habit of code reviewing, which I believe will prove invaluable in the future.</p>
+
+<ol>
+  <li>Speeding things up</li>
+</ol>
+
+<p>Just before departing the base, a fellow soldier thanked me for my project and suggested speeding up the game as the Chess AI took a bit too long to make decisions. Originally a Python Chess project, I viewed this as an opportunity to learn C++ and optimize my code for increased speed.</p>
+
+<p>I hope you enjoyed my story of coding with pen and paper for months in the Korean army, bringing the joy of Chess to fellow soldiers.</p>
+
+    </div>
+  </article>
+
+
+  
+    
+    <br>
+    <hr>
+    <br>
+    <ul class="list-disc pl-8"></ul>
+
+    <!-- Adds related posts to the end of an article -->
+    <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2>
+    <p class="mb-2">Here are some more articles you might like to read next:</p>
+  
+
+  <li class="my-2">
+    <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/xray-gan/">How GANs can be used to synthesize X-Rays</a>
+  </li>
+
+  
+
+  <li class="my-2">
+    <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/the-imagenet-5/">I implemented 5 CNN papers. Here's what I learned.</a>
+  </li>
+
+  
+
+  <li class="my-2">
+    <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/efficientnet-implementation/">EfficientNet Implementation</a>
+  </li>
+
+  
+
+  <li class="my-2">
+    <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/senet-implementation/">SE-Net Implementation</a>
+  </li>
+
+  
+
+  <li class="my-2">
+    <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/densenet-implementation/">DenseNet Implementation</a>
+  </li>
+
+</div>
+
+          </div>
+          <!-- sidebar, which will move to the top on a small screen -->
+          <div class="col-sm-3">
+            <nav id="toc-sidebar" class="sticky-top"></nav>
+          </div>
+        </div>
+        
+      
+    </div>
+
+    <!-- Footer -->    <footer class="sticky-bottom mt-5">
+      <div class="container">
+        © Copyright 2023 Boosung  Kim. 
+      </div>
+    </footer>
+
+    <!-- JavaScripts -->
+    <!-- jQuery -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!-- Bootsrap & MDB scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha256-fgLAgv7fyCGopR/gBNq2iW3ZKIdqIcyshnUULC4vex8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script>
+
+    <!-- Masonry & imagesLoaded -->
+  <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+  <script defer src="/assets/js/masonry.js" type="text/javascript"></script>
+    
+  <!-- Medium Zoom JS -->
+  <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+  <script defer src="/assets/js/zoom.js"></script>
+  <!-- Sidebar Table of Contents -->
+  <script defer src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script>
+
+
+  <!-- Bootstrap Table -->
+  <script defer src="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.js"></script>
+
+  <!-- Load Common JS -->
+  <script src="/assets/js/no_defer.js"></script>
+  <script defer src="/assets/js/common.js"></script>
+  <script defer src="/assets/js/copy_code.js" type="text/javascript"></script>
+
+    
+  <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script>
+  <script async src="https://badge.dimensions.ai/badge.js"></script>
+
+    <!-- MathJax -->
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        tags: 'ams'
+      }
+    };
+  </script>
+  <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js"></script>
+  <script defer src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    
+    
+
+<!-- Scrolling Progress Bar -->
+<script type="text/javascript">
+  /*
+   * This JavaScript code has been adapted from the article 
+   * https://css-tricks.com/reading-position-indicator/ authored by Pankaj Parashar, 
+   * published on the website https://css-tricks.com on the 7th of May, 2014.
+   * Couple of changes were made to the original code to make it compatible 
+   * with the `al-foio` theme.
+   */
+  const progressBar = $("#progress");
+  /*
+   * We set up the bar after all elements are done loading.
+   * In some cases, if the images in the page are larger than the intended
+   * size they'll have on the page, they'll be resized via CSS to accomodate
+   * the desired size. This mistake, however, breaks the computations as the
+   * scroll size is computed as soon as the elements finish loading.
+   * To account for this, a minimal delay was introduced before computing the
+   * values.
+   */
+  window.onload = function () {
+    setTimeout(progressBarSetup, 50);
+  };
+  /*
+   * We set up the bar according to the browser.
+   * If the browser supports the progress element we use that.
+   * Otherwise, we resize the bar thru CSS styling
+   */
+  function progressBarSetup() {
+    if ("max" in document.createElement("progress")) {
+      initializeProgressElement();
+      $(document).on("scroll", function() {
+        progressBar.attr({ value: getCurrentScrollPosition() });
+      });
+      $(window).on("resize", initializeProgressElement);
+    } else {
+      resizeProgressBar();
+      $(document).on("scroll", resizeProgressBar);
+      $(window).on("resize", resizeProgressBar);
+    }
+  }
+  /*
+   * The vertical scroll position is the same as the number of pixels that
+   * are hidden from view above the scrollable area. Thus, a value > 0 is
+   * how much the user has scrolled from the top
+   */
+  function getCurrentScrollPosition() {
+    return $(window).scrollTop();
+  }
+
+  function initializeProgressElement() {
+    let navbarHeight = $("#navbar").outerHeight(true);
+    $("body").css({ "padding-top": navbarHeight });
+    $("progress-container").css({ "padding-top": navbarHeight });
+    progressBar.css({ top: navbarHeight });
+    progressBar.attr({
+      max: getDistanceToScroll(),
+      value: getCurrentScrollPosition(),
+    });
+  }
+  /*
+   * The offset between the html document height and the browser viewport
+   * height will be greater than zero if vertical scroll is possible.
+   * This is the distance the user can scroll
+   */
+  function getDistanceToScroll() {
+    return $(document).height() - $(window).height();
+  }
+
+  function resizeProgressBar() {
+    progressBar.css({ width: getWidthPercentage() + "%" });
+  }
+  // The scroll ratio equals the percentage to resize the bar
+  function getWidthPercentage() {
+    return (getCurrentScrollPosition() / getDistanceToScroll()) * 100;
+  }
+</script>
+
+  </body>
+</html>
