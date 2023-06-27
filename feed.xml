@@ -1,68 +1,39 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://boosungkim.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://boosungkim.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2023-06-19T02:15:02+00:00</updated><id>https://boosungkim.com/feed.xml</id><title type="html">blank</title><subtitle>A lifelong learner interested in the modern world.
-</subtitle><entry><title type="html">The time I coded Chess with pen and paper in the Korean Army</title><link href="https://boosungkim.com/blog/2023/chess-engine-comeback/" rel="alternate" type="text/html" title="The time I coded Chess with pen and paper in the Korean Army" /><published>2023-06-17T19:53:00+00:00</published><updated>2023-06-17T19:53:00+00:00</updated><id>https://boosungkim.com/blog/2023/chess-engine-comeback</id><content type="html" xml:base="https://boosungkim.com/blog/2023/chess-engine-comeback/"><![CDATA[<p>This is a story about how I brought back and used my Custom Chess Engine during my service in the Korea Army. With limited resources and immense determination, I overcame obstacles to bring the joy of chess to fellow soldiers. Who knows, perhaps my creation still thrives today?</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://boosungkim.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://boosungkim.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2023-06-27T04:04:41+00:00</updated><id>https://boosungkim.com/feed.xml</id><title type="html">blank</title><subtitle>A lifelong learner interested in the modern world.
+</subtitle><entry><title type="html">R-CNNs Part I - R-CNN, Fast R-CNN, Faster R-CNN</title><link href="https://boosungkim.com/blog/2023/rcnn-explained-part1/" rel="alternate" type="text/html" title="R-CNNs Part I - R-CNN, Fast R-CNN, Faster R-CNN" /><published>2023-06-25T19:53:00+00:00</published><updated>2023-06-25T19:53:00+00:00</updated><id>https://boosungkim.com/blog/2023/rcnn-explained-part1</id><content type="html" xml:base="https://boosungkim.com/blog/2023/rcnn-explained-part1/"><![CDATA[<p><a href="">R-CNN paper</a>
+<a href="">Fast R-CNN paper</a>
+<a href="">Faster R-CNN paper</a></p>
 
-<p><img src="/assets/img/blogs/2023/2023-06-17-chess-engine-comeback/army-time.jpeg" width="600" /></p>
+<p>So far, I’ve read papers on image classification so far. However, there are many more tasks in computer vision outside of classification. Another popular vision task is “Object Detection.”</p>
 
-<h2 id="my-military-service">My military service</h2>
-<p>As many of you probably know, the military service is mandatory for most men in Korea. I enlisted in October 2021 and finished my service as a Sergeant this April.</p>
+<p>There are two model types prevalent in the Object Detection field - the one-step models (e.g. You Only Look Once) and two-step models (e.g. the Region proposals with CNNs). Today, we will look at the first three variations of Region proposals with CNNs, or R-CNN.</p>
 
-<p>As a mandatory duty, I enlisted in the Korean Army in October 2021 and completed my service as a Sergeant in April of this year. Assigned as a Data Analyst for the Tunnel Neutralization Team in the Demilitarized Zone (DMZ), I engaged in data processing and DMZ missions throughout my tenure.</p>
+<h2 id="image-classification-vs-object-detection">Image Classification vs Object Detection</h2>
+<p><img src="/assets/img/blogs/2023/2023-06-25-rcnn-explained-part1/classification-vs-detection.jpg" width="500" /></p>
 
-<p>Our base, situated outside the civilian zone, imposed numerous restrictions. Notably, we lacked modern facilities, including a PC room typically found in other bases.</p>
+<p>While image classification focuses solely on detecting and classifying one object in each image, object detection requires localization of many objects within one image.</p>
 
-<h2 id="the-spark-of-an-idea">The spark of an idea</h2>
-<p>Playing chess on military work computers was strictly prohibited due to security concerns. However, there were old recreational computers available for soldiers’ use during downtime—albeit without internet access.</p>
+<h2 id="before-r-cnn">Before R-CNN</h2>
+<p>Before</p>
 
-<p>In the evening, we were allowed 2-3 hours with our phones (on non-surveillance shifts). While soldiers utilized this time as they pleased, it was a fraction of the day, limiting options for entertainment. One day, upon learning of my background in Computer Science, a superior casually suggested creating games for these recreational computers.</p>
+<h2 id="the-original-r-cnn">The Original R-CNN</h2>
 
-<p>That moment sparked my idea. I had previously developed a mostly finished Python-Chess project. Why not transfer the code to a military computer? Thus, I devoted the first half of 2022 to migrating my Chess project to a military machine.</p>
+<h2 id="fast-r-cnn">Fast R-CNN</h2>
 
-<p><img src="/assets/img/blogs/2023/2023-06-17-chess-engine-comeback/chess-github.png" width="600" /></p>
+<h2 id="faster-r-cnn">Faster R-CNN</h2>
 
-<h2 id="the-mighty-pen">The mighty pen</h2>
-<p>Without internet access on the recreational computers, I couldn’t simply download the files from GitHub. However, I still had access to my phone during the evenings.</p>
+<h2 id="references">References</h2>]]></content><author><name></name></author><category term="computer-vision" /><category term="paper-review" /><summary type="html"><![CDATA[R-CNN, Fast R-CNN, Faster R-CNN explained]]></summary></entry><entry><title type="html">Introducing DeepLearnLab</title><link href="https://boosungkim.com/blog/2023/deeplearnlab/" rel="alternate" type="text/html" title="Introducing DeepLearnLab" /><published>2023-06-23T19:53:00+00:00</published><updated>2023-06-23T19:53:00+00:00</updated><id>https://boosungkim.com/blog/2023/deeplearnlab</id><content type="html" xml:base="https://boosungkim.com/blog/2023/deeplearnlab/"><![CDATA[<p><a href="https://boosungkim.com/dllab">DeepLearnLab</a></p>
 
-<p>Initially, I intended to bring my phone into the recreational room and copy the code directly onto the computers. However, I discovered that phones were not allowed there due to the proximity of a [REDACTED] area.</p>
+<p>I am introducing my newest side project, DeepLearnLab, which is a Jekyll website with side-by-side notes and code implementations of popular Deep Learning papers and tools.</p>
 
-<p>Can you guess what I did? With approximately 2000 lines of code in my Chess project, I spent an hour or two every day for three months painstakingly copying code from GitHub onto paper and then transcribing it onto the recreational computers. Over 2000 lines of code.</p>
+<p><img src="/assets/img/blogs/2023/2023-06-23-deeplearnlab/dllab.jpg" width="500" /></p>
 
-<p>On days without evening work shifts, I would receive my phone, find a hilltop bench with a serene river view, and meticulously transcribe the code, line by line, word by word.</p>
+<p>Inspired by annotated deep learning papers on GitHub, I coded this website using Jekyll, Markdown, and Python to share my implemented code.</p>
 
-<p>There were moments when I accidentally wrote down the wrong line, resulting in hours of debugging. There were also days filled with emergency situations, like the threats of nuclear experimentation from North Korea last year. Despite the challenges, I persisted with unwavering determination.</p>
+<p>Over the past few weeks, I’ve implemented various models from Computer Vision, such as VGG, ResNet, and EfficientNet. All of the code, along with my notes from the papers, are now available at DeepLearnLab.</p>
 
-<p>After months of resolute work, the transfer was complete, and the recreational army computer officially hosted the Chess game.</p>
+<p>All my Deep Learning studies and paper code will be uploaded on DeeplearnLab from now on. I am currently working on a small-scale implementation of PyTorch’s autograd.</p>
 
-<h2 id="entertaining-a-whole-base">Entertaining a whole base</h2>
-<p><img src="/assets/img/blogs/2023/2023-06-17-chess-engine-comeback/pc-room-army.jpg" width="600" /></p>
-
-<p>Transferring 2000 lines of code was no small feat, but witnessing soldiers play my game to unwind after arduous work made it all worthwhile.</p>
-
-<p>While I relish the problem-solving aspect of software development, the joy is multiplied when others actively use and enjoy my creations. Based on my rough estimate during service, I believe dozens of people played my game at least once.</p>
-
-<p>Since my honorable discharge this year, I haven’t received much news about my former base. However, I like to imagine that future generations of soldiers will continue to relish the fruits of my labor.</p>
-
-<h2 id="what-i-learned">What I learned</h2>
-<h3 id="1-listen-to-what-people-want">1. Listen to what people want</h3>
-
-<p>While it’s fulfilling to pursue projects that personally resonate, the true essence of product development lies in satisfying the desires of consumers. I’m grateful for recognizing the lack of daytime recreational activities based on my supervisor’s passing remark. Despite his unsuspecting nature, I employed my coding expertise to identify and resolve a problem.</p>
-
-<h3 id="2-resistance-and-resilience">2. Resistance and Resilience</h3>
-
-<p>This “code transfer” was far from the most complex task in my short CS career. However, the hurdles I encountered along the way made it one of the most challenging endeavors.</p>
-
-<p>Coding within a controlled school environment is relatively straightforward, with minimal resistance. Yet, coding in the army exposed me to real-world obstacles. From the absence of internet and time constraints to skeptical commanders questioning my notebook filled with pages of code, I felt like I was navigating one fiery hoop after another.</p>
-
-<p>I would imagine that coding outside of school is generally like this. During these hurdles, it is important to stay resilient and keep moving forward, one step at a time.</p>
-
-<h3 id="3-better-code">3. Better code</h3>
-
-<p>After revisiting my project code months after its initial creation, I identified repeated code sections requiring refactoring. Thanks to this project, I developed the habit of code reviewing, which I believe will prove invaluable in the future.</p>
-
-<h3 id="4-speeding-things-up">4. Speeding things up</h3>
-
-<p>Just before departing the base, a fellow soldier thanked me for my project and suggested speeding up the game as the Chess AI took a bit too long to make decisions. Originally a Python Chess project, I viewed this as an opportunity to learn C++ and optimize my code for increased speed.</p>
-
-<p>I hope you enjoyed my story of coding with pen and paper for months in the Korean army, bringing the joy of Chess to fellow soldiers.</p>]]></content><author><name></name></author><category term="software" /><category term="story" /><summary type="html"><![CDATA[The story of how I coded Chess on pen and paper in the Korean Army.]]></summary></entry><entry><title type="html">How GANs can be used to synthesize X-Rays</title><link href="https://boosungkim.com/blog/2023/xray-gan/" rel="alternate" type="text/html" title="How GANs can be used to synthesize X-Rays" /><published>2023-06-17T19:53:00+00:00</published><updated>2023-06-17T19:53:00+00:00</updated><id>https://boosungkim.com/blog/2023/xray-gan</id><content type="html" xml:base="https://boosungkim.com/blog/2023/xray-gan/"><![CDATA[<p><a href="https://www.researchgate.net/publication/328945795_Synthesizing_Chest_X-Ray_Pathology_for_Training_Deep_Convolutional_Neural_Networks">Synthesizing Chest X-Ray Pathology for Training
+<p>Go check it out, and feel free to leave a star on GitHub or contribute!</p>]]></content><author><name></name></author><category term="project" /><summary type="html"><![CDATA[Introducing DeepLearnLab, my new website with side-by-side notes and code implementations of all things DL]]></summary></entry><entry><title type="html">How GANs can be used to synthesize X-Rays</title><link href="https://boosungkim.com/blog/2023/xray-gan/" rel="alternate" type="text/html" title="How GANs can be used to synthesize X-Rays" /><published>2023-06-18T19:53:00+00:00</published><updated>2023-06-18T19:53:00+00:00</updated><id>https://boosungkim.com/blog/2023/xray-gan</id><content type="html" xml:base="https://boosungkim.com/blog/2023/xray-gan/"><![CDATA[<p><a href="https://www.researchgate.net/publication/328945795_Synthesizing_Chest_X-Ray_Pathology_for_Training_Deep_Convolutional_Neural_Networks">Synthesizing Chest X-Ray Pathology for Training
 Deep Convolutional Neural Networks</a></p>
 
 <p>My friend Daesung Kim, who studies the use of Computer Vision in medical research, recently approached me with an interesting paper to get my opinion. The paper was “Synthesizing Chest X-Ray Pathology for Training
@@ -189,7 +160,70 @@ Deep Convolutional Neural Networks,” and it provided an insight on how GANs ca
   <li><a href="https://www.researchgate.net/publication/328945795_Synthesizing_Chest_X-Ray_Pathology_for_Training_Deep_Convolutional_Neural_Networks">Synthesizing Chest X-Ray Pathology for Training
 Deep Convolutional Neural Networks</a></li>
   <li><a href="https://www.reddit.com/r/StableDiffusion/comments/11bvx8d/using_controlnet_to_demonstrate_how_ai_generated/">(Figure 1) GAN art by u/theAngryGoat</a></li>
-</ol>]]></content><author><name></name></author><category term="computer-vision" /><category term="paper-review" /><summary type="html"><![CDATA[Synthesizing Chest X-Ray Pathology for Training Deep Convolutional Neural Networks]]></summary></entry><entry><title type="html">EfficientNet Implementation</title><link href="https://boosungkim.com/blog/2023/efficientnet-implementation/" rel="alternate" type="text/html" title="EfficientNet Implementation" /><published>2023-06-15T19:53:00+00:00</published><updated>2023-06-15T19:53:00+00:00</updated><id>https://boosungkim.com/blog/2023/efficientnet-implementation</id><content type="html" xml:base="https://boosungkim.com/blog/2023/efficientnet-implementation/"><![CDATA[<p>Link to <a href="https://arxiv.org/abs/1905.11946">paper</a>
+</ol>]]></content><author><name></name></author><category term="computer-vision" /><category term="paper-review" /><summary type="html"><![CDATA[How Generative Adversarial Networks are used to synthesize X-Rays]]></summary></entry><entry><title type="html">The time I coded Chess with pen and paper in the Korean Army</title><link href="https://boosungkim.com/blog/2023/chess-engine-comeback/" rel="alternate" type="text/html" title="The time I coded Chess with pen and paper in the Korean Army" /><published>2023-06-17T19:53:00+00:00</published><updated>2023-06-17T19:53:00+00:00</updated><id>https://boosungkim.com/blog/2023/chess-engine-comeback</id><content type="html" xml:base="https://boosungkim.com/blog/2023/chess-engine-comeback/"><![CDATA[<p>This is a story about how I brought back and used my Custom Chess Engine during my service in the Korea Army. With limited resources and immense determination, I overcame obstacles to bring the joy of chess to fellow soldiers. Who knows, perhaps my creation still thrives today?</p>
+
+<p><img src="/assets/img/blogs/2023/2023-06-17-chess-engine-comeback/army-time.jpeg" width="600" /></p>
+
+<h2 id="my-military-service">My military service</h2>
+<p>As many of you probably know, the military service is mandatory for most men in Korea. I enlisted in October 2021 and finished my service as a Sergeant this April.</p>
+
+<p>As a mandatory duty, I enlisted in the Korean Army in October 2021 and completed my service as a Sergeant in April of this year. Assigned as a Data Analyst for the Tunnel Neutralization Team in the Demilitarized Zone (DMZ), I engaged in data processing and DMZ missions throughout my tenure.</p>
+
+<p>Our base, situated outside the civilian zone, imposed numerous restrictions. Notably, we lacked modern facilities, including a PC room typically found in other bases.</p>
+
+<h2 id="the-spark-of-an-idea">The spark of an idea</h2>
+<p>Playing chess on military work computers was strictly prohibited due to security concerns. However, there were old recreational computers available for soldiers’ use during downtime—albeit without internet access.</p>
+
+<p>In the evening, we were allowed 2-3 hours with our phones (on non-surveillance shifts). While soldiers utilized this time as they pleased, it was a fraction of the day, limiting options for entertainment. One day, upon learning of my background in Computer Science, a superior casually suggested creating games for these recreational computers.</p>
+
+<p>That moment sparked my idea. I had previously developed a mostly finished Python-Chess project. Why not transfer the code to a military computer? Thus, I devoted the first half of 2022 to migrating my Chess project to a military machine.</p>
+
+<p><img src="/assets/img/blogs/2023/2023-06-17-chess-engine-comeback/chess-github.png" width="600" /></p>
+
+<h2 id="the-mighty-pen">The mighty pen</h2>
+<p>Without internet access on the recreational computers, I couldn’t simply download the files from GitHub. However, I still had access to my phone during the evenings.</p>
+
+<p>Initially, I intended to bring my phone into the recreational room and copy the code directly onto the computers. However, I discovered that phones were not allowed there due to the proximity of a [REDACTED] area.</p>
+
+<p>Can you guess what I did? With approximately 2000 lines of code in my Chess project, I spent an hour or two every day for three months painstakingly copying code from GitHub onto paper and then transcribing it onto the recreational computers. Over 2000 lines of code.</p>
+
+<p>On days without evening work shifts, I would receive my phone, find a hilltop bench with a serene river view, and meticulously transcribe the code, line by line, word by word.</p>
+
+<p>There were moments when I accidentally wrote down the wrong line, resulting in hours of debugging. There were also days filled with emergency situations, like the threats of nuclear experimentation from North Korea last year. Despite the challenges, I persisted with unwavering determination.</p>
+
+<p>After months of resolute work, the transfer was complete, and the recreational army computer officially hosted the Chess game.</p>
+
+<h2 id="entertaining-a-whole-base">Entertaining a whole base</h2>
+<p><img src="/assets/img/blogs/2023/2023-06-17-chess-engine-comeback/pc-room-army.jpg" width="600" /></p>
+
+<p>Transferring 2000 lines of code was no small feat, but witnessing soldiers play my game to unwind after arduous work made it all worthwhile.</p>
+
+<p>While I relish the problem-solving aspect of software development, the joy is multiplied when others actively use and enjoy my creations. Based on my rough estimate during service, I believe dozens of people played my game at least once.</p>
+
+<p>Since my honorable discharge this year, I haven’t received much news about my former base. However, I like to imagine that future generations of soldiers will continue to relish the fruits of my labor.</p>
+
+<h2 id="what-i-learned">What I learned</h2>
+<h3 id="1-listen-to-what-people-want">1. Listen to what people want</h3>
+
+<p>While it’s fulfilling to pursue projects that personally resonate, the true essence of product development lies in satisfying the desires of consumers. I’m grateful for recognizing the lack of daytime recreational activities based on my supervisor’s passing remark. Despite his unsuspecting nature, I employed my coding expertise to identify and resolve a problem.</p>
+
+<h3 id="2-resistance-and-resilience">2. Resistance and Resilience</h3>
+
+<p>This “code transfer” was far from the most complex task in my short CS career. However, the hurdles I encountered along the way made it one of the most challenging endeavors.</p>
+
+<p>Coding within a controlled school environment is relatively straightforward, with minimal resistance. Yet, coding in the army exposed me to real-world obstacles. From the absence of internet and time constraints to skeptical commanders questioning my notebook filled with pages of code, I felt like I was navigating one fiery hoop after another.</p>
+
+<p>I would imagine that coding outside of school is generally like this. During these hurdles, it is important to stay resilient and keep moving forward, one step at a time.</p>
+
+<h3 id="3-better-code">3. Better code</h3>
+
+<p>After revisiting my project code months after its initial creation, I identified repeated code sections requiring refactoring. Thanks to this project, I developed the habit of code reviewing, which I believe will prove invaluable in the future.</p>
+
+<h3 id="4-speeding-things-up">4. Speeding things up</h3>
+
+<p>Just before departing the base, a fellow soldier thanked me for my project and suggested speeding up the game as the Chess AI took a bit too long to make decisions. Originally a Python Chess project, I viewed this as an opportunity to learn C++ and optimize my code for increased speed.</p>
+
+<p>I hope you enjoyed my story of coding with pen and paper for months in the Korean army, bringing the joy of Chess to fellow soldiers.</p>]]></content><author><name></name></author><category term="software" /><category term="story" /><summary type="html"><![CDATA[The story of how I coded Chess on pen and paper in the Korean Army.]]></summary></entry><entry><title type="html">EfficientNet Implementation</title><link href="https://boosungkim.com/blog/2023/efficientnet-implementation/" rel="alternate" type="text/html" title="EfficientNet Implementation" /><published>2023-06-15T19:53:00+00:00</published><updated>2023-06-15T19:53:00+00:00</updated><id>https://boosungkim.com/blog/2023/efficientnet-implementation</id><content type="html" xml:base="https://boosungkim.com/blog/2023/efficientnet-implementation/"><![CDATA[<p>Link to <a href="https://arxiv.org/abs/1905.11946">paper</a>
 Link to <a href="https://github.com/boosungkim/milestone-cnn-model-implementations">my code</a></p>
 
 <p>Unlike previous models, EfficientNet does not introduce a novel architecture. Rather, it introduces the idea of compound scaling and a base model, EfficientNet, to test the new scaling method.</p>
@@ -829,60 +863,4 @@ Estimated Total Size (MB): 694.16
   <li>NN model debugging skills</li>
   <li>Analyzing parameters and hyperparameters from papers</li>
   <li>Adjusting the model to fit the dataset</li>
-</ul>]]></content><author><name></name></author><category term="computer-vision" /><category term="implementation" /><summary type="html"><![CDATA[Implementing the VGG paper from "Very Deep Convolutional Networks for Large-Scale Image Recognition"]]></summary></entry><entry><title type="html">Sticky business of setting up a web server</title><link href="https://boosungkim.com/blog/2020/sticky-business-of-setting-up-a-web-server/" rel="alternate" type="text/html" title="Sticky business of setting up a web server" /><published>2020-12-27T00:00:00+00:00</published><updated>2020-12-27T00:00:00+00:00</updated><id>https://boosungkim.com/blog/2020/sticky-business-of-setting-up-a-web-server</id><content type="html" xml:base="https://boosungkim.com/blog/2020/sticky-business-of-setting-up-a-web-server/"><![CDATA[<h1 id="0-introduction">0: Introduction</h1>
-<p>Earlier this week, I finally finished setting up my web server and decided to write this “documentation.” Looking back now, these steps may seem evident, but it was a nightmare when I started up due my complete lack of prior experience. I hope that this will be of use, whether it be to my future self setting up another server or to someone else starting from scratch.</p>
-
-<p>I used NameCheap for the domain name, Vultr for a VPS, CertBot for SSL, CloudFlare for the DNS servers, and the classic LAMP (Linux Apache MariaDB PHP) stack to host my web server.</p>
-
-<p>I only mention the major steps in chronological order to serve as a general overview of creating a web server from scratch.</p>
-
-<h1 id="1-basic-html-and-css">1: Basic HTML and CSS</h1>
-<p>Before anything else, I first had to write the foundations of my website in HTML and CSS. I found the Interneting is Hard tutorial to be the most intuitive.</p>
-
-<h1 id="2-purchasing-a-vps-and-a-domain">2: Purchasing a VPS and a domain</h1>
-<p>Purchasing a domain name and a VPS was easy enough. I decided to go with the popular choice of (first name)(last name).com. After I obtained a VPS, I set the A NAME for my root domain boosungkim.com and the CNAME for my subdomain www.boosungkim.com. This way, people will be directed to my site regardless of their URL choice. At this point, I was using the default NameCheap DNS servers.</p>
-
-<h1 id="3-setting-a-lamp-stack">3: Setting a LAMP stack</h1>
-<p>I believe that this is probably the section that took the second longest time to figure out. After I set up Debian on the VPS and installed Apache2, I still had no idea how to configure the Apache settings. I ended up jumping back and forth among several documentations and guides, but I mostly used these two: <a href="linux.com">Linux.com</a> and <a href="apache.org">apache.org</a>. The guide only shows the basic configuration of publishing an HTTP website, so I had to make alterations later on.</p>
-
-<h1 id="4-file-uploading-with-rsync-and-ssh">4: File uploading with rsync and SSH</h1>
-<p>Up to this point, it seemed like everyone was using some sort of graphical interface to upload their files. Since I did not have access to any, I originally considered pushing and pulling via GitHub. Thankfully, I figured out a simpler solution: I used the Linux command rsync over SSH. It was direct and fast.</p>
-
-<h1 id="5-ssl-https">5: SSL (HTTPS)</h1>
-<p>Now this is the part I got stuck on for the longest period of time, which was quite surprising. The vast majority, if not all, of the tutorials state that CertBot is simple to use. It certainly is easy to download, but the configuration process was convoluted for me as a beginner.</p>
-
-<p>At first, I made the mistake of getting the default certbot, which is designed for websites with only one domain. In the earlier part of this documentation, I mentioned that I had a subdomain for www.boosungkim.com. The subdomain and the default certbot conflicted, and I ended up completely destroying my web server. I had to reset the VPS and start all over again.</p>
-
-<p>After the restart, I realized that I need to use the wilcard certbot to install HTTPS for all the subdomains as well as the main one. I then immediately faced the issue of DNS plugins—NameCheap does not support certbot, as they have their own SSL service (which is charged). A comment on a <a href="https://old.reddit.com/r/homelab/comments/84no8z/lets_encrypt_certbot_namecheap_and_tlssni_or_dns/dvqz8pz/">forum</a> inspired me to switch to the CloudFlare DNS servers and use their plugin to install HTTPS.</p>
-
-<p>After the successful installation, I had to reconfigure my VirtualHost file to change from the HTTP port (80) to the HTTPS port (443). I followed the following <a href="https://cwiki.apache.org/confluence/display/HTTPD/ExampleVhosts">guide</a>.</p>
-
-<p>While these may seem like straightforward issues with effortless solutions, I can promise you that when I had no idea what was going on, understanding the core complication was like finding a needle in a haystack, except that the needle thankfully left a trail of clues here and there.</p>
-
-<h1 id="6-rss-and-the-email-subscription-system">6: RSS and the Email subscription system</h1>
-<p>Creating the RSS for my blog was quite a relief, as it was near trivial compared to the SSL mess right before this step. I used the documentations <a href="https://www.w3schools.com/xml/xml_rss.asp">w3schools</a> and <a href="https://validator.w3.org/feed/docs/rss2.html">FEED validator</a>, and you can view my XML file on my website as well.</p>
-
-<p>I decided to use PHPList for the email subscription system, because it uses PHP and mariaDB. I installed an SMTP client on my server, then the PHPList software. While the official <a href="https://www.phplist.org/manual/books/phplist-manual/page/installing-phplist-manually">PHPList documentation</a> includes a part of the installation process, it skims over the configuration of the database. I would recommend this resource here: <a href="https://www.rosehosting.com/blog/how-to-install-phplist-on-a-centos-7-vps/">Rosehosting</a>.</p>
-
-<h1 id="7-completion">7: Completion?</h1>
-<p>And that was the final major course of action I had to take. The current version of my website, “version 1” as I like to call it, was completed this Wednesday (2020/07/01).</p>
-
-<p>As mentioned, I did not include all the minor difficulties I had, such as granting different files various permissions, creating a contact form, and configuring the php file, but most of those were resolved by reading the documentation (often for hours).</p>
-
-<h1 id="learning-how-to-troubleshoot">Learning how to troubleshoot</h1>
-<p>Perhaps this is a stretch, but I believe that I learnt the basics of troubleshooting. To look up a problem, I had to narrow down what the scope of the issue. No search results came up when I simply said that my website sometimes showed up an error page. I had to specify the error messages and try to derive the main issue from them. Did I make a mistake in the Apache configuration file, or is port 443 closed? Perhaps it is the firewall? Oh no, I simply misdirected the website root folder.</p>
-
-<h1 id="the-future">The future</h1>
-<p>As mentioned, I consider the current website only Version 1.0. There are many more changes I would like to make over the next few months and even years. For one, I would like to automate the blog posting process. Right now, I have to code 5 times every time I post: the standalone blog file, the blog index page, the blog rolling page, the XML file, and the email. It would be far more convenient to have a single script that would code all that for me.</p>
-
-<p>But I leave my website where it is for now, as I would like to work on other projects before the summer ends.</p>
-
-<p>I hope this helps someone and thanks for reading!</p>
-
-<p><a href="https://github.com/boosungkim/original-website">The front end code</a></p>]]></content><author><name></name></author><category term="misc" /><summary type="html"><![CDATA[the process of setting up my original website]]></summary></entry><entry><title type="html">Blog 0 - Why I started a blog</title><link href="https://boosungkim.com/blog/2020/why-i-started-a-blog/" rel="alternate" type="text/html" title="Blog 0 - Why I started a blog" /><published>2020-12-26T00:00:00+00:00</published><updated>2020-12-26T00:00:00+00:00</updated><id>https://boosungkim.com/blog/2020/why-i-started-a-blog</id><content type="html" xml:base="https://boosungkim.com/blog/2020/why-i-started-a-blog/"><![CDATA[<p>So this is my first official blog post of this website! I have to admit that setting up the basics of this web server was a lot more complicated than I anticipated, but here we are!</p>
-
-<p>On this site, I plan to post mainly about Math and Computer Science, my two great passions and also my majors. I will upload my opinions on various technologies, documentations I write while working on personal projects, and even potentially devlogs for particular projects.</p>
-
-<p>The primary reason I started writing about the my Math and Computer Science endeavors is to practice my communication skills. Up till now, I have worked on my technology skillsets, but not so much on communication. I realized recently that I should be able to convey my ideas in a clear and concise manner—even to people who may not be familiar with technologies I work with. Like most things, the best way to better my interpersonal skills is to practice.</p>
-
-<p>While that may be my main reason, I am already learning far beyond just communication skills: I learnt how to set up a server, the basics of the LAMP stack, and more. More on that on the next blog post about setting up a web server.</p>]]></content><author><name></name></author><category term="misc" /><summary type="html"><![CDATA[my motivation for starting a blog]]></summary></entry></feed>
+</ul>]]></content><author><name></name></author><category term="computer-vision" /><category term="implementation" /><summary type="html"><![CDATA[Implementing the VGG paper from "Very Deep Convolutional Networks for Large-Scale Image Recognition"]]></summary></entry></feed>
