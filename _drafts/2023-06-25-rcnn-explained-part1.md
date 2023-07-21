@@ -20,7 +20,8 @@ There are two model types prevalent in the Object Detection field - the one-step
 ## Image Classification vs Object Detection
 <img src="/assets/img/blogs/2023/2023-06-25-rcnn-explained-part1/classification-vs-detection.jpg"  width="500">
 
-While image classification focuses solely on detecting and classifying one object in each image, object detection requires localization of many objects within one image. 
+While image classification focuses solely on detecting and classifying one object in each image, object detection requires localization of many objects within one image.
+
 
 
 ## Before R-CNN
