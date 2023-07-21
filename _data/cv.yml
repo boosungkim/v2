@@ -1,66 +1,81 @@
+- contents: Click on the blue PDF icon above to download the PDF version of my resume!
+
 - title: General Information
   type: map
   contents:
     - name: Full Name
       value: Boosung Kim
     - name: Programming Languages
-      value: Python3, C++, Java
+      value: Python3, C++, Java, SQL, JavaScript, HTML, CSS, PHP
     - name: Frameworks
-      value: PyTorch, TensorFlow, Keras, Scikit-Learn
+      value: PyTorch, TensorFlow, Keras, scikit-learn, Express, React, Node.js, Django, FastAPI
     - name: Developer Tools
-      value: Git, Latex, Docker, VSCode, PyCharm, Linux
-    - name: Languages
+      value: Git, Linux, MySQL, MongoDB, Docker, VSCode, Vim, AWS EC2/Sagemaker, Apache
+    - name: Spoken Languages
       value: English (native), Korean (native), Chinese (fluent)
 
 - title: Education
   type: time_table
   contents:
     - title: B.S. in Math and Computer Science
-      institution: Dickinson College, Carlisle, US
-      year: Expected 2025
+      institution: Dickinson College (Carlisle, PA)
+      year: May 2025
       description:
-        - Full ride scholarship
-        - Selected Coursework - Data Structures and Algorithms, Object Oriented Programming, Computing Abstractions, Linear Algebra, Deep Learning Specialization (Coursera), Large Scale Open Source Development, Probability and Statistics I & II, Gene Reprogramming of Human Leukemia Cells
+        - Full ride scholarship Dean's List, Pi Mu Epsilon, Upsilon Pi Epsilon
+        - Coursework - Data Structures and Algorithms, Object Oriented Programming, Computer Architecture, Linear Algebra, Deep Learning Specialization (Coursera), Large Scale Open Source Development, Probability and Statistics I & II, Gene Reprogramming of Human Leukemia Cells, Computability and Complexity, Programming Language Structures
 
+- title: Relevant Work Experience
+  type: time_table
+  contents:
+    - title: Software Engineering Intern
+      institution: NEW Consulting, Co.
+      year: Jun 2023 - Jul 2023
+      description:
+        - Spearheaded the development of an automated NLP translation pipeline for marketing documents using Langchain, OpenAI API, and AWS Sagemaker, resulting in company cost savings of approximately $2,000 per month
+        - Deployed FastAPI services that handle automatic question and answer generation with a T5-based model using Docker
+        - Integrated automated API testing systems into CI/CD pipeline using the Postman framework
+    
+    - title: Data Analyst for the Tunnel Neutralization Team
+      institution: Republic of Korea Army Intelligence
+      year: Oct 2021 - Apr 2023
+      description:
+        - Identified and located over 30 North Korean underground activities by processing geological sound data with Fast Fourier Transformation and Spectral Analysis techniques using SQL, Excel, and proprietary military tools
+        - Automated 25% of the data pipeline and Excel tasks using SQL, VBA, and Python saving 6 hours of weekly manual work
+        - Led 13 successful reconnaissance team missions to maintain specialized military computers in the Demilitarized Zone
+        - Co-founded the RECON Coding Bootcamp, empowering over 10 soldiers and officers with invaluable skills in Python, enhancing their ability to address complex military challenges through advanced data analysis
+        - Recognized with the Academic Excellence Award for securing the second position among a cohort of over 70 trainees at the Korea Army Intelligence School's distinguished Class of 2021
+   
 - title: Research Experience
   type: time_table
   contents:
-    - title: Undergraduate Computer Vision Research Assistant with Professor John MacCormick
+    - title: Computer Vision Research Intern under Professor John MacCormick
       institution: Dickinson College Tome Robotics Lab
       year: May 2021 - Aug 2021
       description:
-        - Explored and applied advanced Convolutional Neural Network visualization techniques using TensorFlow/Scikit-learn
-        - Enhanced existing software packages to optimize CNN visualizations for a non-expert audience, effectively bridging the gap between complex algorithms and accessible interpretation
+        - Developed Convolutional Neural Network visualization pipelines for a custom dataset using Deconvolution, Filter Visualization, and Activation Maximization techniques written in Python and Tensorflow for easier interpretability
+        - Improved Top-5 accuracy by 8% through the substitution of the ZFNet backbone model with the VGG16 model
+        - Reduced 70% of environment issues by debugging and containerizing the visualization pipelines with Docker
         - Conducted an extensive review of 12 cutting-edge CNN research papers and conference articles, synthesizing key findings and advancements in the field
     
-    - title: Computational Biologist Research Assistant with Professor Michael Roberts
+    - title: Bioinformatics Research Assistant under Professor Michael Roberts
       institution: Rector Biochemistry & Molecular Biology Research Lab
       year: Jan 2021 - May 2021
       description:
-        - Developed a robust data pipeline for machine learning model development, enabling advanced analysis and insights into Acute Myeloid Leukemia (AML) cell data
-        - Designed and trained highly accurate classifier models, achieving an impressive 90% accuracy, to predict EGR1 cancer relapse levels by leveraging Scikit-Learn and Pandas libraries for efficient model development
+        - Coordinated the Computational Biology sub-team to develop a scalable end-to-end data pipeline for analyzing cancer relapse rates based on 20,000 gene map samples using Random Forest, SVMs, and XGBoost in Python scikit-learn
+        - Achieved a balanced accuracy of 88.2%, precision score of 93.8%, recall score of 93.4%, and F1 score of 93.1%
         - Actively contributed to weekly stand-up meetings, delivering comprehensive presentations on research findings and providing insightful interpretations of AML Bioinformatics papers
 
-- title: Relevant Work Experience
+- title: Teaching Experience
   type: time_table
   contents:
     - title: Math and Computer Science Teaching Assistant
       institution: Dickinson College Math and CS Department
       year: Jan 2020 - Present
       description:
-        - Instruct +80 students in Multivariable Calculus, Computing with Python, and Data Structures and Algorithms labs
+        - Courses - Multivariable Calculus, Computing with Python, and Data Structures and Algorithms, Object Oriented Programming, Graph Theory
         - Led weekly study sessions, reviewed student code and graded homework
         - 2020 - 2021, Aug 2023 - Present
-    
-    - title: Tunnel Neutralization Team Data Analyst
-      institution: South Korean Army Division 1 Reconnaissance Battalion
-      year: Oct 2021 - Apr 2023
-      description:
-        - Collected and preprocessed +30 North Korean underground sound data using Fast Fourier Transformation and AI tools
-        - Demonstrated exceptional leadership skills during more than 10  reconnaissance missions, successfully deploying and managing specialized military computer systems within the intense environment of the Korean Demilitarized Zone
-        - Co-founded the RECON Coding Bootcamp, empowering over 10 soldiers and officers with invaluable skills in Scikit-learn and TensorFlow, enhancing their ability to address complex military challenges through advanced data analysis
-        - Recognized with the Academic Excellence Award for securing the second position among a cohort of over 70 trainees at the Korea Army Intelligence School's distinguished Class of 2021
-    
+
 - title: Leadership & Extra-Curricular
   type: time_table
   contents:
@@ -74,7 +89,7 @@
       description:
         - 2020 - 2021, Aug 2023 - Present
     
-    - title: Partnered YouTube Tech Content Creator
+    - title: Partnered YouTube Content Creator in Tech
       institution: YouTube Partnership Program
       year: 2018 - Present
 
@@ -82,14 +97,14 @@
 - title: Projects
   type: time_table
   contents:
-    - title: <a href="">Artify.ai</a>
-      description: Artify
-    - title: <a href="https://github.com/boosungkim/milestone-cnn-model-implementations">Milestone CNN Papers Implementations</a>
-      description: Implementations of milestone Convolutional Neural Network models from famous papers
+    - title: <a href="https://github.com/boosungkim/deepfiction">DeepFiction</a>
+      description: A full stack MERN website for generating and sharing AI short stories and images
+    - title: <a href="https://boosungkim.com/dllab">DeepLearnLab</a>
+      description: A platform for analysis of popular Deep Learning paper and tool implementations
     - title: <a href="https://github.com/boosungkim/custom-chess-engine">Custom Chess Engine</a>
-      description: A custom chess engine, including a basic AI player, written from scratch in Python and C++ used by dozens in the Korean army
+      description: A custom chess engine, including a basic AI player written from scratch in Python and C++
     - title: <a href="https://github.com/boosungkim/dickinson-college-menu-bot">Dickinson College Menu Bot</a>
-      description: A webscraper + email bot that retrieves and formats the cafeteria menu for +50 students, professors, and faculty
+      description: A webscraper + email bot that retrieves and formats the cafeteria menu for students, professors, and faculty
 
 - title: Academic Honors and Awards
   type: time_table
@@ -101,13 +116,19 @@
       items: 
         - Pi Mu Epsilon (Mathematics)
         - Upsilon Pi Epsilon (Computer Science)
-        - Henry P. Cannon Memorial Prize in Mathematics (Top Sophomore in Math)
+        - Henry P. Cannon Memorial Prize in Mathematics (Top Sophomore)
     - year: 2020
       items: 
-        - William W. Landis Memorial Prize in Mathematics (Top Freshman in Math)
-        - Jane Hill Prize for excellence in Computer Science (Top Freshman in CS)
+        - William W. Landis Memorial Prize in Mathematics (Top Freshman)
+        - Jane Hill Prize for excellence in Computer Science (Top Freshman)
         - Alpha Lambda Delta
     - year: 2019
       items: 
         - Freshman Putnam score of 8 (top 39%)
         - Benjamin Rush Scholarship ($60,000)
+    - year: 2018
+      items:
+        - Finalist in Twentieth Annual High School Mathematical Contest in Modeling (HiMCM)
+    - year: 2017
+      items:
+        - High Distinction (Top 10%) in Calculus for Beijing ASDAN Math Tournament (AMT)
