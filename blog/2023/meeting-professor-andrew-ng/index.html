@@ -10,9 +10,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>R-CNNs Part I - R-CNN, Fast R-CNN, Faster R-CNN | Boosung  Kim</title>
+    <title>I got to meet Professor Andrew Ng! (SNU Data Science Day Recap) | Boosung  Kim</title>
     <meta name="author" content="Boosung  Kim">
-    <meta name="description" content="R-CNN, Fast R-CNN, Faster R-CNN explained">
+    <meta name="description" content="I got to meet Professor Andrew Ng for the first time at Seoul National University!">
     <meta name="keywords" content="portfolio-website">
 
 
@@ -41,7 +41,7 @@
     <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%94%A5&lt;/text&gt;&lt;/svg&gt;">
     
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://boosungkim.com/blog/2023/rcnn-explained-part1/">
+    <link rel="canonical" href="https://boosungkim.com/blog/2023/meeting-professor-andrew-ng/">
 
     <!-- Dark Mode -->
     
@@ -139,15 +139,13 @@
 <div class="post">
 
   <header class="post-header">
-    <h1 class="post-title">R-CNNs Part I - R-CNN, Fast R-CNN, Faster R-CNN</h1>
-    <p class="post-meta">June 25, 2023</p>
+    <h1 class="post-title">I got to meet Professor Andrew Ng! (SNU Data Science Day Recap)</h1>
+    <p class="post-meta">July 20, 2023</p>
     <p class="post-tags">
       <a href="/blog/2023"> <i class="fas fa-calendar fa-sm"></i> 2023 </a>
         ·  
-        <a href="/blog/category/computer-vision">
-          <i class="fas fa-tag fa-sm"></i> computer-vision</a>  
-          <a href="/blog/category/paper-review">
-          <i class="fas fa-tag fa-sm"></i> paper-review</a>  
+        <a href="/blog/category/story">
+          <i class="fas fa-tag fa-sm"></i> story</a>  
           
 
     </p>
@@ -156,29 +154,57 @@
   <article class="post-content">
     
     <div id="markdown-content">
-      <p><a href="">R-CNN paper</a>
-<a href="">Fast R-CNN paper</a>
-<a href="">Faster R-CNN paper</a></p>
+      <p><img src="/assets/img/blogs/2023/2023-07-20-meeting-professor-andrew-ng/champ.jpeg" width="500"></p>
 
-<p>So far, I’ve read papers on image classification so far. However, there are many more tasks in computer vision outside of classification. Another popular vision task is “Object Detection.”</p>
+<p>Today, I had the opportunity to meet Professor Andrew Ng at Seoul National University’s Data Science Day!</p>
 
-<p>There are two model types prevalent in the Object Detection field - the one-step models (e.g. You Only Look Once) and two-step models (e.g. the Region proposals with CNNs). Today, we will look at the first three variations of Region proposals with CNNs, or R-CNN.</p>
+<p>I attended SNU’s Data Science Day, which introduced the new CHAMP AI center and hosted Professor Ng’s talk on AI trends and startups. I had to wake up at the break of dawn to attend, as I do not live in Seoul, but it was totally worth it!</p>
 
-<h2 id="image-classification-vs-object-detection">Image Classification vs Object Detection</h2>
-<p><img src="/assets/img/blogs/2023/2023-06-25-rcnn-explained-part1/classification-vs-detection.jpg" width="500"></p>
+<h2 id="introducing-snus-champ">Introducing SNU’s CHAMP</h2>
+<p><img src="/assets/img/blogs/2023/2023-07-20-meeting-professor-andrew-ng/birth-of-charm.JPG" width="500"></p>
 
-<p>While image classification focuses solely on detecting and classifying one object in each image, object detection requires localization of many objects within one image.</p>
+<p>I would like to start off the blog by first talking about the new SNU AI center, CHAMP (Center for optimizing Hyperscale AI Models and Platform), led by Professor Lee.</p>
 
-<h2 id="before-r-cnn">Before R-CNN</h2>
-<p>Before</p>
+<p>SNU established CHAMP to create Korean Hyperscale AI models in order to stay up to date with recent AI research and products. The goals for the next few years is to create hyperscale models similar to ChatGPT by collaborating with different research labs and companies in Korea.</p>
 
-<h2 id="the-original-r-cnn">The Original R-CNN</h2>
+<p>I think this is a great opportunity for Korea to contribute to the world of AI, and I look forward to seeing future works from CHAMP. Who knows, perhaps I could apply to work there someday if such an opportunity arises.</p>
 
-<h2 id="fast-r-cnn">Fast R-CNN</h2>
+<h2 id="professor-ngs-talk">Professor Ng’s Talk</h2>
+<p>Professor Ng’s talk was divided in to two parts: AI trends and AI startup process.</p>
 
-<h2 id="faster-r-cnn">Faster R-CNN</h2>
+<h3 id="new-electricity-and-the-decade-of-gan">New Electricity and the Decade of GAN</h3>
+<p><img src="/assets/img/blogs/2023/2023-07-20-meeting-professor-andrew-ng/gan.JPG" width="500"></p>
 
-<h2 id="references">References</h2>
+<p>Professor Ng kicked things off by repeating his favorite phrase: “AI is the new electricity.” He was kind enough to incorporate new Korean food he tried recently into his presentation!</p>
+
+<p>Professor Ng claimed that if 2010s were the decade of supervised learning (with the boom of image recognition/detection), 2020s will be the boom of Generative AI. We already have ChatGPT and Midjourney, along with many other similar projects. Professor Ng predicts at least twice the amount of GAN progress to be made in the next few years, while Supervised Learning continues to grow as well.</p>
+
+<h3 id="building-ai-businesses">Building AI Businesses</h3>
+<p><img src="/assets/img/blogs/2023/2023-07-20-meeting-professor-andrew-ng/startup-process.JPG" width="500"></p>
+
+<p>Professor Ng firmly believes that AI technologies are general purpose technologies that can be useful for many tasks in different industries. It is not a magic tool that can be used to solve everything, but a major tool that can create opportunities to solve previously difficult problems.</p>
+
+<p>Professor Ng, however, emphasized the importance on building powerful innovative products rather than surface level products.</p>
+
+<p>For instance, when the iPhone first came out, there was an influx of apps on the new technology. There were surface level apps, like apps that converted the iPhone into a flashlight. While interesting, there was no true depth to the app, as it basically just had the camera flash turned on for an extended period of time. On the other hand, there were new apps that changed the world, such as Tinder, Maps, and iTunes.</p>
+
+<p>Professor Ng spent the final portion of his presentation discussing his process for building AI startups, as can be seen in the photo above. It was very interesting hearing about the startup process, especially on how much time it takes before actually building the full product. Quite different building small personal projects.</p>
+
+<p>Perhaps I could try reaching out to local companies or small startups and try to replicate this process myself to familiarize myself with the AI tools and skills. Something to sleep on.</p>
+
+<h2 id="qa-and-selfies">Q&amp;A and Selfies</h2>
+<p><img src="/assets/img/blogs/2023/2023-07-20-meeting-professor-andrew-ng/outside.JPG" width="400"></p>
+
+<p>There was a short Q&amp;A session, and I lined up behind the mic. I was a little scared if my question is good enough, but I’ve been working on stepping outside my comfort zone recently, so I went anyways. However, due to time constraints, I didn’t get to ask my question! Sadly, I will have to find some other opportunity to ask him in the future.</p>
+
+<p>Although Professor Ng had another schedule right after, he still spent some time taking selfies with students while heading out. It was chaotic like a celebrity arriving at an airport, but that’s not surprising, considering how Professor Andrew Ng is like the Leonardo DiCaprio of AI. I might not have been able to ask him my question, but I luckily got to take a quick selfie with the legend.</p>
+
+<h2 id="closing-words">Closing Words</h2>
+<p><img src="/assets/img/blogs/2023/2023-07-20-meeting-professor-andrew-ng/ticket.JPG" width="300"></p>
+
+<p>Overall, meeting Professor Andrew Ng and speaking with different students and professors were very motivating. Professor Andrew Ng was incredibly smart, engaging, and very friendly. I will continue to work hard and create more opportunities to connect with others in the field.</p>
+
+<p>Additionally, it’s been a while since I’ve posted new blogs. I have been spending my time learning tech stacks, wrapping up my internship at a local startup, and enjoying my final few weeks in Korea meeting friends and experts in CS.</p>
 
     </div>
   </article>
