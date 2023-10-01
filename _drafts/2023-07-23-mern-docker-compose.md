@@ -9,7 +9,12 @@ related_posts: true
 toc:
   sidebar: right
 ---
+Code: [https://]()
+
 I used Docker in the past while working on ML research with professors from my college, but this was the first time I used it with the MERN tech stack. It was mostly similar, but I thought I would log different commands and debugging methods I used.
+
+## General Code
+
 
 ## Client side containerization
 
@@ -17,6 +22,8 @@ docker build . -t boosungkim/deepfiction-client
 docker run -p 5173:80 -d boosungkim/deepfiction-client
 
 ## Server side containerization
+
+
 
 ## Explain dockerfile
 port 80 explained

@@ -104,6 +104,8 @@ instagram_id: # your instagram id
 facebook_id: # your facebook id
 youtube_id: converge2diverge # your youtube channel id (youtube.com/@<youtube_id>)
 discord_id: # your discord id (18-digit unique numerical identifier)
+zotero_username: # your zotero username
+wechat_qr: # filename of your wechat qr-code saved as an image (e.g., wechat-qr.png if saved to assets/img/wechat-qr.png)
 
 contact_note: >
   Best way to reach me is via email (boosung@boosungkim.com)
@@ -113,7 +115,7 @@ contact_note: >
 # -----------------------------------------------------------------------------
 
 google_analytics:  # your Google Analytics measurement ID (format: G-XXXXXXXXXX)
-panelbear_analytics:  # panelbear analytics site ID (format: XXXXXXXXX)
+cronitor_analytics:  # cronitor RUM analytics site ID (format: XXXXXXXXX)
 
 google_site_verification:  # your google-site-verification ID (Google Search Console)
 bing_site_verification:  # out your bing-site-verification ID (Bing Webmaster)
@@ -222,7 +224,9 @@ plugins:
   - jekyll-diagrams
   - jekyll-email-protect
   - jekyll-feed
+  - jekyll-get-json
   - jekyll-imagemagick
+  - jekyll-jupyter-notebook
   - jekyll-link-attributes
   - jekyll-minifier
   - jekyll-paginate-v2
@@ -293,6 +297,8 @@ scholar:
   details_link: Details
 
   query: "@*"
+  group_by: year
+  group_order: descending
 
 badges: # Display different badges for your publications
   altmetric_badge: true # Altmetric badge (https://www.altmetric.com/products/altmetric-badges/)
@@ -352,7 +358,7 @@ jekyll-diagrams:
 # -----------------------------------------------------------------------------
 
 enable_google_analytics:    false  # enables google analytics
-enable_panelbear_analytics: false  # enables panelbear analytics
+enable_cronitor_analytics: false  # enables cronitor RUM analytics
 enable_google_verification: false  # enables google site verification
 enable_bing_verification:   false  # enables bing site verification
 enable_masonry:             true   # enables automatic project cards arrangement
@@ -382,8 +388,8 @@ bootstrap:
 bootstrap-table:
   version: "1.21.4"
 fontawesome:
-  version: "5.15.4"
-  integrity: "sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4="
+  version: "6.4.0"
+  integrity: "sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8="
 jquery:
   version: "3.6.0"
   integrity: "sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
@@ -400,3 +406,24 @@ mdb:
 medium_zoom:
   version: "1.0.8"
   integrity: "sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8="
+
+# -----------------------------------------------------------------------------
+# Get external JSON data
+# -----------------------------------------------------------------------------
+
+jekyll_get_json:
+  - data: resume
+    json: assets/json/resume.json # it can also be an url
+jsonresume:
+  - basics
+  - work
+  - education
+  - publications
+  - projects
+  - volunteer
+  - awards
+  - certificates
+  - skills
+  - languages
+  - interests
+  - references
